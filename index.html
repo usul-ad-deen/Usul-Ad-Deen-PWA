@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usul ad-Deen PWA</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <script src="service-worker.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Willkommen bei Usul ad-Deen</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#">Startseite</a></li>
+            <li><a href="#buecher">Bücher</a></li>
+            <li><a href="#hadithe">Hadithe</a></li>
+            <li><a href="#gebetszeiten">Gebetszeiten</a></li>
+            <li><a href="#bittgebete">Bittgebete</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="buecher">
+            <h2>Bücher</h2>
+            <p>Hier können Sie islamische Bücher herunterladen und lesen.</p>
+        </section>
+        <section id="hadithe">
+            <h2>Hadithe</h2>
+            <p>Tägliche Hadithe auf Deutsch.</p>
+        </section>
+        <section id="gebetszeiten">
+            <h2>Gebetszeiten</h2>
+            <p>Standortbasierte Gebetszeiten werden hier angezeigt.</p>
+        </section>
+        <section id="bittgebete">
+            <h2>Bittgebete</h2>
+            <p>Tägliche Bittgebete in Arabisch, Deutsch und Transliteration.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Usul ad-Deen</p>
+    </footer>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(reg => console.log('Service Worker registriert:', reg))
+                .catch(err => console.log('Service Worker Registrierung fehlgeschlagen:', err));
+        }
+    </script>
+</body>
+</html>
