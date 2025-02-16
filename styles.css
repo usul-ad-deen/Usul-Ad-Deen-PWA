@@ -3,6 +3,7 @@ body {
     text-align: center;
     margin: 0;
     padding: 0;
+    background-color: #f8f9fa;
 }
 
 header {
@@ -12,23 +13,44 @@ header {
 }
 
 .logo {
-    max-width: 150px;
+    max-width: 120px;
     display: block;
     margin: 0 auto;
+}
+
+nav {
+    background: #007566;
+    padding: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
 }
 
 #gebetszeiten, #beschreibung {
     margin: 20px;
     padding: 20px;
-    background: #f4f4f4;
+    background: white;
     border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
 }
 
 footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #028174;
+    background: #007566;
     color: white;
     padding: 10px;
     text-align: center;
