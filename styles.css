@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    background: url('icons/icon-192x192.png') no-repeat center center fixed;
+    background: src='icons/icon-192x192.png', no-repeat center center fixed;
     background-size: 300px; 
     background-repeat: no-repeat;
     background-position: center;
