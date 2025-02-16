@@ -1,26 +1,51 @@
-document.addEventListener("DOMContentLoaded", function() {
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(position => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-
-            fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`)
-                .then(response => response.json())
-                .then(data => {
-                    const timings = data.data.timings;
-                    document.getElementById("gebetszeiten-info").innerHTML = `
-                        <strong>Fajr:</strong> ${timings.Fajr} | 
-                        <strong>Dhuhr:</strong> ${timings.Dhuhr} | 
-                        <strong>Asr:</strong> ${timings.Asr} | 
-                        <strong>Maghrib:</strong> ${timings.Maghrib} | 
-                        <strong>Isha:</strong> ${timings.Isha}
-                    `;
-                })
-                .catch(error => {
-                    document.getElementById("gebetszeiten-info").textContent = "Fehler beim Laden der Gebetszeiten.";
-                });
-        });
+document.addEventListener("DOMContentLoaded", function () {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
-        document.getElementById("gebetszeiten-info").textContent = "Standort nicht verfügbar.";
+        alert("Geolocation wird von deinem Browser nicht unterstützt.");
     }
 });
+
+function showPosition(position) {
+    let latitude = position.coords.latitude;
+    let longitude = position.coords.longitude;
+    fetchGebetszeiten(latitude, longitude);
+}
+
+function showError(error) {
+    console.log("Standort konnte nicht ermittelt werden: " + error.message);
+}
+
+function getGebetszeiten() {
+    let city = document.getElementById("stadt").value;
+    let coords = {
+        "Berlin": { lat: 52.5200, lon: 13.4050 },
+        "München": { lat: 48.1351, lon: 11.5820 },
+        "Hamburg": { lat: 53.5511, lon: 9.9937 },
+        "Köln": { lat: 50.9375, lon: 6.9603 },
+        "Frankfurt": { lat: 50.1109, lon: 8.6821 },
+        "Dortmund": { lat: 51.5136, lon: 7.4653 },
+        "Bochum": { lat: 51.4818, lon: 7.2162 },
+        "Essen": { lat: 51.4556, lon: 7.0116 },
+        "Mülheim an der Ruhr": { lat: 51.4180, lon: 6.8845 }
+    };
+    
+    if (coords[city]) {
+        fetchGebetszeiten(coords[city].lat, coords[city].lon);
+    }
+}
+
+function fetchGebetszeiten(latitude, longitude) {
+    const url = `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("fajr").innerText = data.data.timings.Fajr;
+            document.getElementById("dhuhr").innerText = data.data.timings.Dhuhr;
+            document.getElementById("asr").innerText = data.data.timings.Asr;
+            document.getElementById("maghrib").innerText = data.data.timings.Maghrib;
+            document.getElementById("isha").innerText = data.data.timings.Isha;
+        })
+        .catch(error => console.log("Fehler beim Abrufen der Gebetszeiten: " + error));
+}
