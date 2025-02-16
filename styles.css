@@ -2,7 +2,14 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+	background-color: DeepSkyBlue ; 
+	background-image: url("icons/icon-192x192.png");
+	background-repeat: no-repeat;
+	background-position: 90% top;
+	color: midnightblue;
+	height: 100vh;
+}
+
 }
 
 
