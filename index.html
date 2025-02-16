@@ -6,26 +6,73 @@
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
-    <script src="service-worker.js"></script>
+    <script defer src="script.js"></script>
 </head>
 <body>
     <header>
         <img src="logo.png" alt="Usul ad-Deen Logo" class="logo">
-        <h1>Willkommen bei Usul ad-Deen</h1>
+        <h1>Usul ad-Deen</h1>
     </header>
 
-    <section id="gebetszeiten">
-        <h2>Gebetszeiten</h2>
-        <p id="gebetszeiten-info">Lade Gebetszeiten...</p>
+    <nav>
+        <ul>
+            <li><a href="index.html">Startseite</a></li>
+            <li><a href="buecher.html">Bücher</a></li>
+            <li><a href="gebete.html">Bittgebete</a></li>
+            <li><a href="hadithe.html">Hadithe</a></li>
+            <li><a href="einstellungen.html">Einstellungen</a></li>
+        </ul>
+    </nav>
+
+    <section id="beschreibung" class="box">
+        <h2>Willkommen bei Usul ad-Deen</h2>
+        <p>Usul ad-Deen ist eine Plattform für islamisches Wissen. Hier findest du täglich neue Hadithe, Bittgebete und vieles mehr.</p>
     </section>
 
-    <section id="beschreibung">
-        <h2>Über Usul ad-Deen</h2>
-        <p>Usul ad-Deen ist eine Plattform für islamisches Wissen mit täglich neuen Hadithen, Bittgebeten und mehr.</p>
+    <section id="ueber-mich" class="box">
+        <h2>Über mich</h2>
+        <p>
+            "Über mich sei lediglich so viel gesagt:<br>
+            Ich bin niemand, außer ein Diener الله ﷻ, der seinem Herrn dienen möchte, wie es ihm gebührt...
+        </p>
+        <p><strong>Hadith 1:</strong> <br>
+            Abud-Darda (möge Allah mit ihm zufrieden sein) berichtete: Der Gesandte Allahs (ﷺ) sagte: „Wer einem Weg auf der Suche nach Wissen folgt, dem wird Allah den Weg von Jannah leicht machen..."
+        </p>
+        <p><strong>Hadith 2:</strong> <br>
+            Zayd ibn Thabit berichtete: Ich hörte den Gesandten Allahs (ﷺ) sagen: Möge Allah einen Mann erhellen, der eine Tradition von uns hört, sie auswendig lernt und sie an andere weitergibt...
+        </p>
+    </section>
+
+    <section id="gebetszeiten" class="box">
+        <h2>Gebetszeiten</h2>
+        <p>Die aktuellen Gebetszeiten für deine Stadt:</p>
+        
+        <label for="stadt">Wähle eine Stadt:</label>
+        <select id="stadt">
+            <option value="Berlin">Berlin</option>
+            <option value="München">München</option>
+            <option value="Hamburg">Hamburg</option>
+            <option value="Köln">Köln</option>
+            <option value="Dortmund">Dortmund</option>
+            <option value="Bochum">Bochum</option>
+            <option value="Essen">Essen</option>
+            <option value="Mühlheim an der Ruhr">Mühlheim a.d.R.</option>
+            <option value="Frankfurt">Frankfurt</option>
+        </select>
+        
+        <button onclick="getGebetszeiten()">Laden</button>
+        
+        <div id="zeiten">
+            <p><strong>Fajr:</strong> <span id="fajr"></span></p>
+            <p><strong>Dhuhr:</strong> <span id="dhuhr"></span></p>
+            <p><strong>Asr:</strong> <span id="asr"></span></p>
+            <p><strong>Maghrib:</strong> <span id="maghrib"></span></p>
+            <p><strong>Isha:</strong> <span id="isha"></span></p>
+        </div>
     </section>
 
     <footer>
-        <p>&copy; 2025 Usul ad-Deen</p>
+        <p>© 2025 Usul ad-Deen. Alle Rechte vorbehalten.</p>
     </footer>
 
     <script src="script.js"></script>
