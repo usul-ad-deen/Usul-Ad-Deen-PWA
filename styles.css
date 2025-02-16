@@ -4,11 +4,11 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     background: url('icons/icon-192x192.png') no-repeat center center fixed;
-    background-size: 300px; /* Größe des Logos anpassen */
+    background-size: 300px; 
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    opacity: 0.1; /* Transparenz des Logos als Wasserzeichen */
+    opacity: 0.1; 
 
 }
 
