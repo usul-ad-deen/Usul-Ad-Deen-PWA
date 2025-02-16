@@ -1,20 +1,14 @@
-document.addEventListener("DOMContentLoaded", function () {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else {
-        alert("Geolocation wird von deinem Browser nicht unterstützt.");
+async function getCityFromCoords(lat, lon) {
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+        const data = await response.json();
+        return data.address.city || data.address.town || data.address.village || "Unbekannte Stadt";
+    } catch (error) {
+        console.error("Fehler beim Abrufen der Stadt:", error);
+        return "Unbekannte Stadt";
     }
-});
-
-function showPosition(position) {
-    let latitude = position.coords.latitude;
-    let longitude = position.coords.longitude;
-    fetchGebetszeiten(latitude, longitude);
 }
 
-function showError(error) {
-    console.log("Standort konnte nicht ermittelt werden: " + error.message);
-}
 async function fetchPrayerTimes(city) {
     try {
         const response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=Germany&method=3`);
@@ -29,48 +23,33 @@ async function fetchPrayerTimes(city) {
                 <p>Maghrib: ${data.data.timings.Maghrib}</p>
                 <p>Isha: ${data.data.timings.Isha}</p>
             `;
+            document.getElementById("user-location").innerText = `📍 Ihr Standort: ${city}`;
         } else {
             document.getElementById("prayer-times").innerHTML = "Fehler beim Abrufen der Gebetszeiten.";
+            document.getElementById("user-location").innerText = "📍 Standort konnte nicht ermittelt werden.";
         }
     } catch (error) {
         console.error("Fehler beim Laden der Gebetszeiten:", error);
         document.getElementById("prayer-times").innerHTML = "Fehler beim Laden der Gebetszeiten.";
+        document.getElementById("user-location").innerText = "📍 Standort konnte nicht geladen werden.";
     }
 }
 
-// Standard-Stadt setzen
-fetchPrayerTimes("Dortmund");
-
-function getGebetszeiten() {
-    let city = document.getElementById("stadt").value;
-    let coords = {
-        "Berlin": { lat: 52.5200, lon: 13.4050 },
-        "München": { lat: 48.1351, lon: 11.5820 },
-        "Hamburg": { lat: 53.5511, lon: 9.9937 },
-        "Köln": { lat: 50.9375, lon: 6.9603 },
-        "Frankfurt": { lat: 50.1109, lon: 8.6821 },
-        "Dortmund": { lat: 51.5136, lon: 7.4653 },
-        "Bochum": { lat: 51.4818, lon: 7.2162 },
-        "Essen": { lat: 51.4556, lon: 7.0116 },
-        "Mülheim an der Ruhr": { lat: 51.4180, lon: 6.8845 }
-    };
-    
-    if (coords[city]) {
-        fetchGebetszeiten(coords[city].lat, coords[city].lon);
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const city = await getCityFromCoords(lat, lon);
+            fetchPrayerTimes(city);
+        }, (error) => {
+            console.error("Fehler bei der Standortabfrage:", error);
+            document.getElementById("user-location").innerText = "📍 Standort konnte nicht ermittelt werden.";
+        });
+    } else {
+        document.getElementById("user-location").innerText = "📍 Geolocation wird von deinem Browser nicht unterstützt.";
     }
 }
 
-function fetchGebetszeiten(latitude, longitude) {
-    const url = `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`;
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("fajr").innerText = data.data.timings.Fajr;
-            document.getElementById("dhuhr").innerText = data.data.timings.Dhuhr;
-            document.getElementById("asr").innerText = data.data.timings.Asr;
-            document.getElementById("maghrib").innerText = data.data.timings.Maghrib;
-            document.getElementById("isha").innerText = data.data.timings.Isha;
-        })
-        .catch(error => console.log("Fehler beim Abrufen der Gebetszeiten: " + error));
-}
+// Automatisch Standort abrufen beim Laden der Seite
+getLocation();
