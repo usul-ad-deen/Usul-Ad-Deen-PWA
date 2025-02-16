@@ -16,22 +16,22 @@ async function fetchPrayerTimes(city) {
         
         if (data.code === 200) {
             document.getElementById("prayer-times").innerHTML = `
-                <h3>Gebetszeiten für ${city}</h3>
-                <p>Fajr: ${data.data.timings.Fajr}</p>
-                <p>Dhuhr: ${data.data.timings.Dhuhr}</p>
-                <p>Asr: ${data.data.timings.Asr}</p>
-                <p>Maghrib: ${data.data.timings.Maghrib}</p>
-                <p>Isha: ${data.data.timings.Isha}</p>
+                <h3>🕌 Gebetszeiten für ${city}</h3>
+                <p><strong>Fajr:</strong> ${data.data.timings.Fajr}</p>
+                <p><strong>Dhuhr:</strong> ${data.data.timings.Dhuhr}</p>
+                <p><strong>Asr:</strong> ${data.data.timings.Asr}</p>
+                <p><strong>Maghrib:</strong> ${data.data.timings.Maghrib}</p>
+                <p><strong>Isha:</strong> ${data.data.timings.Isha}</p>
             `;
-            document.getElementById("user-location").innerText = `📍 Ihr Standort: ${city}`;
+            document.getElementById("user-location").innerHTML = `📍 <strong>Ihr Standort:</strong> ${city}`;
         } else {
-            document.getElementById("prayer-times").innerHTML = "Fehler beim Abrufen der Gebetszeiten.";
-            document.getElementById("user-location").innerText = "📍 Standort konnte nicht ermittelt werden.";
+            document.getElementById("prayer-times").innerHTML = "⚠️ Fehler beim Abrufen der Gebetszeiten.";
+            document.getElementById("user-location").innerHTML = "📍 Standort konnte nicht ermittelt werden. Bitte wähle den Standort manuell aus.";
         }
     } catch (error) {
         console.error("Fehler beim Laden der Gebetszeiten:", error);
-        document.getElementById("prayer-times").innerHTML = "Fehler beim Laden der Gebetszeiten.";
-        document.getElementById("user-location").innerText = "📍 Standort konnte nicht geladen werden.";
+        document.getElementById("prayer-times").innerHTML = "⚠️ Fehler beim Laden der Gebetszeiten.";
+        document.getElementById("user-location").innerHTML = "📍 Standort konnte nicht geladen werden. Bitte wähle den Standort manuell aus.";
     }
 }
 
@@ -44,12 +44,12 @@ function getLocation() {
             fetchPrayerTimes(city);
         }, (error) => {
             console.error("Fehler bei der Standortabfrage:", error);
-            document.getElementById("user-location").innerText = "📍 Standort konnte nicht ermittelt werden.";
+            document.getElementById("user-location").innerHTML = "📍 Standort konnte nicht ermittelt werden.";
         });
     } else {
-        document.getElementById("user-location").innerText = "📍 Geolocation wird von deinem Browser nicht unterstützt.";
+        document.getElementById("user-location").innerHTML = "📍 Geolocation wird von deinem Browser nicht unterstützt.";
     }
 }
 
 // Automatisch Standort abrufen beim Laden der Seite
-getLocation();
+document.addEventListener("DOMContentLoaded", getLocation);
