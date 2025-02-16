@@ -3,6 +3,10 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 header {
@@ -34,7 +38,7 @@ header {
 
 nav ul {
     list-style: none;
-    background: #333;
+    background: #028174;
     padding: 10px;
     text-align: center;
 }
