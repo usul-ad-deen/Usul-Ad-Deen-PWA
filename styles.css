@@ -6,11 +6,11 @@ body {
 }
 body {
     background: url('icons/icon-192x192.png') no-repeat center center fixed;
-    background-size: 250px; /* Größe des Wasserzeichens */
+    background-size: 300px; /* Größe des Wasserzeichens */
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    opacity: 0.1; /* Transparenz */
+    opacity: 0.001; /* Transparenz */
 }
 
 
