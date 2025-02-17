@@ -1,4 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const menu = document.getElementById("main-menu");
+    if (!menu) {
+        const nav = document.createElement("nav");
+        nav.id = "main-menu";
+        nav.innerHTML = `
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
+                <li><a href="hadithe.html">Hadithe</a></li>
+                <li><a href="buecher.html">Bücher</a></li>
+                <li><a href="ueber-mich.html">Über mich</a></li>
+                <li><a href="kontakt.html">Kontakt</a></li>
+            </ul>
+        `;
+        document.body.prepend(nav);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
     const hadithText = document.getElementById("hadith-text");
 
     // Liste der Hadithe
