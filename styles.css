@@ -3,11 +3,14 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f8f9fa;
+
     background-image: url('icons/icon-192x192.png');
-    background-size: 20%;
     background-repeat: no-repeat;
     background-position: center;
-    opacity: 0.1;
+    background-size: 200px; /* Anpassbare Größe */
+    background-attachment: fixed;
+    opacity: 0.1; /* Macht das Wasserzeichen dezent */
+
 }
 
 .container {
