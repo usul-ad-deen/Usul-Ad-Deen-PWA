@@ -1,19 +1,19 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
-    <script defer src="app.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <header>
         <h1>Usul ad-Deen</h1>
-      <nav id="main-menu">
-    <ul>
-        <li><a href="index.html">Startseite</a></li>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Startseite</a></li>
         <li><a href="Beiträge.html">Beiträge</a></li>
         <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
         <li><a href="hadithe.html">Hadithe</a></li>
@@ -21,32 +21,21 @@
         <li><a href="Login.html">Login</a></li>
         <li><a href="ueber-mich.html">Über mich</a></li>
         <li><a href="mehr.html">Mehr</a></li>
-    </ul>
-</nav>
-
-    </header>
-    
+        </ul>
+    </nav>
     <main>
         <section id="gebetszeiten">
-            
             <h2>Gebetszeiten</h2>
-            <p id="standort-anzeige">Ihr Standort: Wird geladen...</p>
-            <p>Fajr: <span id="fajr"></span></p>
-            <p>Shuruk: <span id="shuruk"></span></p>
-            <p>Dhuhr: <span id="dhuhr"></span></p>
-            <p>Asr: <span id="asr"></span></p>
-            <p>Maghrib: <span id="maghrib"></span></p>
-            <p>Isha: <span id="isha"></span></p>
-            <p>Mitternacht: <span id="mitternacht"></span></p>
-            <p>Letztes Drittel: <span id="letztes-drittel"></span></p>
+            <p id="standort">Ihr Standort: Wird ermittelt...</p>
+            <p id="zeiten">Lade Gebetszeiten...</p>
         </section>
-        
         <section id="hadith">
-             ​<<div id="hadith-container">
-    <h2>📖 Hadith des Tages</h2>
-    <div id="hadith-text"></div>
-            <blockquote id="hadith-text">Wird geladen...</blockquote>
-             </div>
+            <h2>Hadith des Tages</h2>
+            <p id="hadith-text">Lade Hadith...</p>
+        </section>
+        <section id="bittgebete">
+            <h2>Tägliche Bittgebete</h2>
+            <p>Hier erscheinen tägliche Bittgebete.</p>
         </section>
          <section id="ueber-mich" class="box">
        <h2>Über mich</h2>
@@ -67,15 +56,10 @@
                 Sunan Abi Dawud 3660, Sahih nach Al-Albani</p>
 ​         </div>
          </section>
-
     </main>
-    
     <footer>
         <p>&copy; 2025 Usul ad-Deen</p>
     </footer>
 </body>
 </html>
 
-    <script src="script.js"></script>
-</body>
-</html>
