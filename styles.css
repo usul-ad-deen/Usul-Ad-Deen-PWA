@@ -1,13 +1,19 @@
+/* Allgemeine Stile */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
-    }
-body {
-    position: relative;
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+    background-image: url('icons/icon-192x192.png'); /* Wasserzeichen */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed; /* Bleibt fixiert beim Scrollen */
+    background-size: 200px;
 }
 
+/* Wasserzeichen im Hintergrund */
 body::before {
     content: "";
     position: fixed;
@@ -18,30 +24,100 @@ body::before {
     background-image: url('icons/icon-192x192.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 200px; /* Anpassbare Größe */
-    opacity: 0.1; /* Wasserzeichen dezent machen */
-    z-index: -1; /* Setzt das Wasserzeichen in den Hintergrund */
+    background-size: 200px;
+    opacity: 0.05; /* Dezent machen */
+    z-index: -1; /* Sicherstellen, dass es im Hintergrund bleibt */
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+/* Kopfzeile */
+header {
+    background: #333;
+    color: white;
+    padding: 15px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Navigation */
+nav {
+    background: #444;
+    padding: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* Hauptbereich */
+main {
     padding: 20px;
+}
+
+/* Abschnitte */
+section {
     background: white;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+}
+
+/* Gebetszeiten */
+#prayer-times {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0066cc;
+}
+
+/* Zentrale Anzeige */
+.hadith-container {
+    text-align: center;
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 15px;
+    border: 2px solid #ccc;
     border-radius: 10px;
+    background: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-    text-align: center;
+/* Buttons */
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    background: #007BFF;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
+button:hover {
+    background: #0056b3;
+}
+
+/* Footer */
 footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #343a40;
+    background: #333;
     color: white;
     text-align: center;
     padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
