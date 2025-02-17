@@ -8,7 +8,7 @@ body {
     background-repeat: repeat; /* Wiederholung */
     background-position: center; /* Zentrierte Ausrichtung */
     background-attachment: fixed; /* Hintergrund bleibt beim Scrollen */
-    opacity: 0.02; /* Sehr transparente Darstellung */
+    opacity: 0.01; /* Sehr transparente Darstellung */
 }
 
 /* Navigation */
