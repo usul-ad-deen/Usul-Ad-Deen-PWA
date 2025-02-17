@@ -6,14 +6,14 @@
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <header>
         <h1>Usul ad-Deen</h1>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="index.html">Startseite</a></li>
+        <nav>
+            <ul>
+                   <li><a href="index.html">Startseite</a></li>
         <li><a href="Beiträge.html">Beiträge</a></li>
         <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
         <li><a href="hadithe.html">Hadithe</a></li>
@@ -21,23 +21,31 @@
         <li><a href="Login.html">Login</a></li>
         <li><a href="ueber-mich.html">Über mich</a></li>
         <li><a href="mehr.html">Mehr</a></li>
-        </ul>
-    </nav>
+            </ul>
+        </nav>
+    </header>
     <main>
         <section id="gebetszeiten">
             <h2>Gebetszeiten</h2>
             <p id="standort">Ihr Standort: Wird ermittelt...</p>
-            <p id="zeiten">Lade Gebetszeiten...</p>
+            <ul id="gebetszeiten-liste">
+                <li>Fajr: <span id="fajr"></span></li>
+                <li>Shuruk: <span id="shuruk"></span></li>
+                <li>Dhuhr: <span id="dhuhr"></span></li>
+                <li>Asr: <span id="asr"></span></li>
+                <li>Maghrib: <span id="maghrib"></span></li>
+                <li>Isha: <span id="isha"></span></li>
+            </ul>
         </section>
         <section id="hadith">
             <h2>Hadith des Tages</h2>
             <p id="hadith-text">Lade Hadith...</p>
         </section>
-        <section id="bittgebete">
+         <section id="bittgebete">
             <h2>Tägliche Bittgebete</h2>
             <p>Hier erscheinen tägliche Bittgebete.</p>
         </section>
-         <section id="ueber-mich" class="box">
+          <section id="ueber-mich" class="box">
        <h2>Über mich</h2>
         <p>
             "Über mich sei lediglich so viel gesagt:<br>
@@ -62,4 +70,3 @@
     </footer>
 </body>
 </html>
-
