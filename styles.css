@@ -1,13 +1,14 @@
-/* Allgemeine Stile */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-image: url('icons/icon-192x192.png'); /* Hintergrundbild */
     background-size: 100px; /* Bildgröße */
-    background-repeat: repeat; /* Wiederholung des Bildes */
+    background-repeat: repeat; /* Wiederholung */
     background-position: center; /* Zentrierte Ausrichtung */
     background-attachment: fixed; /* Hintergrund bleibt beim Scrollen */
+    opacity: 0.05; /* Sehr transparente Darstellung */
 }
 
 /* Navigation */
