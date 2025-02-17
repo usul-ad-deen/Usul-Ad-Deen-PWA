@@ -3,23 +3,20 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('icons/icon-192x192.png');
-    background-size: 100px;
-    background-repeat: repeat;
-    background-attachment: fixed;
-    background-position: center;
+    background-image: url('icons/icon-192x192.png'); /* Hintergrundbild */
+    background-size: 100px; /* Bildgröße */
+    background-repeat: repeat; /* Wiederholung des Bildes */
+    background-position: center; /* Zentrierte Ausrichtung */
+    background-attachment: fixed; /* Hintergrund bleibt beim Scrollen */
 }
 
-/* Navigation (fixiert am oberen Rand) */
+/* Navigation */
 nav {
     background-color: #2d6a4f; /* Dunkelgrünes Design */
     color: white;
     padding: 10px 0;
     text-align: center;
-    position: fixed;
     width: 100%;
-    top: 0;
-    z-index: 1000;
 }
 
 nav ul {
@@ -40,7 +37,7 @@ nav ul li a {
 
 /* Hauptinhalt */
 .container {
-    padding: 100px 20px; /* Abstand zur fixierten Menüleiste */
+    padding: 20px;
     text-align: center;
 }
 
