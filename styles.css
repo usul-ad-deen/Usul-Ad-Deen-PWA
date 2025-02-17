@@ -1,4 +1,4 @@
-/* Standard-Stile für die gesamte Seite */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -7,12 +7,12 @@ body {
     color: #333;
     text-align: center;
     
-    /* Hintergrundbild setzen */
-    background-image: url('icons/icon-192x192.png'); /* Stelle sicher, dass der Pfad stimmt */
-    background-size: cover; /* Bild passt sich an */
-    background-repeat: no-repeat; /* Kein Wiederholen des Bildes */
-    background-position: center center; /* Bild bleibt mittig */
-    background-attachment: fixed; /* Hintergrund bleibt beim Scrollen fix */
+  
+    background-image: url('icons/icon-192x192.png');
+    background-size: cover;
+    background-repeat: no-repeat; 
+    background-position: right;
+    background-attachment: fixed; 
 }
 
 
