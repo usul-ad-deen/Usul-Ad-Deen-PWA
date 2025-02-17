@@ -43,4 +43,32 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => console.error("Fehler beim Abrufen der Gebetszeiten:", error));
     }
+
+    // Hadith des Tages abrufen und anzeigen
+    function fetchHadithDesTages() {
+        const hadithSammlung = [
+            {
+                arabisch: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",
+                deutsch: "Die Taten werden nur nach den Absichten beurteilt.",
+                quelle: "Sahih al-Bukhari, Hadith 1"
+            },
+            {
+                arabisch: "لاَ يَرْحَمُ اللَّهُ مَنْ لاَ يَرْحَمُ النَّاسَ",
+                deutsch: "Allah erbarmt sich nicht über den, der sich nicht über die Menschen erbarmt.",
+                quelle: "Sahih Muslim, Hadith 2319"
+            },
+            {
+                arabisch: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ",
+                deutsch: "Wer an Allah und den Jüngsten Tag glaubt, soll Gutes sprechen oder schweigen.",
+                quelle: "Sahih al-Bukhari, Hadith 6018"
+            }
+        ];
+
+        const zufallsHadith = hadithSammlung[Math.floor(Math.random() * hadithSammlung.length)];
+        document.getElementById("hadith-arabisch").textContent = zufallsHadith.arabisch;
+        document.getElementById("hadith-deutsch").textContent = zufallsHadith.deutsch;
+        document.getElementById("hadith-quelle").textContent = zufallsHadith.quelle;
+    }
+
+    fetchHadithDesTages();
 });
