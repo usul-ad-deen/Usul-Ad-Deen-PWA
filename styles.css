@@ -1,4 +1,4 @@
-/* Allgemeine Stile */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,14 +6,14 @@ body {
     background-color: #f4f4f4;
     color: #333;
     text-align: center;
-    background-image: url('icons/icon-192x192.png'); /* Wasserzeichen */
+    background-image: url('icons/icon-192x192.png'); 
     background-repeat: no-repeat;
     background-position: center;
-    background-attachment: fixed; /* Bleibt fixiert beim Scrollen */
+    background-attachment: fixed; 
     background-size: 200px;
 }
 
-/* Wasserzeichen im Hintergrund */
+
 body::before {
     content: "";
     position: fixed;
@@ -25,11 +25,11 @@ body::before {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 200px;
-    opacity: 0.05; /* Dezent machen */
-    z-index: -1; /* Sicherstellen, dass es im Hintergrund bleibt */
+    opacity: 0.05; 
+    z-index: -1; 
 }
 
-/* Kopfzeile */
+
 header {
     background: #333;
     color: white;
@@ -38,7 +38,7 @@ header {
     font-weight: bold;
 }
 
-/* Navigation */
+
 nav {
     background: #444;
     padding: 10px;
@@ -61,12 +61,12 @@ nav ul li a {
     font-size: 18px;
 }
 
-/* Hauptbereich */
+
 main {
     padding: 20px;
 }
 
-/* Abschnitte */
+
 section {
     background: white;
     margin: 20px auto;
@@ -76,14 +76,22 @@ section {
     max-width: 800px;
 }
 
-/* Gebetszeiten */
+
 #prayer-times {
     font-size: 20px;
     font-weight: bold;
     color: #0066cc;
+     text-align: center;
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 15px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Zentrale Anzeige */
+
 .hadith-container {
     text-align: center;
     margin: 20px auto;
@@ -95,7 +103,6 @@ section {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Buttons */
 button {
     padding: 10px 20px;
     margin: 10px;
@@ -111,7 +118,7 @@ button:hover {
     background: #0056b3;
 }
 
-/* Footer */
+
 footer {
     background: #333;
     color: white;
