@@ -1,4 +1,4 @@
-/* Hintergrundbild als Wasserzeichen */
+/* Standard-Stile für die gesamte Seite */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,24 +6,13 @@ body {
     background-color: #f4f4f4;
     color: #333;
     text-align: center;
-    position: relative; /* Wichtig für das Pseudo-Element */
-}
-
-/* Wasserzeichen wirklich im Hintergrund */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    
+    /* Hintergrundbild setzen */
     background-image: url('icons/icon-192x192.png'); /* Stelle sicher, dass der Pfad stimmt */
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 150px;
-    opacity: 0.05; /* Noch unauffälliger */
-    z-index: -9999; /* Tiefster Hintergrund */
-    pointer-events: none; /* Verhindert, dass es über andere Elemente kommt */
+    background-size: cover; /* Bild passt sich an */
+    background-repeat: no-repeat; /* Kein Wiederholen des Bildes */
+    background-position: center center; /* Bild bleibt mittig */
+    background-attachment: fixed; /* Hintergrund bleibt beim Scrollen fix */
 }
 
 
