@@ -1,20 +1,18 @@
-/* Hintergrundbild als kaum sichtbares Wasserzeichen */
+/* Hintergrund */
 body {
-    background-image: url('icons/icon-192x192.png');
-    background-repeat: repeat;
-    background-position: center;
-    background-size: 10%; /* Verkleinert das Bild für dezente Darstellung */
-    opacity: 0.1; /* Kaum sichtbar */
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
 }
 
-/* Kopfzeile fixieren mit "Usul ad-Deen" über der Menüleiste */
-.header {
-    background-color: #0a3d62; /* Grün wie vorher */
+/* Kopfzeile mit Logo */
+header {
+    background-color: #0a3d62;
     color: white;
-    padding: 15px;
     text-align: center;
-    font-size: 24px;
-    font-weight: bold;
+    padding: 10px 0;
+    position: relative;
+}
+
 }
 
 /* Menüleiste fixieren */
@@ -27,16 +25,45 @@ body {
     text-align: center;
     z-index: 1000;
 }
+#header-logo {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+}
 
-/* Gebetszeiten-Anzeige */
+/* Standort-Anzeige */
+#location-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#manualCitySelection {
+    width: 80%;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+/* Gebetszeiten */
 .prayer-times {
     text-align: center;
     background: white;
-    padding: 15px;
+    padding: 20px;
+    margin: 20px auto;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    max-width: 400px;
+}
+
+/* Farben für Texte */
+p {
+    color: #333;
+}
+
+
+
+
+
 }
 
 /* Hadith-Anzeige */
