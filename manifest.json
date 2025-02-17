@@ -1,19 +1,19 @@
 {
     "name": "Usul ad-Deen",
-    "short_name": "Usul ad-Deen",
-    "description": "Islamische Bücher, Gebetszeiten & tägliche Hadithe",
+    "short_name": "UsulDeen",
+    "description": "Islamische App mit Gebetszeiten, Hadithen und Bittgebeten",
     "start_url": "/index.html",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#009688",
+    "theme_color": "#005f5f",
     "icons": [
         {
-            "src": "/icons/icon-192x192.png",
+            "src": "icons/icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/icons/icon-512x512.png",
+            "src": "icons/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
