@@ -7,15 +7,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 const lon = position.coords.longitude;
                 fetchGebetszeiten(lat, lon);
                 fetchStadtname(lat, lon);
-                fetchZeiten(); // Mekka & Berlin Zeiten
             },
-            function (error) {
+            function () {
                 console.log("Standort konnte nicht ermittelt werden. Manuelle Auswahl erforderlich.");
                 document.getElementById("manualCitySelection").style.display = "block";
+                document.getElementById("manualCitySelection").addEventListener("change", function () {
+                    const city = this.value;
+                    document.getElementById("currentLocation").textContent = `Manuell gewählt: ${city}`;
+                    fetchGebetszeitenFürStadt(city);
+                });
             }
         );
-    } else {
-        console.log("Geolocation wird nicht unterstützt.");
     }
 
     // Stadtname anhand der Koordinaten holen
@@ -28,6 +30,42 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => console.error("Fehler beim Abrufen der Stadt:", error));
     }
+
+    // Funktion für Gebetszeiten anhand von Städtenamen
+    function fetchGebetszeitenFürStadt(city) {
+        const cityCoords = {
+            "Berlin": { lat: 52.5200, lon: 13.4050 },
+            "Hamburg": { lat: 53.5511, lon: 9.9937 },
+            "München": { lat: 48.1351, lon: 11.5820 },
+            "Köln": { lat: 50.9375, lon: 6.9603 },
+            "Frankfurt": { lat: 50.1109, lon: 8.6821 },
+            "Stuttgart": { lat: 48.7758, lon: 9.1829 },
+            "Düsseldorf": { lat: 51.2277, lon: 6.7735 }
+        };
+
+        if (cityCoords[city]) {
+            fetchGebetszeiten(cityCoords[city].lat, cityCoords[city].lon);
+        } else {
+            console.log("Koordinaten für diese Stadt nicht vorhanden.");
+        }
+    }
+
+    // Gebetszeiten abrufen
+    function fetchGebetszeiten(lat, lon) {
+        fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
+            .then(response => response.json())
+            .then(data => {
+                const timings = data.data.timings;
+                document.getElementById("fajr").textContent = timings.Fajr;
+                document.getElementById("dhuhr").textContent = timings.Dhuhr;
+                document.getElementById("asr").textContent = timings.Asr;
+                document.getElementById("maghrib").textContent = timings.Maghrib;
+                document.getElementById("isha").textContent = timings.Isha;
+                document.getElementById("shuruk").textContent = timings.Sunrise;
+            })
+            .catch(error => console.error("Fehler beim Abrufen der Gebetszeiten:", error));
+    }
+});
 
     // Gebetszeiten abrufen & zusätzliche Zeiten berechnen
     function fetchGebetszeiten(lat, lon) {
