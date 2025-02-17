@@ -1,106 +1,51 @@
-
+/* Hintergrundbild als kaum sichtbares Wasserzeichen */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-image: url('icons/icon-192x192.png'); /* Hintergrundbild */
-    background-size: 300px; /* Bildgröße */
-    background-repeat: repeat; /* Wiederholung */
-    background-position: center; /* Zentrierte Ausrichtung */
-    background-attachment: fixed; /* Hintergrund bleibt beim Scrollen */
-    opacity: 0.01; /* Sehr transparente Darstellung */
+    background-image: url('icons/icon-192x192.png');
+    background-repeat: repeat;
+    background-position: center;
+    background-size: 10%; /* Verkleinert das Bild für dezente Darstellung */
+    opacity: 0.1; /* Kaum sichtbar */
 }
 
-/* Navigation */
-nav {
-    background-color: #2d6a4f; /* Dunkelgrünes Design */
+/* Kopfzeile fixieren mit "Usul ad-Deen" über der Menüleiste */
+.header {
+    background-color: #0a3d62; /* Grün wie vorher */
     color: white;
-    padding: 10px 0;
-    text-align: center;
-    width: 100%;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-}
-
-/* Hauptinhalt */
-.container {
-    padding: 20px;
-    text-align: center;
-}
-#hadith-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 600px;
-    margin: 20px auto;
-    text-align: center;
-}
-
-.hadith-box {
     padding: 15px;
-    border-left: 4px solid #007BFF;
-    background: #f8f9fa;
-    margin-top: 10px;
-}
-
-.hadith-arabic {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-}
-
-.hadith-german {
-    font-size: 16px;
-    color: #555;
-    margin-top: 10px;
-}
-
-.hadith-source {
-    font-size: 14px;
-    color: #777;
-    margin-top: 5px;
-}
-
-/* Gebetszeiten */
-.prayer-times {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 15px;
-    border-radius: 10px;
-    margin: 20px auto;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Standort-Anzeige */
-#location {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-/* Footer (fixiert am unteren Rand) */
-footer {
-    background-color: #2d6a4f; /* Dunkelgrünes Design */
-    color: white;
     text-align: center;
-    padding: 10px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Menüleiste fixieren */
+.navbar {
     position: fixed;
-    bottom: 0;
+    top: 0;
     width: 100%;
+    background-color: #0a3d62;
+    padding: 10px 0;
+    text-align: center;
+    z-index: 1000;
+}
+
+/* Gebetszeiten-Anzeige */
+.prayer-times {
+    text-align: center;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+/* Hadith-Anzeige */
+.hadith-container {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
 }
