@@ -5,68 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
     <link rel="manifest" href="manifest.json">
+    <script defer src="script.js"></script>
 </head>
 <body>
     <header>
         <h1>Usul ad-Deen</h1>
         <nav>
             <ul>
-                   <li><a href="index.html">Startseite</a></li>
-        <li><a href="Beiträge.html">Beiträge</a></li>
-        <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
-        <li><a href="hadithe.html">Hadithe</a></li>
-        <li><a href="buecher.html">Bücher</a></li>
-        <li><a href="Login.html">Login</a></li>
-        <li><a href="ueber-mich.html">Über mich</a></li>
-        <li><a href="mehr.html">Mehr</a></li>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="Bücher.html">Bücher</a></li>
+                <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
+                <li><a href="bittgebete.html">Bittgebete</a></li>
+                <li><a href="hadithsammlung.html">Hadithsammlung</a></li>
+                <li><a href="ueber-uns.html">Über uns</a></li>
+                <li><a href="mehr.html">mehr</a></li>
             </ul>
         </nav>
     </header>
+
     <main>
-        <section id="gebetszeiten">
+        <section class="gebetszeiten">
             <h2>Gebetszeiten</h2>
             <p id="standort">Ihr Standort: Wird ermittelt...</p>
-            <ul id="gebetszeiten-liste">
-                <li>Fajr: <span id="fajr"></span></li>
-                <li>Shuruk: <span id="shuruk"></span></li>
-                <li>Dhuhr: <span id="dhuhr"></span></li>
-                <li>Asr: <span id="asr"></span></li>
-                <li>Maghrib: <span id="maghrib"></span></li>
-                <li>Isha: <span id="isha"></span></li>
-            </ul>
+            <p id="stadt"></p>
+            <ul id="gebetszeitenListe"></ul>
         </section>
-        <section id="hadith">
+
+        <section class="hadith">
             <h2>Hadith des Tages</h2>
-            <p id="hadith-text">Lade Hadith...</p>
+            <p id="hadithArabisch"></p>
+            <p id="hadithDeutsch"></p>
+            <p id="hadithQuelle"></p>
         </section>
-         <section id="bittgebete">
-            <h2>Tägliche Bittgebete</h2>
-            <p>Hier erscheinen tägliche Bittgebete.</p>
+
+        <section class="bittgebet">
+            <h2>Bittgebet des Tages</h2>
+            <p id="bittgebetArabisch"></p>
+            <p id="bittgebetDeutsch"></p>
+            <p id="bittgebetTrans"></p>
         </section>
-          <section id="ueber-mich" class="box">
-       <h2>Über mich</h2>
-        <p>
-            "Über mich sei lediglich so viel gesagt:<br>
-            Ich bin niemand, außer ein Diener الله ﷻ, der seinem Herrn dienen möchte, wie es ihm gebührt...
-        </p>
-      
-            ​<div class="hadith-container">
- <p>وعن أبي الدرداء رضي الله عنه قال سمعت رسول الله صلى الله عليه وسلم يقول‏: ‏ ‏ "‏من سلك طريقًا يبتغي فيه علمًا سهل الله له طريقًا إلى الجنة، وإن الملائكة لتضع أجنحتها لطالب العلم رضا بما صنع، وإن العالم ليستغفر له من في السماوات والأرض حتى الحيتان في الماء، وفضل العالم على العابد كفضل القمر على سائر الكواكب، وإن العلماء ورثة الأنبياء وإن الأنبياء لم يورثوا دينارًا ولا درهما وإنما ورثوا العلم‏.‏ فمن أخذه أخذ بحظ وافر‏"‏ ‏(‏‏(‏رواه أبو داود والترمذي‏)‏‏)‏‏.
-            Abud-Darda (möge Allah mit ihm zufrieden sein) berichtete: Der Gesandte Allahs (ﷺ) sagte: „Wer einem Weg auf der Suche nach Wissen folgt, dem wird Allah den Weg von Jannah leicht machen. Die Engel senken ihre Flügel.“ Der Wissenssucher ist zufrieden mit dem, was er tut. Die Bewohner der Himmel und der Erde und sogar die Fische in den Tiefen der Ozeane bitten um Vergebung für ihn. Die Überlegenheit des Gelehrten über den frommen Anbeter ist wie die des Vollmond zu den übrigen Sternen (d. h. in Helligkeit). Die Gelehrten sind die Erben der Propheten, die weder Dinar noch Dirham hinterlassen, sondern nur das Wissen; und wer es erwirbt, hat tatsächlich einen reichlichen Anteil erworben. [Abu Dawud and At- Tirmidhi].
-            Riyad as-Salihin 1388"   </p>
-            </div>
-    
-<div class="hadith-container">
-            <p>  حَدَّثَنَا مُسَدَّدٌ، حَدَّثَنَا يَحْيَى، عَنْ شُعْبَةَ، حَدَّثَنِي عُمَرُ بْنُ سُلَيْمَانَ، - مِنْ وَلَدِ عُمَرَ بْنِ الْخَطَّابِ - عَنْ عَبْدِ الرَّحْمَنِ بْنِ أَبَانَ، عَنْ أَبِيهِ، عَنْ زَيْدِ بْنِ ثَابِتٍ، قَالَ سَمِعْتُ رَسُولَ اللَّهِ صلى الله عليه وسلم يَقُولُ ‏ "‏ نَضَّرَ اللَّهُ امْرَأً سَمِعَ مِنَّا حَدِيثًا فَحَفِظَهُ حَتَّى يُبَلِّغَهُ فَرُبَّ حَامِلِ فِقْهٍ إِلَى مَنْ هُوَ أَفْقَهُ مِنْهُ وَرُبَّ حَامِلِ فِقْهٍ لَيْسَ بِفَقِيهٍ ‏"‏ ‏.‏
-                Zayd ibn Thabit berichtete: Ich hörte den Gesandten Allahs (ﷺ) sagen: Möge Allah einen Mann erhellen, der eine Tradition von uns hört, sie auswendig lernt und sie an andere weitergibt. Mancher Wissensträger gibt es jemandem weiter, der bewandert ist als er; und mancher Wissensträger kennt sich darin nicht aus.
-                Sunan Abi Dawud 3660, Sahih nach Al-Albani</p>
-​         </div>
-         </section>
     </main>
+
     <footer>
         <p>&copy; 2025 Usul ad-Deen</p>
     </footer>
 </body>
 </html>
+
