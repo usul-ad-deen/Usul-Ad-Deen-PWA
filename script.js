@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const lon = position.coords.longitude;
                 fetchGebetszeiten(lat, lon);
                 fetchStadtname(lat, lon);
+                fetchZeiten(); // Mekka & Berlin Zeiten
             },
             function (error) {
                 console.log("Standort konnte nicht ermittelt werden. Manuelle Auswahl erforderlich.");
@@ -28,23 +29,70 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Fehler beim Abrufen der Stadt:", error));
     }
 
-    // Gebetszeiten abrufen
+    // Gebetszeiten abrufen & zusätzliche Zeiten berechnen
     function fetchGebetszeiten(lat, lon) {
         fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`)
             .then(response => response.json())
             .then(data => {
                 const timings = data.data.timings;
+                
+                // Standard-Gebetszeiten setzen
                 document.getElementById("fajr").textContent = timings.Fajr;
                 document.getElementById("dhuhr").textContent = timings.Dhuhr;
                 document.getElementById("asr").textContent = timings.Asr;
                 document.getElementById("maghrib").textContent = timings.Maghrib;
                 document.getElementById("isha").textContent = timings.Isha;
                 document.getElementById("shuruk").textContent = timings.Sunrise;
+
+                // Islamische Mitternacht berechnen (Mitte zwischen Maghrib & Fajr)
+                const mitternacht = berechneZwischenzeit(timings.Maghrib, timings.Fajr);
+                document.getElementById("mitternacht").textContent = mitternacht;
+
+                // Letztes Drittel der Nacht berechnen
+                const letztesDrittel = berechneDrittelzeit(timings.Maghrib, timings.Fajr);
+                document.getElementById("letztes-drittel").textContent = letztesDrittel;
+
+                // Islamisches & gregorianisches Datum setzen
+                document.getElementById("islamic-date").textContent = data.data.date.hijri.date;
+                document.getElementById("gregorian-date").textContent = data.data.date.gregorian.date;
             })
             .catch(error => console.error("Fehler beim Abrufen der Gebetszeiten:", error));
     }
 
-    // Hadith des Tages abrufen und anzeigen
+    // Zwischenzeit berechnen (z. B. islamische Mitternacht)
+    function berechneZwischenzeit(start, end) {
+        const startDate = new Date(`1970-01-01T${start}:00`);
+        const endDate = new Date(`1970-01-01T${end}:00`);
+        if (endDate < startDate) {
+            endDate.setDate(endDate.getDate() + 1);
+        }
+        const diff = (endDate - startDate) / 2;
+        const result = new Date(startDate.getTime() + diff);
+        return result.toTimeString().substring(0, 5);
+    }
+
+    // Letztes Drittel der Nacht berechnen
+    function berechneDrittelzeit(start, end) {
+        const startDate = new Date(`1970-01-01T${start}:00`);
+        const endDate = new Date(`1970-01-01T${end}:00`);
+        if (endDate < startDate) {
+            endDate.setDate(endDate.getDate() + 1);
+        }
+        const diff = (endDate - startDate) * (2 / 3);
+        const result = new Date(startDate.getTime() + diff);
+        return result.toTimeString().substring(0, 5);
+    }
+
+    // Mekka & Berlin Uhrzeiten abrufen
+    function fetchZeiten() {
+        const berlinTime = new Date().toLocaleTimeString("de-DE", { timeZone: "Europe/Berlin" });
+        const mekkaTime = new Date().toLocaleTimeString("ar-SA", { timeZone: "Asia/Riyadh" });
+
+        document.getElementById("zeit-berlin").textContent = berlinTime;
+        document.getElementById("zeit-mekka").textContent = mekkaTime;
+    }
+
+    // Hadith des Tages abrufen
     function fetchHadithDesTages() {
         const hadithSammlung = [
             {
