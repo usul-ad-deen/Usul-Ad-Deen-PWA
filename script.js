@@ -1,4 +1,48 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const hadithText = document.getElementById("hadith-text");
+
+    // Liste der Hadithe
+    const hadithList = [
+        {
+            arabic: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى...",
+            german: "Die Taten hängen von den Absichten ab, und jeder bekommt das, was er beabsichtigt...",
+            source: "Sahih al-Bukhari 1"
+        },
+        {
+            arabic: "مَنْ دَلَّ عَلَى خَيْرٍ فَلَهُ مِثْلُ أَجْرِ فَاعِلِهِ...",
+            german: "Wer auf eine gute Tat hinweist, erhält die gleiche Belohnung wie derjenige, der sie tut...",
+            source: "Sahih Muslim 1893"
+        },
+        {
+            arabic: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ...",
+            german: "Wer an Allah und den Jüngsten Tag glaubt, soll Gutes sprechen oder schweigen...",
+            source: "Sahih al-Bukhari 6018"
+        }
+    ];
+
+    // Aktuelles Datum abrufen
+    const today = new Date().toISOString().split('T')[0];
+
+    // Letzten gespeicherten Hadith abrufen
+    let lastHadithData = JSON.parse(localStorage.getItem("hadithData"));
+
+    // Falls das Datum neu ist, neuen Hadith auswählen
+    if (!lastHadithData || lastHadithData.date !== today) {
+        const randomHadith = hadithList[Math.floor(Math.random() * hadithList.length)];
+        lastHadithData = { date: today, hadith: randomHadith };
+        localStorage.setItem("hadithData", JSON.stringify(lastHadithData));
+    }
+
+    // Hadith anzeigen
+    hadithText.innerHTML = `
+        <div class="hadith-box">
+            <p class="hadith-arabic">${lastHadithData.hadith.arabic}</p>
+            <p class="hadith-german">${lastHadithData.hadith.german}</p>
+            <p class="hadith-source">${lastHadithData.hadith.source}</p>
+        </div>
+    `;
+});
+document.addEventListener("DOMContentLoaded", function () {
     getLocation();
 });
 
