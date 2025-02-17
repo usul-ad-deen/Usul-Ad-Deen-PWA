@@ -10,7 +10,7 @@ body {
   
     background-image: url('icons/icon-192x192.png');
     background-size: cover;
-    background-repeat: no-repeat; 
+    background-repeat: repeat; 
     background-position: right;
     background-attachment: fixed; 
 }
