@@ -4,70 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 </head>
 <body>
     <header>
         <h1>Usul ad-Deen</h1>
-        <img src="icons/icon-192x192.png" alt="Logo" class="kopfzeilen-logo">
-        
-        
+        <img src="icons/icon-192x192.png" alt="Logo" class="header-logo">
         <nav>
             <ul>
-                <li><a href="index.html">Startseite</a></li>
-                <li><a href="hadith.html">Hadithsammlungen</a></li>
-                <li><a href="dua.html">Bittgebete</a></li>
-                <li><a href="beitraege.html">Beiträge</a></li>
-                <li><a href="buecher.html">Bücher</a></li>
-                <li><a href="mehr.html">Mehr</a></li>
+                <li><a href="#">Start</a></li>
+                <li><a href="#">Beiträge</a></li>
+                <li><a href="#">Bücher</a></li>
+                <li><a href="#">Hadithsammlungen</a></li>
+                <li><a href="#">Mehr</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <h2>Aktuelle Uhrzeiten</h2>
-        <p><strong>Berlin:</strong> <span id="uhrzeitBerlin"></span></p>
-        <p><strong>Mekka:</strong> <span id="uhrzeitMekka"></span></p>
+        <div id="zeitAnzeige">
+            <strong id="uhrzeitBerlin"></strong> - Berlin <br>
+            <strong id="uhrzeitMekka"></strong> - Mekka <br>
+            <span id="datumGregorianisch"></span> <br>
+            <span id="datumIslamisch"></span>
+        </div>
 
-        <h3>Aktuelle Daten</h3>
-        <p><strong>Gregorianisch:</strong> <span id="datumGregorianisch"></span></p>
-        <p><strong>Islamisch (Saudi-Arabien):</strong> <span id="datumIslamisch"></span></p>
-
-        <h4 id="standortAnzeige">Ihr Standort: Wird ermittelt...</h4>
+        <div id="standortAnzeige"></div>
+        <div id="stadtAuswahlContainer" style="display:none;">
+            <label for="stadtAuswahl">Stadt wählen:</label>
+            <select id="stadtAuswahl"></select>
+        </div>
 
         <div id="gebetszeiten">
             <h2>Gebetszeiten</h2>
-            <ul>
-                <li><strong>Fajr:</strong> <span id="fajr"></span></li>
-                <li>Shuruk: <span id="shuruk"></span></li>
-                <li><strong>Dhuhr:</strong> <span id="dhuhr"></span></li>
-                <li><strong>Asr:</strong> <span id="asr"></span></li>
-                <li><strong>Maghreb:</strong> <span id="maghreb"></span></li>
-                <li><strong>Isha:</strong> <span id="isha"></span></li>
-                <li>Islamische Mitternacht: <span id="mitternacht"></span></li>
-                <li>Letztes Drittel der Nacht: <span id="letztesDrittel"></span></li>
-            </ul>
+            <p>Fajr: <strong id="fajr"></strong></p>
+            <p>Shuruk: <span id="shuruk"></span></p>
+            <p>Dhuhr: <strong id="dhuhr"></strong></p>
+            <p>Asr: <strong id="asr"></strong></p>
+            <p>Maghreb: <strong id="maghreb"></strong></p>
+            <p>Isha: <strong id="isha"></strong></p>
+            <p>Islamische Mitternacht: <span id="mitternacht"></span></p>
+            <p>Letztes Drittel der Nacht: <span id="letztesDrittel"></span></p>
         </div>
 
-        <div id="hadithDesTages">
+        <div id="hadith">
             <h2>Hadith des Tages</h2>
             <p id="hadithText"></p>
         </div>
 
-        <div id="duaDesTages">
+        <div id="dua">
             <h2>Bittgebet des Tages</h2>
             <p id="duaText"></p>
         </div>
-
-        <div id="stadtAuswahlContainer" style="display:none;">
-            <h3>Stadt manuell wählen</h3>
-            <select id="stadtAuswahl"></select>
-        </div>
     </main>
-
-    <footer>
-        <p>&copy; 2025 Usul ad-Deen</p>
-    </footer>
 </body>
 </html>
