@@ -1,89 +1,82 @@
-document.addEventListener("DOMContentLoaded", function () {
-    fetchPrayerTimes();
-    fetchDailyHadith();
-    fetchDailyDua();
-    getUserLocation();
+document.addEventListener("DOMContentLoaded", () => {
+    updateUhrzeit();
+    setInterval(updateUhrzeit, 60000); // Aktualisiert Uhrzeit jede Minute
+
+    ladeHadithDesTages();
+    ladeDuaDesTages();
+    ladeGebetszeiten();
 });
 
-function fetchPrayerTimes(city = "") {
-    let url = "https://api.aladhan.com/v1/timingsByCity?city=" + (city || "Berlin") + "&country=Germany&method=2";
+// Uhrzeit-Funktion für Berlin & Mekka
+function updateUhrzeit() {
+    let jetzt = new Date();
+    
+    let berlinZeit = jetzt.toLocaleTimeString("de-DE", { hour: '2-digit', minute: '2-digit' });
+    let meccaZeit = new Date(jetzt.toLocaleString("en-US", { timeZone: "Asia/Riyadh" }))
+                        .toLocaleTimeString("de-DE", { hour: '2-digit', minute: '2-digit' });
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            let timings = data.data.timings;
-            document.getElementById("prayer-times-list").innerHTML = `
-                <li>Fajr: <b>${timings.Fajr}</b></li>
-                <li>Shuruk: ${timings.Sunrise}</li>
-                <li>Dhuhr: <b>${timings.Dhuhr}</b></li>
-                <li>Asr: <b>${timings.Asr}</b></li>
-                <li>Maghrib: <b>${timings.Maghrib}</b></li>
-                <li>Isha: <b>${timings.Isha}</b></li>
-                <li>Mitternacht: ${timings.Midnight}</li>
-            `;
-            document.getElementById("islamic-date").innerText = `Islamischer Tag: ${data.data.date.hijri.date}`;
-            document.getElementById("gregorian-date").innerText = `Gregorianischer Tag: ${data.data.date.gregorian.date}`;
-        });
+    document.getElementById("uhrzeit-berlin").textContent = berlinZeit || "00:00";
+    document.getElementById("uhrzeit-mekka").textContent = meccaZeit || "00:00";
 }
+
+// Hadith laden
 async function ladeHadithDesTages() {
     try {
         let response = await fetch("hadith.json");
         let hadithe = await response.json();
-
         let heute = new Date().getDate();
-        let hadith = hadithe[heute % hadithe.length]; // Wählt einen Hadith basierend auf dem Tag
+        let hadith = hadithe[heute % hadithe.length];
 
         document.getElementById("hadith-arabic").textContent = hadith.arabic;
         document.getElementById("hadith-german").textContent = hadith.german;
-        document.getElementById("hadith-quelle").textContent = "Quelle: " + hadith.quelle + " (" + hadith.authentizität + ")";
+        document.getElementById("hadith-quelle").textContent = "Quelle: " + hadith.quelle;
+        document.getElementById("hadith-authentizität").textContent = "Authentizität: " + hadith.authentizität;
 
     } catch (error) {
         console.error("Fehler beim Laden des Hadiths:", error);
     }
 }
 
-// Ruft die Funktion auf, wenn die Seite geladen wird
-document.addEventListener("DOMContentLoaded", ladeHadithDesTages);
+// Dua laden
+async function ladeDuaDesTages() {
+    try {
+        let response = await fetch("dua.json");
+        let duas = await response.json();
+        let heute = new Date().getDate();
+        let dua = duas[heute % duas.length];
 
+        document.getElementById("dua-arabic").textContent = dua.arabic;
+        document.getElementById("dua-transliteration").textContent = dua.transliteration;
+        document.getElementById("dua-german").textContent = dua.german;
+        document.getElementById("dua-quelle").textContent = "Quelle: " + dua.quelle;
 
-
-function fetchDailyDua() {
-    fetch("dua.json")
-        .then(response => response.json())
-        .then(data => {
-            let dailyDua = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("dua-arabic").innerText = dailyDua.arabic;
-            document.getElementById("dua-german").innerText = dailyDua.german;
-            document.getElementById("dua-transliteration").innerText = `Transliteration: ${dailyDua.transliteration}`;
-            document.getElementById("dua-source").innerText = `Quelle: ${dailyDua.source}`;
-        });
-}
-
-
-function getUserLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-            let lat = position.coords.latitude;
-            let lon = position.coords.longitude;
-            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-                .then(response => response.json())
-                .then(data => {
-                    let city = data.address.city || "Unbekannt";
-                    document.getElementById("user-location").innerText = `Ihr Standort: ${city}`;
-                    fetchPrayerTimes(city);
-                });
-        }, () => {
-            document.getElementById("user-location").innerText = "Standort nicht verfügbar.";
-        });
-    } else {
-        document.getElementById("user-location").innerText = "Standortermittlung nicht möglich.";
+    } catch (error) {
+        console.error("Fehler beim Laden des Bittgebets:", error);
     }
 }
 
-document.getElementById("city-select").addEventListener("change", function () {
-    let city = this.value;
-    if (city) {
-        document.getElementById("user-location").innerText = `Manuell gewählt: ${city}`;
-        fetchPrayerTimes(city);
+// Gebetszeiten laden (inkl. Mitternacht & letztes Drittel)
+async function ladeGebetszeiten() {
+    try {
+        let response = await fetch("gebetszeiten.json");
+        let zeiten = await response.json();
+        let stadt = document.getElementById("stadt-auswahl").value || "Berlin";
+
+        document.getElementById("stadt-name").textContent = stadt;
+
+        let heute = new Date().toISOString().split("T")[0]; 
+        let zeitenHeute = zeiten[stadt][heute];
+
+        document.getElementById("fajr").textContent = zeitenHeute.fajr;
+        document.getElementById("shuruk").textContent = zeitenHeute.shuruk;
+        document.getElementById("dhuhr").textContent = zeitenHeute.dhuhr;
+        document.getElementById("asr").textContent = zeitenHeute.asr;
+        document.getElementById("maghrib").textContent = zeitenHeute.maghrib;
+        document.getElementById("isha").textContent = zeitenHeute.isha;
+        document.getElementById("mitternacht").textContent = zeitenHeute.mitternacht;
+        document.getElementById("letztes-drittel").textContent = zeitenHeute.letztesDrittel;
+
+    } catch (error) {
+        console.error("Fehler beim Laden der Gebetszeiten:", error);
     }
-});
+}
