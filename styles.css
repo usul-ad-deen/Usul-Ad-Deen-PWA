@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    background-color: #2E7D32;
+    background-color: #004e00;
     color: white;
     padding: 15px;
     display: flex;
@@ -59,7 +59,7 @@ ul li {
 }
 
 footer {
-    background-color: #2E7D32;
+    background-color: #004e00;
     color: white;
     padding: 10px;
     position: relative;
