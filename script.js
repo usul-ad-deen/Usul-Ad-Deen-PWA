@@ -79,4 +79,3 @@ function calculateMidnight(maghrib, fajr) {
 function calculateLastThirdOfNight(maghrib, fajr) {
     return "Berechnet aus Maghrib & Fajr"; 
 }
-
