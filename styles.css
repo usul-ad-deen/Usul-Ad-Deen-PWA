@@ -1,32 +1,33 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
     margin: 0;
     padding: 0;
+    text-align: center;
+    background-color: #f4f4f4;
 }
 
 header {
-    background-color: #2d3e50;
+    background-color: #004e00;
     color: white;
     padding: 15px;
-    text-align: center;
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-header h1 {
-    margin: 0;
+header .logo {
+    height: 40px;
+    margin: 0 10px;
 }
 
 nav ul {
     list-style: none;
     padding: 0;
-    text-align: center;
 }
 
 nav ul li {
     display: inline;
-    margin: 0 15px;
+    margin: 0 10px;
 }
 
 nav ul li a {
@@ -38,27 +39,25 @@ main {
     padding: 20px;
 }
 
-h2 {
-    color: #2d3e50;
+h2, h3 {
+    color: #333;
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+ul li {
+    margin: 10px 0;
+    font-size: 1.2em;
 }
 
 footer {
-    background-color: #2d3e50;
+    background-color: #004e00;
     color: white;
-    text-align: center;
     padding: 10px;
-    margin-top: 20px;
-}
-
-#prayer-times, #daily-hadith, #daily-dua {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-#location {
-    font-weight: bold;
-    color: #2d3e50;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
