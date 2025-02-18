@@ -1,62 +1,79 @@
-document.addEventListener("DOMContentLoaded", () => {
-    aktualisiereUhrzeit();
+document.addEventListener("DOMContentLoaded", function () {
+    aktualisiereUhrzeitUndDatum();
+    ladeGebetszeiten();
     ladeHadithDesTages();
     ladeDuaDesTages();
-    ermittleStandort();
-
-    setInterval(aktualisiereUhrzeit, 1000);
+    ladeStadtAuswahl();
+    bestimmeStandort();
 });
 
-function aktualisiereUhrzeit() {
-    let jetzt = new Date();
-    let uhrzeit = jetzt.toLocaleTimeString("de-DE", { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    let datum = jetzt.toLocaleDateString("de-DE", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+// Aktuelle Uhrzeit & Datum setzen
+function aktualisiereUhrzeitUndDatum() {
+    function formatDatum(date) {
+        return date.toLocaleDateString("de-DE", { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+    }
 
-    document.getElementById("aktuelleUhrzeit").textContent = uhrzeit;
-    document.getElementById("aktuellesDatum").textContent = datum;
+    function updateTime() {
+        let nowBerlin = new Date();
+        let nowMekka = new Date(nowBerlin.getTime() + 2 * 60 * 60 * 1000); // Mekka ist +2h von Berlin
+
+        document.getElementById("uhrzeitBerlin").textContent = nowBerlin.toLocaleTimeString("de-DE");
+        document.getElementById("uhrzeitMekka").textContent = nowMekka.toLocaleTimeString("de-DE");
+
+        document.getElementById("datumGregorianisch").textContent = formatDatum(nowBerlin);
+
+        let islamischesDatum = new Intl.DateTimeFormat("ar-SA", { dateStyle: "full", calendar: "islamic-umalqura" }).format(nowBerlin);
+        document.getElementById("datumIslamisch").textContent = islamischesDatum;
+    }
+
+    updateTime();
+    setInterval(updateTime, 60000);
 }
 
-function ermittleStandort() {
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(position => {
-            let lat = position.coords.latitude;
-            let lon = position.coords.longitude;
-
-            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-                .then(response => response.json())
-                .then(data => {
-                    let stadt = data.address.city || data.address.town || "Unbekannt";
-                    document.getElementById("standortAnzeige").textContent = "Ihr Standort: " + stadt;
-                    ladeGebetszeiten(lat, lon);
-                });
-        }, () => {
-            document.getElementById("standortAnzeige").textContent = "Standort konnte nicht ermittelt werden";
-            document.getElementById("stadtAuswahlContainer").style.display = "block";
-        });
+// Standort bestimmen und Stadt anzeigen
+function bestimmeStandort() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let stadt = data.address.city || data.address.town || "Unbekannt";
+                        document.getElementById("standortAnzeige").textContent = "Ihr Standort: " + stadt;
+                    })
+                    .catch(() => zeigeManuelleStadtauswahl());
+            },
+            function () {
+                zeigeManuelleStadtauswahl();
+            }
+        );
+    } else {
+        zeigeManuelleStadtauswahl();
     }
 }
 
-function ladeGebetszeiten(lat, lon) {
-    fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("fajr").textContent = data.data.timings.Fajr;
-            document.getElementById("shuruk").textContent = data.data.timings.Sunrise;
-            document.getElementById("dhuhr").textContent = data.data.timings.Dhuhr;
-            document.getElementById("asr").textContent = data.data.timings.Asr;
-            document.getElementById("maghreb").textContent = data.data.timings.Maghrib;
-            document.getElementById("isha").textContent = data.data.timings.Isha;
-            berechneNachtzeiten(data.data.timings.Fajr, data.data.timings.Isha);
-        });
+// Manuelle Stadtauswahl anzeigen
+function zeigeManuelleStadtauswahl() {
+    document.getElementById("standortAnzeige").textContent = "Standort nicht ermittelt.";
+    document.getElementById("stadtAuswahlContainer").style.display = "block";
 }
 
-function berechneNachtzeiten(fajr, isha) {
-    let fajrZeit = new Date("1970-01-01T" + fajr + "Z").getTime();
-    let ishaZeit = new Date("1970-01-01T" + isha + "Z").getTime();
+// Liste mit deutschen Städten laden
+function ladeStadtAuswahl() {
+    let staedte = ["Berlin", "Hamburg", "München", "Köln", "Frankfurt", "Stuttgart", "Düsseldorf", "Dresden", "Hannover"];
+    let select = document.getElementById("stadtAuswahl");
 
-    let mitternacht = new Date((fajrZeit + ishaZeit) / 2).toLocaleTimeString("de-DE", { hour: '2-digit', minute: '2-digit' });
-    let letztesDrittel = new Date((2 * fajrZeit + ishaZeit) / 3).toLocaleTimeString("de-DE", { hour: '2-digit', minute: '2-digit' });
+    staedte.forEach(stadt => {
+        let option = document.createElement("option");
+        option.value = stadt;
+        option.textContent = stadt;
+        select.appendChild(option);
+    });
 
-    document.getElementById("mitternacht").textContent = mitternacht;
-    document.getElementById("letztesDrittel").textContent = letztesDrittel;
+    select.addEventListener("change", function () {
+        document.getElementById("standortAnzeige").textContent = "Ihre Auswahl: " + this.value;
+        ladeGebetszeiten();
+    });
 }
