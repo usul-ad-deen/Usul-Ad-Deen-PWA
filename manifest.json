@@ -1,11 +1,10 @@
 {
     "name": "Usul ad-Deen",
     "short_name": "UsulDeen",
-    "description": "Islamische App mit Gebetszeiten, Hadithen und Bittgebeten",
-    "start_url": "/index.html",
+    "start_url": "index.html",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#005f5f",
+    "background_color": "#f8f9fa",
+    "theme_color": "#2c3e50",
     "icons": [
         {
             "src": "icons/icon-192x192.png",
