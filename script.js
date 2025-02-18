@@ -1,57 +1,66 @@
 document.addEventListener("DOMContentLoaded", function () {
-    function updateUhrzeit() {
-        let jetzt = new Date();
-        document.getElementById("uhrzeit").textContent = "Uhrzeit: " + jetzt.toLocaleTimeString("de-DE");
-    }
-    setInterval(updateUhrzeit, 1000);
-    updateUhrzeit();
-
-    function ladeHadithDesTages() {
-        fetch("hadith.json")
-            .then(response => response.json())
-            .then(data => {
-                let index = new Date().getDate() % data.length;
-                document.getElementById("hadith-text").textContent = data[index].arabisch;
-                document.getElementById("hadith-quelle").textContent = data[index].quelle;
-            });
-    }
-    ladeHadithDesTages();
-
-    function ladeDuaDesTages() {
-        fetch("dua.json")
-            .then(response => response.json())
-            .then(data => {
-                let index = new Date().getDate() % data.length;
-                document.getElementById("dua-text").textContent = data[index].arabisch;
-                document.getElementById("dua-transliteration").textContent = data[index].transliteration;
-                document.getElementById("dua-bedeutung").textContent = data[index].bedeutung;
-            });
-    }
-    ladeDuaDesTages();
-    
-    function ladeGebetszeiten(stadt) {
-        fetch("gebetszeiten.json")
-            .then(response => response.json())
-            .then(data => {
-                let zeiten = data[stadt];
-                document.getElementById("fajr").textContent = zeiten.fajr;
-                document.getElementById("shuruk").textContent = zeiten.shuruk;
-                document.getElementById("dhuhr").textContent = zeiten.dhuhr;
-                document.getElementById("asr").textContent = zeiten.asr;
-                document.getElementById("maghrib").textContent = zeiten.maghrib;
-                document.getElementById("isha").textContent = zeiten.isha;
-                document.getElementById("mitternacht").textContent = zeiten.mitternacht;
-                document.getElementById("letztes-drittel").textContent = zeiten.letztes_drittel;
-            });
-    }
-
-    document.getElementById("stadt-auswahl").addEventListener("change", function () {
-        let stadt = this.value;
-        if (stadt) {
-            document.getElementById("standort-name").textContent = stadt;
-            ladeGebetszeiten(stadt);
-        }
-    });
-
-    ladeGebetszeiten("Berlin");
+    setInterval(updateTime, 1000);
+    ladeGebetszeiten();
+    ladeHadith();
+    ladeDua();
 });
+
+function updateTime() {
+    let now = new Date();
+    document.getElementById("deutsche-zeit").textContent = "Berlin: " + now.toLocaleTimeString('de-DE');
+    
+    let mekkaZeit = new Date(now.getTime() + (2 * 60 * 60 * 1000));
+    document.getElementById("mekka-zeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString('de-DE');
+
+    let islamischerTag = "10 Sha'ban 1446";
+    let gregorianischerTag = now.toLocaleDateString('de-DE');
+    document.getElementById("islamischer-tag").textContent = "Islamischer Tag: " + islamischerTag;
+    document.getElementById("gregorianischer-tag").textContent = "Gregorianischer Tag: " + gregorianischerTag;
+}
+
+function ladeGebetszeiten() {
+    navigator.geolocation.getCurrentPosition(position => {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+
+        document.getElementById("standort").textContent = "Berlin"; // Beispielhafter Wert
+
+        fetch(`https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`)
+            .then(response => response.json())
+            .then(data => {
+                let gebetszeiten = data.data.timings;
+                document.getElementById("gebetszeiten-liste").innerHTML = `
+                    <li><b>Fajr:</b> ${gebetszeiten.Fajr}</li>
+                    <li><b>Dhuhr:</b> ${gebetszeiten.Dhuhr}</li>
+                    <li><b>Asr:</b> ${gebetszeiten.Asr}</li>
+                    <li><b>Maghrib:</b> ${gebetszeiten.Maghrib}</li>
+                    <li><b>Isha:</b> ${gebetszeiten.Isha}</li>
+                `;
+            });
+    }, () => {
+        document.getElementById("stadt-auswahl-container").style.display = "block";
+    });
+}
+
+function ladeHadith() {
+    fetch("hadith.json")
+        .then(response => response.json())
+        .then(data => {
+            let hadith = data[Math.floor(Math.random() * data.length)];
+            document.getElementById("hadith-arabisch").textContent = hadith.arabisch;
+            document.getElementById("hadith-deutsch").textContent = hadith.deutsch;
+            document.getElementById("hadith-quellen").textContent = hadith.quelle;
+        });
+}
+
+function ladeDua() {
+    fetch("dua.json")
+        .then(response => response.json())
+        .then(data => {
+            let dua = data[Math.floor(Math.random() * data.length)];
+            document.getElementById("dua-arabisch").textContent = dua.arabisch;
+            document.getElementById("dua-deutsch").textContent = dua.deutsch;
+            document.getElementById("dua-transliteration").textContent = dua.transliteration;
+            document.getElementById("dua-quellen").textContent = dua.quelle;
+        });
+}
