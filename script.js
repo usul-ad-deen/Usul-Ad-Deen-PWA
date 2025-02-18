@@ -89,7 +89,7 @@ document.getElementById("stadt-wählen").addEventListener("change", function () 
 
 async function ladeGebetszeiten(stadt) {
     try {
-        const response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=Germany&method=2`);
+        const response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=Germany&method=3`);
         const data = await response.json();
         const gebetszeiten = data.data.timings;
 
