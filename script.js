@@ -1,66 +1,71 @@
 document.addEventListener("DOMContentLoaded", function () {
-    setInterval(updateTime, 1000);
-    ladeGebetszeiten();
-    ladeHadith();
-    ladeDua();
+    updateTime();
+    fetchPrayerTimes();
+    fetchHadith();
+    fetchDua();
+    populateCitySelection();
 });
 
 function updateTime() {
-    let now = new Date();
-    document.getElementById("deutsche-zeit").textContent = "Berlin: " + now.toLocaleTimeString('de-DE');
-    
-    let mekkaZeit = new Date(now.getTime() + (2 * 60 * 60 * 1000));
-    document.getElementById("mekka-zeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString('de-DE');
-
-    let islamischerTag = "10 Sha'ban 1446";
-    let gregorianischerTag = now.toLocaleDateString('de-DE');
-    document.getElementById("islamischer-tag").textContent = "Islamischer Tag: " + islamischerTag;
-    document.getElementById("gregorianischer-tag").textContent = "Gregorianischer Tag: " + gregorianischerTag;
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById("current-time").textContent = now.toLocaleTimeString("de-DE");
+        document.getElementById("gregorian-date").textContent = now.toLocaleDateString("de-DE");
+    }, 1000);
 }
 
-function ladeGebetszeiten() {
-    navigator.geolocation.getCurrentPosition(position => {
-        let latitude = position.coords.latitude;
-        let longitude = position.coords.longitude;
+async function fetchPrayerTimes() {
+    try {
+        const response = await fetch("prayer_times.json");
+        const data = await response.json();
+        const prayerTimesList = document.getElementById("prayer-times-list");
+        prayerTimesList.innerHTML = "";
+        data.times.forEach(time => {
+            let li = document.createElement("li");
+            li.textContent = `${time.name}: ${time.time}`;
+            prayerTimesList.appendChild(li);
+        });
+    } catch (error) {
+        console.error("Fehler beim Laden der Gebetszeiten:", error);
+    }
+}
 
-        document.getElementById("standort").textContent = "Berlin"; // Beispielhafter Wert
+async function fetchHadith() {
+    try {
+        const response = await fetch("hadith.json");
+        const data = await response.json();
+        const randomHadith = data.hadiths[Math.floor(Math.random() * data.hadiths.length)];
+        document.getElementById("hadith-text").textContent = randomHadith.text;
+        document.getElementById("hadith-source").textContent = randomHadith.source;
+    } catch (error) {
+        console.error("Fehler beim Laden des Hadiths:", error);
+    }
+}
 
-        fetch(`https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=2`)
-            .then(response => response.json())
-            .then(data => {
-                let gebetszeiten = data.data.timings;
-                document.getElementById("gebetszeiten-liste").innerHTML = `
-                    <li><b>Fajr:</b> ${gebetszeiten.Fajr}</li>
-                    <li><b>Dhuhr:</b> ${gebetszeiten.Dhuhr}</li>
-                    <li><b>Asr:</b> ${gebetszeiten.Asr}</li>
-                    <li><b>Maghrib:</b> ${gebetszeiten.Maghrib}</li>
-                    <li><b>Isha:</b> ${gebetszeiten.Isha}</li>
-                `;
-            });
-    }, () => {
-        document.getElementById("stadt-auswahl-container").style.display = "block";
+async function fetchDua() {
+    try {
+        const response = await fetch("dua.json");
+        const data = await response.json();
+        const randomDua = data.duas[Math.floor(Math.random() * data.duas.length)];
+        document.getElementById("dua-text").textContent = randomDua.arabic;
+        document.getElementById("dua-transliteration").textContent = randomDua.transliteration;
+        document.getElementById("dua-translation").textContent = randomDua.translation;
+    } catch (error) {
+        console.error("Fehler beim Laden des Bittgebets:", error);
+    }
+}
+
+function populateCitySelection() {
+    const citySelect = document.getElementById("city-select");
+    const cities = ["Berlin", "Hamburg", "München", "Köln", "Frankfurt", "Stuttgart", "Düsseldorf"];
+    cities.forEach(city => {
+        let option = document.createElement("option");
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
     });
-}
 
-function ladeHadith() {
-    fetch("hadith.json")
-        .then(response => response.json())
-        .then(data => {
-            let hadith = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("hadith-arabisch").textContent = hadith.arabisch;
-            document.getElementById("hadith-deutsch").textContent = hadith.deutsch;
-            document.getElementById("hadith-quellen").textContent = hadith.quelle;
-        });
-}
-
-function ladeDua() {
-    fetch("dua.json")
-        .then(response => response.json())
-        .then(data => {
-            let dua = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("dua-arabisch").textContent = dua.arabisch;
-            document.getElementById("dua-deutsch").textContent = dua.deutsch;
-            document.getElementById("dua-transliteration").textContent = dua.transliteration;
-            document.getElementById("dua-quellen").textContent = dua.quelle;
-        });
+    citySelect.addEventListener("change", function () {
+        document.getElementById("user-location").textContent = citySelect.value;
+    });
 }
