@@ -7,17 +7,22 @@ body {
 }
 
 header {
-    background-color: #004e00;
+    background-color: #2E7D32;
     color: white;
     padding: 15px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 15px;
 }
 
-header .logo {
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+.kopfzeilen-logo {
     height: 40px;
-    margin: 0 10px;
 }
 
 nav ul {
@@ -54,10 +59,11 @@ ul li {
 }
 
 footer {
-    background-color: #004e00;
+    background-color: #2E7D32;
     color: white;
     padding: 10px;
     position: relative;
     bottom: 0;
     width: 100%;
 }
+
