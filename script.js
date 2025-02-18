@@ -35,8 +35,10 @@ async function fetchHadith() {
         const response = await fetch("hadith.json");
         const data = await response.json();
         const randomHadith = data.hadiths[Math.floor(Math.random() * data.hadiths.length)];
-        document.getElementById("hadith-text").textContent = randomHadith.text;
-        document.getElementById("hadith-source").textContent = randomHadith.source;
+        document.getElementById("hadith-arabisch").textContent = randomHadith.arabisch;
+        document.getElementById("hadith-deutsch").textContent = randomHadith.deutsch;
+        document.getElementById("hadith-quelle").textContent = randomHadith.quelle;
+        
     } catch (error) {
         console.error("Fehler beim Laden des Hadiths:", error);
     }
@@ -47,9 +49,10 @@ async function fetchDua() {
         const response = await fetch("dua.json");
         const data = await response.json();
         const randomDua = data.duas[Math.floor(Math.random() * data.duas.length)];
-        document.getElementById("dua-text").textContent = randomDua.arabic;
+        document.getElementById("dua-arabisch").textContent = randomDua.arabic; 
+        document.getElementById("dua-deutsch").textContent = randomDua.deutsch;
         document.getElementById("dua-transliteration").textContent = randomDua.transliteration;
-        document.getElementById("dua-translation").textContent = randomDua.translation;
+        document.getElementById("dua-quelle").textContent = randomDua.quelle;
     } catch (error) {
         console.error("Fehler beim Laden des Bittgebets:", error);
     }
