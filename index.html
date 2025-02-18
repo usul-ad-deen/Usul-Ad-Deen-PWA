@@ -5,99 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
-    <script defer src="script.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
+
     <header>
         <h1>Usul ad-Deen</h1>
         <nav>
             <ul>
                 <li><a href="index.html">Startseite</a></li>
-                <li><a href="Bücher.html">Bücher</a></li>
                 <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
+                <li><a href="hadith.html">Hadith des Tages</a></li>
                 <li><a href="bittgebete.html">Bittgebete</a></li>
-                <li><a href="hadithsammlung.html">Hadithsammlung</a></li>
                 <li><a href="ueber-uns.html">Über uns</a></li>
-                <li><a href="mehr.html">mehr</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section class="gebetszeiten">
-            <h2>Gebetszeiten</h2>
-            <p id="standort">Ihr Standort: Wird ermittelt...</p>
-            <p id="stadt"></p>
-            <ul id="gebetszeitenListe"></ul>
-            <div>
-                <header>
-    <img src="icons/icon-192x192.png" alt="Usul ad-Deen Logo" id="header-logo">
-    <h1>Usul ad-Deen</h1>
-</header>
-
-<div id="location-container">
-    <p id="currentLocation">Ihr Standort: Wird ermittelt...</p>
-    <select id="manualCitySelection" style="display: none;">
-        <option value="">Stadt manuell auswählen</option>
-        <option value="Berlin">Berlin</option>
-        <option value="Hamburg">Hamburg</option>
-        <option value="München">München</option>
-        <option value="Köln">Köln</option>
-        <option value="Frankfurt">Frankfurt</option>
-        <option value="Stuttgart">Stuttgart</option>
-        <option value="Düsseldorf">Düsseldorf</option>
-        <option value="Dortmund">Dortmund</option>
-        <option value="Essen">Essen</option>
-        <option value="Leipzig">Leipzig</option>
-        <option value="Bremen">Bremen</option>
-        <option value="Dresden">Dresden</option>
-        <option value="Hannover">Hannover</option>
-        <option value="Nürnberg">Nürnberg</option>
-        <option value="Duisburg">Duisburg</option>
-        <option value="Bochum">Bochum</option>
-    </select>
-</div>
-
-    <h2>Gebetszeiten</h2>
-    <p id="currentLocation">Ihr Standort: Wird ermittelt...</p>
-    <p>Fajr: <span id="fajr"></span></p>
-    <p>Shuruk: <span id="shuruk"></span></p>
-    <p>Dhuhr: <span id="dhuhr"></span></p>
-    <p>Asr: <span id="asr"></span></p>
-    <p>Maghrib: <span id="maghrib"></span></p>
-    <p>Isha: <span id="isha"></span></p>
-    <p>Islamische Mitternacht: <span id="mitternacht"></span></p>
-    <p>Letztes Drittel der Nacht: <span id="letztes-drittel"></span></p>
-</div>
-
-<div>
-    <h2>Datum & Uhrzeiten</h2>
-    <p>Islamisches Datum: <span id="islamic-date"></span></p>
-    <p>Gregorianisches Datum: <span id="gregorian-date"></span></p>
-    <p>Uhrzeit Berlin: <span id="zeit-berlin"></span></p>
-    <p>Uhrzeit Mekka: <span id="zeit-mekka"></span></p>
-</div>
-
-        </section>
-
-        <section class="hadith">
+        <section id="daily-hadith">
             <h2>Hadith des Tages</h2>
-            <p id="hadithArabisch"></p>
-            <p id="hadithDeutsch"></p>
-            <p id="hadithQuelle"></p>
+            <p id="hadith-arabic"></p>
+            <p id="hadith-german"></p>
+            <p id="hadith-authenticity"></p>
         </section>
 
-        <section class="bittgebet">
+        <section id="daily-dua">
             <h2>Bittgebet des Tages</h2>
-            <p id="bittgebetArabisch"></p>
-            <p id="bittgebetDeutsch"></p>
-            <p id="bittgebetTrans"></p>
+            <p id="dua-arabic"></p>
+            <p id="dua-transliteration"></p>
+            <p id="dua-german"></p>
+        </section>
+
+        <section id="prayer-times">
+            <h2>Gebetszeiten</h2>
+            <p id="location">Ihr Standort: Wird ermittelt...</p>
+            <p id="fajr"></p>
+            <p id="shuruk"></p>
+            <p id="dhuhr"></p>
+            <p id="asr"></p>
+            <p id="maghrib"></p>
+            <p id="isha"></p>
+            <p id="midnight"></p>
+            <p id="last-third"></p>
+            <p id="islamic-date"></p>
+            <p id="gregorian-date"></p>
+            <p id="mecca-time"></p>
+            <p id="berlin-time"></p>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Usul ad-Deen</p>
+        <p>© 2025 Usul ad-Deen</p>
     </footer>
+
 </body>
 </html>
