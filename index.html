@@ -35,17 +35,24 @@
         <section class="gebetszeiten">
             <h2>Gebetszeiten</h2>
             <p id="standort-info">Ihr Standort: <span id="standort-name">Lade Standort...</span></p>
+            <select id="stadt-auswahl">
+                <option value="">Stadt auswählen...</option>
+                <option value="Berlin">Berlin</option>
+                <option value="Hamburg">Hamburg</option>
+                <option value="München">München</option>
+                <option value="Köln">Köln</option>
+                <option value="Frankfurt">Frankfurt</option>
+            </select>
             <table id="gebetszeiten-tabelle">
-                <tr>
-                    <th>Gebet</th>
-                    <th>Uhrzeit</th>
-                </tr>
-                <tr><td>Fajr</td><td id="fajr"></td></tr>
+                <tr><th>Gebet</th><th>Uhrzeit</th></tr>
+                <tr><td><b>Fajr</b></td><td id="fajr"></td></tr>
                 <tr><td>Shuruk</td><td id="shuruk"></td></tr>
-                <tr><td>Dhuhr</td><td id="dhuhr"></td></tr>
-                <tr><td>Asr</td><td id="asr"></td></tr>
-                <tr><td>Maghrib</td><td id="maghrib"></td></tr>
-                <tr><td>Isha</td><td id="isha"></td></tr>
+                <tr><td><b>Dhuhr</b></td><td id="dhuhr"></td></tr>
+                <tr><td><b>Asr</b></td><td id="asr"></td></tr>
+                <tr><td><b>Maghrib</b></td><td id="maghrib"></td></tr>
+                <tr><td><b>Isha</b></td><td id="isha"></td></tr>
+                <tr><td>Mitternacht</td><td id="mitternacht"></td></tr>
+                <tr><td>Letztes Drittel</td><td id="letztes-drittel"></td></tr>
             </table>
         </section>
 
@@ -62,5 +69,9 @@
             <p id="dua-bedeutung"></p>
         </section>
     </main>
+
+    <footer>
+        <p>© 2025 Usul ad-Deen | Alle Rechte vorbehalten</p>
+    </footer>
 </body>
 </html>
