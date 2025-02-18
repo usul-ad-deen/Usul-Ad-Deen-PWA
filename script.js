@@ -43,7 +43,7 @@ async function ladeDuaDesTages() {
         document.getElementById("dua-arabisch").textContent = dua.arabisch;
         document.getElementById("dua-deutsch").textContent = dua.deutsch;
         document.getElementById("dua-transliteration").textContent = dua.transliteration;
-        document.getElementById("dua-quelle").textContent = `Quelle: ${dua.quelle}`;
+        document.getElementById("dua-quelle").textContent = `Quelle: ${dua.quelle} - ${dua.authenzität}`;;
     } catch (error) {
         console.error("Fehler beim Laden der Dua:", error);
     }
