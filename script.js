@@ -1,81 +1,62 @@
-document.addEventListener("DOMContentLoaded", function() {
-    fetchDailyHadith();
-    fetchDailyDua();
-    getLocationAndPrayerTimes();
+document.addEventListener("DOMContentLoaded", () => {
+    aktualisiereUhrzeit();
+    ladeHadithDesTages();
+    ladeDuaDesTages();
+    ermittleStandort();
+
+    setInterval(aktualisiereUhrzeit, 1000);
 });
 
-function fetchDailyHadith() {
-    fetch("hadith.json")
-        .then(response => response.json())
-        .then(data => {
-            const randomHadith = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("hadith-arabic").innerText = randomHadith.arabic;
-            document.getElementById("hadith-german").innerText = randomHadith.german;
-            document.getElementById("hadith-authenticity").innerText = "Authentizität: " + randomHadith.authenticity;
-        })
-        .catch(error => console.error("Fehler beim Laden des Hadiths:", error));
+function aktualisiereUhrzeit() {
+    let jetzt = new Date();
+    let uhrzeit = jetzt.toLocaleTimeString("de-DE", { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    let datum = jetzt.toLocaleDateString("de-DE", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+    document.getElementById("aktuelleUhrzeit").textContent = uhrzeit;
+    document.getElementById("aktuellesDatum").textContent = datum;
 }
 
-function fetchDailyDua() {
-    fetch("duas.json")
-        .then(response => response.json())
-        .then(data => {
-            const randomDua = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("dua-arabic").innerText = randomDua.arabic;
-            document.getElementById("dua-transliteration").innerText = randomDua.transliteration;
-            document.getElementById("dua-german").innerText = randomDua.german;
-        })
-        .catch(error => console.error("Fehler beim Laden des Bittgebets:", error));
-}
-
-function getLocationAndPrayerTimes() {
-    if (navigator.geolocation) {
+function ermittleStandort() {
+    if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(position => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            fetchPrayerTimes(latitude, longitude);
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                .then(response => response.json())
+                .then(data => {
+                    let stadt = data.address.city || data.address.town || "Unbekannt";
+                    document.getElementById("standortAnzeige").textContent = "Ihr Standort: " + stadt;
+                    ladeGebetszeiten(lat, lon);
+                });
         }, () => {
-            document.getElementById("location").innerText = "Standort konnte nicht ermittelt werden. Bitte Stadt manuell auswählen.";
+            document.getElementById("standortAnzeige").textContent = "Standort konnte nicht ermittelt werden";
+            document.getElementById("stadtAuswahlContainer").style.display = "block";
         });
-    } else {
-        document.getElementById("location").innerText = "Standortermittlung nicht unterstützt.";
     }
 }
 
-function fetchPrayerTimes(lat, lon) {
-    const apiUrl = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`;
-
-    fetch(apiUrl)
+function ladeGebetszeiten(lat, lon) {
+    fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`)
         .then(response => response.json())
         .then(data => {
-            const timings = data.data.timings;
-            const date = data.data.date;
-            document.getElementById("fajr").innerText = "Fajr: " + timings.Fajr;
-            document.getElementById("shuruk").innerText = "Sonnenaufgang: " + timings.Sunrise;
-            document.getElementById("dhuhr").innerText = "Dhuhr: " + timings.Dhuhr;
-            document.getElementById("asr").innerText = "Asr: " + timings.Asr;
-            document.getElementById("maghrib").innerText = "Maghrib: " + timings.Maghrib;
-            document.getElementById("isha").innerText = "Isha: " + timings.Isha;
-
-            const midnight = calculateMidnight(timings.Maghrib, timings.Fajr);
-            document.getElementById("midnight").innerText = "Islamische Mitternacht: " + midnight;
-
-            const lastThird = calculateLastThirdOfNight(timings.Maghrib, timings.Fajr);
-            document.getElementById("last-third").innerText = "Letztes Drittel der Nacht: " + lastThird;
-
-            document.getElementById("islamic-date").innerText = "Islamisches Datum: " + date.hijri.date;
-            document.getElementById("gregorian-date").innerText = "Gregorianisches Datum: " + date.gregorian.date;
-
-            document.getElementById("mecca-time").innerText = "Uhrzeit Mekka: " + new Date().toLocaleTimeString("ar-SA", {timeZone: "Asia/Riyadh"});
-            document.getElementById("berlin-time").innerText = "Uhrzeit Berlin: " + new Date().toLocaleTimeString("de-DE", {timeZone: "Europe/Berlin"});
-        })
-        .catch(error => console.error("Fehler beim Laden der Gebetszeiten:", error));
+            document.getElementById("fajr").textContent = data.data.timings.Fajr;
+            document.getElementById("shuruk").textContent = data.data.timings.Sunrise;
+            document.getElementById("dhuhr").textContent = data.data.timings.Dhuhr;
+            document.getElementById("asr").textContent = data.data.timings.Asr;
+            document.getElementById("maghreb").textContent = data.data.timings.Maghrib;
+            document.getElementById("isha").textContent = data.data.timings.Isha;
+            berechneNachtzeiten(data.data.timings.Fajr, data.data.timings.Isha);
+        });
 }
 
-function calculateMidnight(maghrib, fajr) {
-    return "Berechnet aus Maghrib & Fajr"; 
-}
+function berechneNachtzeiten(fajr, isha) {
+    let fajrZeit = new Date("1970-01-01T" + fajr + "Z").getTime();
+    let ishaZeit = new Date("1970-01-01T" + isha + "Z").getTime();
 
-function calculateLastThirdOfNight(maghrib, fajr) {
-    return "Berechnet aus Maghrib & Fajr"; 
+    let mitternacht = new Date((fajrZeit + ishaZeit) / 2).toLocaleTimeString("de-DE", { hour: '2-digit', minute: '2-digit' });
+    let letztesDrittel = new Date((2 * fajrZeit + ishaZeit) / 3).toLocaleTimeString("de-DE", { hour: '2-digit', minute: '2-digit' });
+
+    document.getElementById("mitternacht").textContent = mitternacht;
+    document.getElementById("letztesDrittel").textContent = letztesDrittel;
 }
