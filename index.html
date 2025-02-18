@@ -5,58 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
     <script src="script.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>Usul ad-Deen</h1>
-        <img src="icons/icon-192x192.png" alt="Logo" id="logo">
+        <div class="header-content">
+            <img src="icons/icon-192x192.png" alt="Logo" class="logo">
+            <h1>Usul ad-Deen</h1>
+        </div>
         <nav>
             <ul>
                 <li><a href="index.html">Startseite</a></li>
                 <li><a href="hadith.html">Hadithsammlungen</a></li>
                 <li><a href="dua.html">Bittgebete</a></li>
-                <li><a href="buecher.html">Bücher</a></li>
-                <li><a href="beitraege.html">Beiträge</a></li>
-                <li><a href="ueber.html">Über uns</a></li>
+                <li><a href="books.html">Bücher</a></li>
+                <li><a href="articles.html">Beiträge</a></li>
+                <li><a href="about.html">Über uns</a></li>
+                <li><a href="settings.html">Mehr</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section id="zeit-info">
-            <h2>Aktuelle Zeit</h2>
-            <p id="deutsche-zeit"></p>
-            <p id="mekka-zeit"></p>
-            <p id="islamischer-tag"></p>
-            <p id="gregorianischer-tag"></p>
+        <section id="time-date">
+            <h2>Aktuelle Uhrzeit</h2>
+            <p id="current-time"></p>
+            <h2>Islamisches & Gregorianisches Datum</h2>
+            <p id="islamic-date"></p>
+            <p id="gregorian-date"></p>
         </section>
 
-        <section id="gebetszeiten">
+        <section id="prayer-times">
             <h2>Gebetszeiten</h2>
-            <p id="standort-info">Ihr Standort: <span id="standort"></span></p>
-            <p id="stadt-auswahl-container" style="display: none;">
-                Manuelle Auswahl:
-                <select id="stadt-auswahl"></select>
+            <p id="location">Ihr Standort: <span id="user-location"></span></p>
+            <p id="manual-selection">Manuelle Stadtauswahl: 
+                <select id="city-select"></select>
             </p>
-            <ul id="gebetszeiten-liste"></ul>
-            <p id="mitternacht"></p>
-            <p id="letztes-drittel"></p>
+            <ul id="prayer-times-list"></ul>
         </section>
 
-        <section id="hadith-des-tages">
+        <section id="daily-hadith">
             <h2>Hadith des Tages</h2>
-            <p id="hadith-arabisch"></p>
-            <p id="hadith-deutsch"></p>
-            <p id="hadith-quellen"></p>
+            <p id="hadith-text"></p>
+            <p id="hadith-source"></p>
         </section>
 
-        <section id="dua-des-tages">
+        <section id="daily-dua">
             <h2>Bittgebet des Tages</h2>
-            <p id="dua-arabisch"></p>
-            <p id="dua-deutsch"></p>
+            <p id="dua-text"></p>
             <p id="dua-transliteration"></p>
-            <p id="dua-quellen"></p>
+            <p id="dua-translation"></p>
         </section>
     </main>
 
