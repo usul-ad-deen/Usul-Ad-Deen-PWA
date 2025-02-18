@@ -25,18 +25,27 @@ function fetchPrayerTimes(city = "") {
             document.getElementById("gregorian-date").innerText = `Gregorianischer Tag: ${data.data.date.gregorian.date}`;
         });
 }
+async function ladeHadithDesTages() {
+    try {
+        let response = await fetch("hadith.json");
+        let hadithe = await response.json();
 
-function fetchDailyHadith() {
-    fetch("hadith.json")
-        .then(response => response.json())
-        .then(data => {
-            let dailyHadith = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("hadith-arabic").innerText = dailyHadith.arabic;
-            document.getElementById("hadith-german").innerText = dailyHadith.german;
-            document.getElementById("hadith-source").innerText = `Quelle: ${dailyHadith.source}`;
-            document.getElementById("hadith-authenticity").innerText = `Authentizität: ${dailyHadith.authenticity}`;
-        });
+        let heute = new Date().getDate();
+        let hadith = hadithe[heute % hadithe.length]; // Wählt einen Hadith basierend auf dem Tag
+
+        document.getElementById("hadith-arabic").textContent = hadith.arabic;
+        document.getElementById("hadith-german").textContent = hadith.german;
+        document.getElementById("hadith-quelle").textContent = "Quelle: " + hadith.quelle + " (" + hadith.authentizität + ")";
+
+    } catch (error) {
+        console.error("Fehler beim Laden des Hadiths:", error);
+    }
 }
+
+// Ruft die Funktion auf, wenn die Seite geladen wird
+document.addEventListener("DOMContentLoaded", ladeHadithDesTages);
+
+
 
 function fetchDailyDua() {
     fetch("dua.json")
