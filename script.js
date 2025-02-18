@@ -1,90 +1,105 @@
 document.addEventListener("DOMContentLoaded", function () {
-    updateTime();
-    setInterval(updateTime, 1000);
-    fetchPrayerTimes();
-    fetchHadith();
-    fetchDua();
+    aktualisiereUhrzeit();
+    setInterval(aktualisiereUhrzeit, 1000);
+    ladeHadithDesTages();
+    ladeDuaDesTages();
+    ermitteleStandort();
 });
 
-function updateTime() {
-    let berlinTime = new Date().toLocaleTimeString("de-DE", { timeZone: "Europe/Berlin" });
-    let mekkaTime = new Date().toLocaleTimeString("de-DE", { timeZone: "Asia/Riyadh" });
+function aktualisiereUhrzeit() {
+    const jetzt = new Date();
+    const berlinZeit = jetzt.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    const berlinDatum = jetzt.toLocaleDateString("de-DE");
+    
+    document.getElementById("uhrzeit").textContent = `Berlin: ${berlinZeit}`;
+    document.getElementById("datum").textContent = `Datum: ${berlinDatum}`;
 
-    document.getElementById("berlin-time").textContent = berlinTime;
-    document.getElementById("mekka-time").textContent = mekkaTime;
+    const mekkaZeit = new Intl.DateTimeFormat("de-DE", { timeZone: "Asia/Riyadh", hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(jetzt);
+    document.getElementById("mekka-zeit").textContent = `Mekka: ${mekkaZeit}`;
 }
 
-async function fetchPrayerTimes() {
-    try {
-        const response = await fetch("https://api.aladhan.com/v1/timingsByCity?city=Berlin&country=Germany&method=2");
-        const data = await response.json();
-
-        document.getElementById("fajr").textContent = data.data.timings.Fajr;
-        document.getElementById("shuruk").textContent = data.data.timings.Sunrise;
-        document.getElementById("dhuhr").textContent = data.data.timings.Dhuhr;
-        document.getElementById("asr").textContent = data.data.timings.Asr;
-        document.getElementById("maghreb").textContent = data.data.timings.Maghrib;
-        document.getElementById("isha").textContent = data.data.timings.Isha;
-        
-        let midnight = calculateMidnight(data.data.timings);
-        let lastThird = calculateLastThird(data.data.timings);
-
-        document.getElementById("midnight").textContent = midnight;
-        document.getElementById("last-third").textContent = lastThird;
-
-        document.getElementById("location").textContent = "Berlin";
-    } catch (error) {
-        console.error("Fehler beim Abrufen der Gebetszeiten", error);
-    }
-}
-
-function calculateMidnight(timings) {
-    let ishaTime = parseTime(timings.Isha);
-    let fajrTime = parseTime(timings.Fajr);
-    let midnight = new Date(ishaTime.getTime() + (fajrTime - ishaTime) / 2);
-    return midnight.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-}
-
-function calculateLastThird(timings) {
-    let ishaTime = parseTime(timings.Isha);
-    let fajrTime = parseTime(timings.Fajr);
-    let lastThird = new Date(ishaTime.getTime() + (fajrTime - ishaTime) * (2 / 3));
-    return lastThird.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-}
-
-function parseTime(time) {
-    let [hours, minutes] = time.split(":").map(Number);
-    let date = new Date();
-    date.setHours(hours, minutes, 0);
-    return date;
-}
-
-async function fetchHadith() {
+async function ladeHadithDesTages() {
     try {
         const response = await fetch("hadith.json");
-        const data = await response.json();
-        const hadith = data[Math.floor(Math.random() * data.length)];
+        const hadithe = await response.json();
+        const index = new Date().getDate() % hadithe.length;
+        const hadith = hadithe[index];
 
-        document.getElementById("hadith-arabic").textContent = hadith.arabic;
-        document.getElementById("hadith-german").textContent = hadith.german;
-        document.getElementById("hadith-source").textContent = hadith.source;
-        document.getElementById("hadith-authenticity").textContent = hadith.authenticity;
+        document.getElementById("hadith-arabisch").textContent = hadith.arabisch;
+        document.getElementById("hadith-deutsch").textContent = hadith.deutsch;
+        document.getElementById("hadith-quelle").textContent = `Quelle: ${hadith.quelle} - ${hadith.authenzität}`;
     } catch (error) {
-        console.error("Fehler beim Laden des Hadith", error);
+        console.error("Fehler beim Laden des Hadith:", error);
     }
 }
 
-async function fetchDua() {
+async function ladeDuaDesTages() {
     try {
         const response = await fetch("dua.json");
-        const data = await response.json();
-        const dua = data[Math.floor(Math.random() * data.length)];
+        const duas = await response.json();
+        const index = new Date().getDate() % duas.length;
+        const dua = duas[index];
 
-        document.getElementById("dua-arabic").textContent = dua.arabic;
-        document.getElementById("dua-german").textContent = dua.german;
-        document.getElementById("dua-translit").textContent = dua.transliteration;
-        document.getElementById("dua-source").textContent = dua.source;
+        document.getElementById("dua-arabisch").textContent = dua.arabisch;
+        document.getElementById("dua-deutsch").textContent = dua.deutsch;
+        document.getElementById("dua-transliteration").textContent = dua.transliteration;
+        document.getElementById("dua-quelle").textContent = `Quelle: ${dua.quelle}`;
     } catch (error) {
-        console.error("Fehler beim Laden des Bittgebets", error);
+        console.error("Fehler beim Laden der Dua:", error);
+    }
+}
+
+function ermitteleStandort() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                    const data = await response.json();
+                    const stadt = data.address.city || data.address.town || "Unbekannt";
+                    document.getElementById("standort").textContent = `Ihr Standort: ${stadt}`;
+                    ladeGebetszeiten(stadt);
+                } catch (error) {
+                    console.error("Fehler bei der Standortbestimmung:", error);
+                    zeigeManuelleStadtauswahl();
+                }
+            },
+            () => {
+                zeigeManuelleStadtauswahl();
+            }
+        );
+    } else {
+        zeigeManuelleStadtauswahl();
+    }
+}
+
+function zeigeManuelleStadtauswahl() {
+    document.getElementById("standort").textContent = "Standort konnte nicht ermittelt werden. Bitte Stadt manuell wählen:";
+    document.getElementById("stadt-auswahl").style.display = "block";
+}
+
+document.getElementById("stadt-wählen").addEventListener("change", function () {
+    const stadt = this.value;
+    document.getElementById("standort").textContent = `Ihr Standort: ${stadt}`;
+    ladeGebetszeiten(stadt);
+});
+
+async function ladeGebetszeiten(stadt) {
+    try {
+        const response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=Germany&method=2`);
+        const data = await response.json();
+        const gebetszeiten = data.data.timings;
+
+        document.getElementById("fajr").textContent = gebetszeiten.Fajr;
+        document.getElementById("dhuhr").textContent = gebetszeiten.Dhuhr;
+        document.getElementById("asr").textContent = gebetszeiten.Asr;
+        document.getElementById("maghrib").textContent = gebetszeiten.Maghrib;
+        document.getElementById("isha").textContent = gebetszeiten.Isha;
+        document.getElementById("shuruk").textContent = gebetszeiten.Sunrise;
+    } catch (error) {
+        console.error("Fehler beim Laden der Gebetszeiten:", error);
     }
 }
