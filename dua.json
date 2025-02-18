@@ -1,33 +1,14 @@
-{
-    "duas": [
-        
-    {
-        "arabisch": "اللهم إني أسألك العفو والعافية في الدنيا والآخرة",
-        "deutsch": "O Allah, ich bitte Dich um Vergebung und Wohlbefinden in dieser Welt und im Jenseits.",
-        "transliteration": "Allahumma inni as'aluka al-'afwa wal-'afiyah fid-dunya wal-akhirah"
-    },
-    {
-        "arabisch": "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ",
-        "deutsch": "Mein Herr, vergib mir, meinen Eltern und den Gläubigen.",
-        "transliteration": "Rabbi ighfir li wa li-walidayya wa lil-mu’minin"
-    },
-    {
-        "arabisch": "اللهم اجعلني من التوابين واجعلني من المتطهرين",
-        "deutsch": "O Allah, mache mich zu einem derjenigen, die oft bereuen, und zu einem derjenigen, die sich reinigen.",
-        "transliteration": "Allahumma aj‘alni min at-tawwabin wa aj‘alni min al-mutatahhirin"
-    },
-    {
-        "arabisch": "اللهم إني أعوذ بك من الهم والحزن",
-        "deutsch": "O Allah, ich suche Zuflucht bei Dir vor Kummer und Traurigkeit.",
-        "transliteration": "Allahumma inni a‘udhu bika min al-hammi wal-hazan"
-    }
-
-    {
-        "arabisch": "اللهم إني أسألك علماً نافعاً ورزقاً طيباً وعملاً متقبلاً",
-        "deutsch": "O Allah, ich bitte Dich um nützliches Wissen, guten Lebensunterhalt und annehmbares Handeln.",
-        "transliteration": "Allahumma inni as'aluka 'ilman nafi'an wa rizqan tayyiban wa 'amalan mutaqabbalan.",
-        "quelle": "Sunan Ibn Majah 925"
-    }
-
+[
+  {
+    "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ العَافِيَةَ",
+    "german": "O Allah, ich bitte Dich um Gesundheit.",
+    "transliteration": "Allahumma inni as'aluka al-'afiyah.",
+    "source": "Sunan Abi Dawood 5074"
+  },
+  {
+    "arabic": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+    "german": "Unser Herr, gib uns Gutes im Diesseits und Gutes im Jenseits und bewahre uns vor der Strafe des Feuers.",
+    "transliteration": "Rabbana atina fi-d-dunya hasanatan wa fi-l-akhirati hasanatan wa qina 'adhab an-nar.",
+    "source": "Sahih al-Bukhari 6389"
+  }
 ]
- }
