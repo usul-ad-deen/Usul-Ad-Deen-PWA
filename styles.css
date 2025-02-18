@@ -17,7 +17,7 @@ body {
 }
 
 .logo {
-    width: 50px; /* Klein und dezent */
+    width: 40px;
     height: auto;
     margin-top: 5px;
 }
@@ -45,13 +45,6 @@ body {
     font-weight: bold;
 }
 
-.gebetszeiten {
-    background: white;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 5px;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -62,14 +55,9 @@ th, td {
     border: 1px solid #ccc;
 }
 
-.hadith-des-tages, .dua-des-tages {
-    background: white;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 5px;
-}
-
-.uhrzeit-container {
-    font-weight: bold;
-    font-size: 18px;
+footer {
+    background-color: #2E7D32;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
 }
