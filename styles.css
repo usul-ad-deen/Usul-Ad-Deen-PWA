@@ -56,6 +56,27 @@ main {
 h2 {
     color: #2c3e50;
 }
+/* Stil für die Stadtauswahl */
+#city-selection {
+    text-align: center;
+    margin-top: 15px;
+}
+
+#city-select {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+
+/* Stil für die Standortanzeige */
+#user-location {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 10px;
+}
 
 /* Gebetszeiten */
 #prayer-times ul {
