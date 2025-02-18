@@ -1,24 +1,28 @@
-{
-    "hadiths": [
+[
+  {
+    "arabic": "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
+    "german": "Die Taten sind nur nach den Absichten zu bewerten.",
+    "source": "Sahih al-Bukhari 1, Sahih Muslim 1907"",
+    "authenticity": "Sahih"
+  },
+  {
+    "arabic": "الدُّنْيَا سِجْنُ الْمُؤْمِنِ وَجَنَّةُ الْكَافِرِ",
+    "german": "Die Welt ist ein Gefängnis für den Gläubigen und ein Paradies für den Ungläubigen.",
+    "source": "Sahih Muslim 2956",
+    "authenticity": "Sahih"
+  },
+ 
     {
-        "arabisch": "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",
-        "deutsch": "Die Taten werden nur nach den Absichten beurteilt.",
-        "authentizitaet": "Sahih Bukhari 1, Sahih Muslim 1907"
+        "arabic":  "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ",
+    "german": "Wer an Allah und den Jüngsten Tag glaubt, der soll Gutes sprechen oder schweigen.",
+    "source": "Sahih Bukhari 6136, Sahih Muslim 47",
+    "authenticity": "Sahih"
     },
     {
-        "arabisch": "الدُّنْيَا سِجْنُ الْمُؤْمِنِ وَجَنَّةُ الْكَافِرِ",
-        "deutsch": "Die Welt ist ein Gefängnis für den Gläubigen und ein Paradies für den Ungläubigen.",
-        "authentizitaet": "Sahih Muslim 2956"
-    },
-    {
-        "arabisch": "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ",
-        "deutsch": "Wer an Allah und den Jüngsten Tag glaubt, der soll Gutes sprechen oder schweigen.",
-        "authentizitaet": "Sahih Bukhari 6136, Sahih Muslim 47"
-    },
-    {
-        "arabisch": "الرِّفْقُ لَا يَكُونُ فِي شَيْءٍ إِلَّا زَانَهُ",
-        "deutsch": "Sanftmut ist in allem, was es verschönert.",
-        "authentizitaet": "Sahih Muslim 2594"
+          "arabic": "الرِّفْقُ لَا يَكُونُ فِي شَيْءٍ إِلَّا زَانَهُ",
+    "german": "Sanftmut ist in allem, was es verschönert.",
+    "source": "Sahih Muslim 2594",
+    "authenticity": "Sahih"  
     }
     ]
-}
+
