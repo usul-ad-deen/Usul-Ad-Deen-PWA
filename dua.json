@@ -1,4 +1,6 @@
-[
+{
+    "duas": [
+        
     {
         "arabisch": "اللهم إني أسألك العفو والعافية في الدنيا والآخرة",
         "deutsch": "O Allah, ich bitte Dich um Vergebung und Wohlbefinden in dieser Welt und im Jenseits.",
@@ -28,3 +30,4 @@
     }
 
 ]
+ }
