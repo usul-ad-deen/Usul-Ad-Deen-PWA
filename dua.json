@@ -1,17 +1,22 @@
 [
     {
-        "arabic": "اللّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ وَاجْعَلْنِي مِنَ المُتَطَهِّرِينَ",
-        "transliteration": "Allahumma aj‘alni mina at-tawwabin wa aj‘alni mina al-mutatahhirin.",
-        "german": "O Allah, mache mich zu einem derjenigen, die bereuen, und zu einem derjenigen, die sich reinigen."
+        "arabisch": "اللهم إني أسألك العفو والعافية في الدنيا والآخرة",
+        "deutsch": "O Allah, ich bitte Dich um Vergebung und Wohlbefinden in dieser Welt und im Jenseits.",
+        "transliteration": "Allahumma inni as'aluka al-'afwa wal-'afiyah fid-dunya wal-akhirah"
     },
     {
-        "arabic": "رَبِّ زِدْنِي عِلْمًا",
-        "transliteration": "Rabbi zidni ‘ilma.",
-        "german": "Mein Herr, mehre mein Wissen."
+        "arabisch": "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ",
+        "deutsch": "Mein Herr, vergib mir, meinen Eltern und den Gläubigen.",
+        "transliteration": "Rabbi ighfir li wa li-walidayya wa lil-mu’minin"
     },
     {
-        "arabic": "اللّهُمَّ إِنِّي أَسْأَلُكَ العَفْوَ وَالعَافِيَةَ",
-        "transliteration": "Allahumma inni as’aluka al-‘afwa wa al-‘afiyah.",
-        "german": "O Allah, ich bitte Dich um Vergebung und Wohlbefinden."
+        "arabisch": "اللهم اجعلني من التوابين واجعلني من المتطهرين",
+        "deutsch": "O Allah, mache mich zu einem derjenigen, die oft bereuen, und zu einem derjenigen, die sich reinigen.",
+        "transliteration": "Allahumma aj‘alni min at-tawwabin wa aj‘alni min al-mutatahhirin"
+    },
+    {
+        "arabisch": "اللهم إني أعوذ بك من الهم والحزن",
+        "deutsch": "O Allah, ich suche Zuflucht bei Dir vor Kummer und Traurigkeit.",
+        "transliteration": "Allahumma inni a‘udhu bika min al-hammi wal-hazan"
     }
 ]
