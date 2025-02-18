@@ -1,10 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     aktualisiereUhrzeitUndDatum();
     bestimmeStandort();
-    ladeGebetszeiten();
     ladeHadithDesTages();
     ladeDuaDesTages();
-    ladeStadtAuswahl();
 });
 
 // ⏳ **Uhrzeit & Datum sekündlich aktualisieren**
@@ -13,32 +11,43 @@ function aktualisiereUhrzeitUndDatum() {
         let nowBerlin = new Date();
         let nowMekka = new Date(nowBerlin.getTime() + 2 * 60 * 60 * 1000);
 
-        document.getElementById("uhrzeitBerlin").textContent = nowBerlin.toLocaleTimeString("de-DE");
-        document.getElementById("uhrzeitMekka").textContent = nowMekka.toLocaleTimeString("de-DE");
+        document.getElementById("uhrzeitBerlin").textContent = nowBerlin.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+        document.getElementById("uhrzeitMekka").textContent = nowMekka.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
-        document.getElementById("datumGregorianisch").textContent = nowBerlin.toLocaleDateString("de-DE");
-        document.getElementById("datumIslamisch").textContent = new Intl.DateTimeFormat("ar-SA", { calendar: "islamic-umalqura" }).format(nowBerlin);
+        document.getElementById("datumBerlin").textContent = nowBerlin.toLocaleDateString("de-DE");
+        document.getElementById("datumMekka").textContent = nowMekka.toLocaleDateString("de-DE");
     }
 
     updateTime();
     setInterval(updateTime, 1000);
 }
 
-// 📍 **Standort & Stadt ermitteln**
+// 📍 **Standort & Stadtname ermitteln**
 function bestimmeStandort() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function (position) {
                 let lat = position.coords.latitude;
                 let lon = position.coords.longitude;
-                document.getElementById("standortAnzeige").textContent = "Ihr Standort: " + lat + ", " + lon;
-                ladeGebetszeiten(lat, lon);
+                holeStadtname(lat, lon);
             },
             function () {
                 document.getElementById("stadtAuswahlContainer").style.display = "block";
             }
         );
     }
+}
+
+function holeStadtname(lat, lon) {
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.address.city) {
+                document.getElementById("standortAnzeige").textContent = `Ihr Standort: ${data.address.city}`;
+            } else {
+                document.getElementById("stadtAuswahlContainer").style.display = "block";
+            }
+        });
 }
 
 // 📚 **Hadith & Dua laden**
@@ -48,8 +57,8 @@ function ladeHadithDesTages() {
         .then(data => {
             let zufallsHadith = data[Math.floor(Math.random() * data.length)];
             document.getElementById("hadithText").innerHTML = `
-                <strong>Arabisch:</strong> ${zufallsHadith.arabisch} <br>
-                <strong>Deutsch:</strong> ${zufallsHadith.deutsch} <br>
+                <strong>Arabisch:</strong> ${zufallsHadith.arabisch} <br><br>
+                <strong>Deutsch:</strong> ${zufallsHadith.deutsch} <br><br>
                 <strong>Authentizität:</strong> ${zufallsHadith.authentizitaet}
             `;
         });
@@ -61,56 +70,25 @@ function ladeDuaDesTages() {
         .then(data => {
             let zufallsDua = data[Math.floor(Math.random() * data.length)];
             document.getElementById("duaText").innerHTML = `
-                <strong>Arabisch:</strong> ${zufallsDua.arabisch} <br>
-                <strong>Deutsch:</strong> ${zufallsDua.deutsch} <br>
+                <strong>Arabisch:</strong> ${zufallsDua.arabisch} <br><br>
+                <strong>Deutsch:</strong> ${zufallsDua.deutsch} <br><br>
                 <strong>Transliteration:</strong> ${zufallsDua.transliteration}
             `;
         });
 }
 
-// 🕌 **Gebetszeiten abrufen & Islamische Mitternacht & Letztes Drittel berechnen**
-function ladeGebetszeiten(lat, lon) {
-    let apiUrl = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`;
-
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            let timings = data.data.timings;
-
-            document.getElementById("fajr").textContent = timings.Fajr;
-            document.getElementById("shuruk").textContent = timings.Sunrise;
-            document.getElementById("dhuhr").textContent = timings.Dhuhr;
-            document.getElementById("asr").textContent = timings.Asr;
-            document.getElementById("maghreb").textContent = timings.Maghrib;
-            document.getElementById("isha").textContent = timings.Isha;
-
-            let mitternacht = berechneMitternacht(timings.Maghrib, timings.Fajr);
-            let letztesDrittel = berechneLetztesDrittel(timings.Maghrib, timings.Fajr);
-
-            document.getElementById("mitternacht").textContent = mitternacht;
-            document.getElementById("letztesDrittel").textContent = letztesDrittel;
-        });
-}
-
-// 🔢 **Islamische Mitternacht berechnen**
-function berechneMitternacht(maghrib, fajr) {
+// 🕌 **Islamische Mitternacht & Letztes Drittel berechnen**
+function berechneMitternachtUndDrittel(maghrib, fajr) {
     let maghribTime = timeToMinutes(maghrib);
     let fajrTime = timeToMinutes(fajr);
 
     let mitternachtMin = maghribTime + Math.floor((fajrTime - maghribTime) / 2);
-    return minutesToTime(mitternachtMin);
-}
-
-// 🔢 **Letztes Drittel der Nacht berechnen**
-function berechneLetztesDrittel(maghrib, fajr) {
-    let maghribTime = timeToMinutes(maghrib);
-    let fajrTime = timeToMinutes(fajr);
-
     let letztesDrittelMin = fajrTime - Math.floor((fajrTime - maghribTime) / 3);
-    return minutesToTime(letztesDrittelMin);
+
+    document.getElementById("mitternacht").textContent = minutesToTime(mitternachtMin);
+    document.getElementById("letztesDrittel").textContent = minutesToTime(letztesDrittelMin);
 }
 
-// ⏳ **Hilfsfunktionen für Zeitberechnungen**
 function timeToMinutes(timeStr) {
     let [hours, minutes] = timeStr.split(":").map(Number);
     return hours * 60 + minutes;
