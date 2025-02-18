@@ -5,61 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <script defer src="script.js"></script>
 </head>
 <body>
-
     <header>
         <h1>Usul ad-Deen</h1>
+        <img src="icons/icon-192x192.png" alt="Logo" class="logo">
         <nav>
             <ul>
                 <li><a href="index.html">Startseite</a></li>
-                <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
-                <li><a href="hadith.html">Hadith des Tages</a></li>
-                <li><a href="bittgebete.html">Bittgebete</a></li>
-                <li><a href="ueber-uns.html">Über uns</a></li>
+                <li><a href="hadith.html">Hadithsammlungen</a></li>
+                <li><a href="dua.html">Bittgebete</a></li>
+                <li><a href="beitraege.html">Beiträge</a></li>
+                <li><a href="buecher.html">Bücher</a></li>
+                <li><a href="mehr.html">Mehr</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-          <section id="prayer-times">
+        <h2 id="aktuelleUhrzeit"></h2>
+        <h3 id="aktuellesDatum"></h3>
+        <h4 id="standortAnzeige">Ihr Standort: Wird ermittelt...</h4>
+
+        <div id="gebetszeiten">
             <h2>Gebetszeiten</h2>
-            <p id="location">Ihr Standort: Wird ermittelt...</p>
-            <p id="fajr"></p>
-            <p id="shuruk"></p>
-            <p id="dhuhr"></p>
-            <p id="asr"></p>
-            <p id="maghrib"></p>
-            <p id="isha"></p>
-            <p id="midnight"></p>
-            <p id="last-third"></p>
-            <p id="islamic-date"></p>
-            <p id="gregorian-date"></p>
-            <p id="mecca-time"></p>
-            <p id="berlin-time"></p>
-        </section>
+            <ul>
+                <li><strong>Fajr:</strong> <span id="fajr"></span></li>
+                <li>Shuruk: <span id="shuruk"></span></li>
+                <li><strong>Dhuhr:</strong> <span id="dhuhr"></span></li>
+                <li><strong>Asr:</strong> <span id="asr"></span></li>
+                <li><strong>Maghreb:</strong> <span id="maghreb"></span></li>
+                <li><strong>Isha:</strong> <span id="isha"></span></li>
+                <li>Islamische Mitternacht: <span id="mitternacht"></span></li>
+                <li>Letztes Drittel der Nacht: <span id="letztesDrittel"></span></li>
+            </ul>
+        </div>
+        <div id="stadtAuswahlContainer" style="display:none;">
+            <h3>Stadt manuell wählen</h3>
+            <select id="stadtAuswahl"></select>
+        </div>
 
-        
-        <section id="daily-hadith">
+        <div id="hadithDesTages">
             <h2>Hadith des Tages</h2>
-            <p id="hadith-arabic"></p>
-            <p id="hadith-german"></p>
-            <p id="hadith-authenticity"></p>
-        </section>
+            <p id="hadithText"></p>
+        </div>
 
-        <section id="daily-dua">
+        <div id="duaDesTages">
             <h2>Bittgebet des Tages</h2>
-            <p id="dua-arabic"></p>
-            <p id="dua-transliteration"></p>
-            <p id="dua-german"></p>
-        </section>
+            <p id="duaText"></p>
+        </div>
 
     </main>
 
     <footer>
-        <p>© 2025 Usul ad-Deen</p>
+        <p>&copy; 2025 Usul ad-Deen</p>
     </footer>
-
 </body>
 </html>
