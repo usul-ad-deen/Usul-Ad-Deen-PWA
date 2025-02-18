@@ -1,29 +1,45 @@
+/* Allgemeine Stile */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Kopfzeile */
+header {
+    background-color: ##004e00;
+    color: white;
+    padding: 10px 20px;
     text-align: center;
 }
 
-header {
-    background-color: #004e00;
-    color: white;
-    padding: 10px;
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
-#logo {
-    width: 50px;
-    display: block;
-    margin: 10px auto;
+.logo {
+    width: 40px;
+    height: 40px;
 }
 
+/* Navigation */
 nav ul {
     list-style: none;
     padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #34495e;
 }
 
 nav ul li {
-    display: inline;
-    margin: 0 15px;
+    margin: 0;
+    padding: 10px 15px;
 }
 
 nav ul li a {
@@ -31,17 +47,32 @@ nav ul li a {
     text-decoration: none;
 }
 
+/* Hauptinhalt */
 main {
     padding: 20px;
+    text-align: center;
 }
 
 h2 {
-    color: #2E8B57;
+    color: #2c3e50;
 }
 
+/* Gebetszeiten */
+#prayer-times ul {
+    list-style: none;
+    padding: 0;
+}
+
+#prayer-times ul li {
+    padding: 5px;
+    font-weight: bold;
+}
+
+/* Fußzeile */
 footer {
     background-color: #004e00;
     color: white;
+    text-align: center;
     padding: 10px;
     margin-top: 20px;
 }
