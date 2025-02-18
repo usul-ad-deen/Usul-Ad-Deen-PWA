@@ -4,74 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
 </head>
 <body>
     <header>
-        <div class="header-container">
-            <h1>Usul ad-Deen</h1>
-            <img src="icons/icon-192x192.png" alt="Logo" class="logo">
-        </div>
-        <nav class="menu">
+        <h1>Usul ad-Deen</h1>
+        <img src="icons/icon-192x192.png" alt="Logo" id="logo">
+        <nav>
             <ul>
                 <li><a href="index.html">Startseite</a></li>
-                <li><a href="hadithsammlung.html">Hadithsammlungen</a></li>
+                <li><a href="hadith.html">Hadithsammlungen</a></li>
                 <li><a href="dua.html">Bittgebete</a></li>
-                <li><a href="beitraege.html">Beiträge</a></li>
                 <li><a href="buecher.html">Bücher</a></li>
-                <li><a href="mehr.html">Mehr</a></li>
+                <li><a href="beitraege.html">Beiträge</a></li>
+                <li><a href="ueber.html">Über uns</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <div class="uhrzeit-container">
-            <p id="uhrzeit"></p>
-            <p id="islamischer-tag"></p>
+        <section id="zeit-info">
+            <h2>Aktuelle Zeit</h2>
+            <p id="deutsche-zeit"></p>
             <p id="mekka-zeit"></p>
-        </div>
+            <p id="islamischer-tag"></p>
+            <p id="gregorianischer-tag"></p>
+        </section>
 
-        <section class="gebetszeiten">
+        <section id="gebetszeiten">
             <h2>Gebetszeiten</h2>
-            <p id="standort-info">Ihr Standort: <span id="standort-name">Lade Standort...</span></p>
-            <select id="stadt-auswahl">
-                <option value="">Stadt auswählen...</option>
-                <option value="Berlin">Berlin</option>
-                <option value="Hamburg">Hamburg</option>
-                <option value="München">München</option>
-                <option value="Köln">Köln</option>
-                <option value="Frankfurt">Frankfurt</option>
-            </select>
-            <table id="gebetszeiten-tabelle">
-                <tr><th>Gebet</th><th>Uhrzeit</th></tr>
-                <tr><td><b>Fajr</b></td><td id="fajr"></td></tr>
-                <tr><td>Shuruk</td><td id="shuruk"></td></tr>
-                <tr><td><b>Dhuhr</b></td><td id="dhuhr"></td></tr>
-                <tr><td><b>Asr</b></td><td id="asr"></td></tr>
-                <tr><td><b>Maghrib</b></td><td id="maghrib"></td></tr>
-                <tr><td><b>Isha</b></td><td id="isha"></td></tr>
-                <tr><td>Mitternacht</td><td id="mitternacht"></td></tr>
-                <tr><td>Letztes Drittel</td><td id="letztes-drittel"></td></tr>
-            </table>
+            <p id="standort-info">Ihr Standort: <span id="standort"></span></p>
+            <p id="stadt-auswahl-container" style="display: none;">
+                Manuelle Auswahl:
+                <select id="stadt-auswahl"></select>
+            </p>
+            <ul id="gebetszeiten-liste"></ul>
+            <p id="mitternacht"></p>
+            <p id="letztes-drittel"></p>
         </section>
 
-        <section class="hadith-des-tages">
+        <section id="hadith-des-tages">
             <h2>Hadith des Tages</h2>
-            <p id="hadith-text"></p>
-            <p id="hadith-quelle"></p>
+            <p id="hadith-arabisch"></p>
+            <p id="hadith-deutsch"></p>
+            <p id="hadith-quellen"></p>
         </section>
 
-        <section class="dua-des-tages">
+        <section id="dua-des-tages">
             <h2>Bittgebet des Tages</h2>
-            <p id="dua-text"></p>
+            <p id="dua-arabisch"></p>
+            <p id="dua-deutsch"></p>
             <p id="dua-transliteration"></p>
-            <p id="dua-bedeutung"></p>
+            <p id="dua-quellen"></p>
         </section>
     </main>
 
     <footer>
-        <p>© 2025 Usul ad-Deen | Alle Rechte vorbehalten</p>
+        <p>&copy; 2025 Usul ad-Deen</p>
     </footer>
 </body>
 </html>
