@@ -1,74 +1,80 @@
 document.addEventListener("DOMContentLoaded", function () {
-    updateTime();
     fetchPrayerTimes();
-    fetchHadith();
-    fetchDua();
-    populateCitySelection();
+    fetchDailyHadith();
+    fetchDailyDua();
+    getUserLocation();
 });
 
-function updateTime() {
-    setInterval(() => {
-        const now = new Date();
-        document.getElementById("current-time").textContent = now.toLocaleTimeString("de-DE");
-        document.getElementById("gregorian-date").textContent = now.toLocaleDateString("de-DE");
-    }, 1000);
-}
+function fetchPrayerTimes(city = "") {
+    let url = "https://api.aladhan.com/v1/timingsByCity?city=" + (city || "Berlin") + "&country=Germany&method=2";
 
-async function fetchPrayerTimes() {
-    try {
-        const response = await fetch("prayer_times.json");
-        const data = await response.json();
-        const prayerTimesList = document.getElementById("prayer-times-list");
-        prayerTimesList.innerHTML = "";
-        data.times.forEach(time => {
-            let li = document.createElement("li");
-            li.textContent = `${time.name}: ${time.time}`;
-            prayerTimesList.appendChild(li);
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            let timings = data.data.timings;
+            document.getElementById("prayer-times-list").innerHTML = `
+                <li>Fajr: <b>${timings.Fajr}</b></li>
+                <li>Shuruk: ${timings.Sunrise}</li>
+                <li>Dhuhr: <b>${timings.Dhuhr}</b></li>
+                <li>Asr: <b>${timings.Asr}</b></li>
+                <li>Maghrib: <b>${timings.Maghrib}</b></li>
+                <li>Isha: <b>${timings.Isha}</b></li>
+                <li>Mitternacht: ${timings.Midnight}</li>
+            `;
+            document.getElementById("islamic-date").innerText = `Islamischer Tag: ${data.data.date.hijri.date}`;
+            document.getElementById("gregorian-date").innerText = `Gregorianischer Tag: ${data.data.date.gregorian.date}`;
         });
-    } catch (error) {
-        console.error("Fehler beim Laden der Gebetszeiten:", error);
+}
+
+function fetchDailyHadith() {
+    fetch("hadith.json")
+        .then(response => response.json())
+        .then(data => {
+            let dailyHadith = data[Math.floor(Math.random() * data.length)];
+            document.getElementById("hadith-arabic").innerText = dailyHadith.arabic;
+            document.getElementById("hadith-german").innerText = dailyHadith.german;
+            document.getElementById("hadith-source").innerText = `Quelle: ${dailyHadith.source}`;
+            document.getElementById("hadith-authenticity").innerText = `Authentizität: ${dailyHadith.authenticity}`;
+        });
+}
+
+function fetchDailyDua() {
+    fetch("dua.json")
+        .then(response => response.json())
+        .then(data => {
+            let dailyDua = data[Math.floor(Math.random() * data.length)];
+            document.getElementById("dua-arabic").innerText = dailyDua.arabic;
+            document.getElementById("dua-german").innerText = dailyDua.german;
+            document.getElementById("dua-transliteration").innerText = `Transliteration: ${dailyDua.transliteration}`;
+            document.getElementById("dua-source").innerText = `Quelle: ${dailyDua.source}`;
+        });
+}
+
+
+function getUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                .then(response => response.json())
+                .then(data => {
+                    let city = data.address.city || "Unbekannt";
+                    document.getElementById("user-location").innerText = `Ihr Standort: ${city}`;
+                    fetchPrayerTimes(city);
+                });
+        }, () => {
+            document.getElementById("user-location").innerText = "Standort nicht verfügbar.";
+        });
+    } else {
+        document.getElementById("user-location").innerText = "Standortermittlung nicht möglich.";
     }
 }
 
-async function fetchHadith() {
-    try {
-        const response = await fetch("hadith.json");
-        const data = await response.json();
-        const randomHadith = data.hadiths[Math.floor(Math.random() * data.hadiths.length)];
-        document.getElementById("hadith-arabisch").textContent = randomHadith.arabisch;
-        document.getElementById("hadith-deutsch").textContent = randomHadith.deutsch;
-        document.getElementById("hadith-quelle").textContent = randomHadith.quelle;
-        
-    } catch (error) {
-        console.error("Fehler beim Laden des Hadiths:", error);
+document.getElementById("city-select").addEventListener("change", function () {
+    let city = this.value;
+    if (city) {
+        document.getElementById("user-location").innerText = `Manuell gewählt: ${city}`;
+        fetchPrayerTimes(city);
     }
-}
-
-async function fetchDua() {
-    try {
-        const response = await fetch("dua.json");
-        const data = await response.json();
-        const randomDua = data.duas[Math.floor(Math.random() * data.duas.length)];
-        document.getElementById("dua-arabisch").textContent = randomDua.arabic; 
-        document.getElementById("dua-deutsch").textContent = randomDua.deutsch;
-        document.getElementById("dua-transliteration").textContent = randomDua.transliteration;
-        document.getElementById("dua-quelle").textContent = randomDua.quelle;
-    } catch (error) {
-        console.error("Fehler beim Laden des Bittgebets:", error);
-    }
-}
-
-function populateCitySelection() {
-    const citySelect = document.getElementById("city-select");
-    const cities = ["Berlin", "Hamburg", "München", "Köln", "Frankfurt", "Stuttgart", "Düsseldorf"];
-    cities.forEach(city => {
-        let option = document.createElement("option");
-        option.value = city;
-        option.textContent = city;
-        citySelect.appendChild(option);
-    });
-
-    citySelect.addEventListener("change", function () {
-        document.getElementById("user-location").textContent = citySelect.value;
-    });
-}
+});
