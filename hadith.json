@@ -2,7 +2,7 @@
   {
     "arabic": "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
     "german": "Die Taten sind nur nach den Absichten zu bewerten.",
-    "source": "Sahih al-Bukhari 1, Sahih Muslim 1907"",
+    "source": "Sahih al-Bukhari 1",
     "authenticity": "Sahih"
   },
   {
@@ -10,19 +10,5 @@
     "german": "Die Welt ist ein Gefängnis für den Gläubigen und ein Paradies für den Ungläubigen.",
     "source": "Sahih Muslim 2956",
     "authenticity": "Sahih"
-  },
- 
-    {
-        "arabic":  "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ",
-    "german": "Wer an Allah und den Jüngsten Tag glaubt, der soll Gutes sprechen oder schweigen.",
-    "source": "Sahih Bukhari 6136, Sahih Muslim 47",
-    "authenticity": "Sahih"
-    },
-    {
-          "arabic": "الرِّفْقُ لَا يَكُونُ فِي شَيْءٍ إِلَّا زَانَهُ",
-    "german": "Sanftmut ist in allem, was es verschönert.",
-    "source": "Sahih Muslim 2594",
-    "authenticity": "Sahih"  
-    }
-    ]
-
+  }
+]
