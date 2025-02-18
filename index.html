@@ -11,7 +11,6 @@
     <header>
         <h1>Usul ad-Deen</h1>
         <img src="icons/icon-192x192.png" alt="Logo" class="kopfzeilen-logo">
-       
         <nav>
             <ul>
                 <li><a href="index.html">Startseite</a></li>
@@ -25,8 +24,14 @@
     </header>
 
     <main>
-        <h2 id="aktuelleUhrzeit"></h2>
-        <h3 id="aktuellesDatum"></h3>
+        <h2>Aktuelle Uhrzeiten</h2>
+        <p><strong>Berlin:</strong> <span id="uhrzeitBerlin"></span></p>
+        <p><strong>Mekka:</strong> <span id="uhrzeitMekka"></span></p>
+
+        <h3>Aktuelle Daten</h3>
+        <p><strong>Gregorianisch:</strong> <span id="datumGregorianisch"></span></p>
+        <p><strong>Islamisch (Saudi-Arabien):</strong> <span id="datumIslamisch"></span></p>
+
         <h4 id="standortAnzeige">Ihr Standort: Wird ermittelt...</h4>
 
         <div id="gebetszeiten">
@@ -42,10 +47,7 @@
                 <li>Letztes Drittel der Nacht: <span id="letztesDrittel"></span></li>
             </ul>
         </div>
- <div id="stadtAuswahlContainer" style="display:none;">
-            <h3>Stadt manuell wählen</h3>
-            <select id="stadtAuswahl"></select>
-        </div>
+
         <div id="hadithDesTages">
             <h2>Hadith des Tages</h2>
             <p id="hadithText"></p>
@@ -56,6 +58,10 @@
             <p id="duaText"></p>
         </div>
 
+        <div id="stadtAuswahlContainer" style="display:none;">
+            <h3>Stadt manuell wählen</h3>
+            <select id="stadtAuswahl"></select>
+        </div>
     </main>
 
     <footer>
