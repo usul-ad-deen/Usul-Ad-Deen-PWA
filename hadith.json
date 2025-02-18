@@ -1,4 +1,5 @@
-
+{
+    "hadiths": [
     {
         "arabisch": "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",
         "deutsch": "Die Taten werden nur nach den Absichten beurteilt.",
@@ -19,4 +20,5 @@
         "deutsch": "Sanftmut ist in allem, was es verschönert.",
         "authentizitaet": "Sahih Muslim 2594"
     }
-]
+    ]
+}
