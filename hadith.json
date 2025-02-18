@@ -1,14 +1,14 @@
 [
-  {
-    "arabic": "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
-    "german": "Die Taten sind nur nach den Absichten zu bewerten.",
-    "source": "Sahih al-Bukhari 1",
-    "authenticity": "Sahih"
-  },
-  {
-    "arabic": "الدُّنْيَا سِجْنُ الْمُؤْمِنِ وَجَنَّةُ الْكَافِرِ",
-    "german": "Die Welt ist ein Gefängnis für den Gläubigen und ein Paradies für den Ungläubigen.",
-    "source": "Sahih Muslim 2956",
-    "authenticity": "Sahih"
-  }
+    {
+        "arabic": "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",
+        "german": "Die Taten sind nur nach den Absichten zu bewerten.",
+        "quelle": "Bukhari, Hadith 1",
+        "authentizität": "Sahih"
+    },
+    {
+        "arabic": "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا، سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ",
+        "german": "Wer einen Weg geht, um Wissen zu erlangen, dem erleichtert Allah einen Weg ins Paradies.",
+        "quelle": "Muslim, Hadith 2699",
+        "authentizität": "Sahih"
+    }
 ]
