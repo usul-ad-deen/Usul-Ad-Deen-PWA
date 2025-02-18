@@ -1,29 +1,22 @@
-[
+
     {
-        "arabic": "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
-        "german": "Die Taten werden nur nach den Absichten beurteilt.",
-        "authenticity": "Sahih (Bukhari & Muslim)"
+        "arabisch": "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",
+        "deutsch": "Die Taten werden nur nach den Absichten beurteilt.",
+        "authentizitaet": "Sahih Bukhari 1, Sahih Muslim 1907"
     },
     {
-        "arabic": "الدُّنْيَا سِجْنُ الْمُؤْمِنِ وَجَنَّةُ الْكَافِرِ",
-        "german": "Diese Welt ist ein Gefängnis für den Gläubigen und ein Paradies für den Ungläubigen.",
-        "authenticity": "Sahih (Muslim)"
+        "arabisch": "الدُّنْيَا سِجْنُ الْمُؤْمِنِ وَجَنَّةُ الْكَافِرِ",
+        "deutsch": "Die Welt ist ein Gefängnis für den Gläubigen und ein Paradies für den Ungläubigen.",
+        "authentizitaet": "Sahih Muslim 2956"
     },
     {
-        "arabic": "مَنْ يَرْحَمْ يُرْحَمْ",
-        "german": "Wer barmherzig ist, wird Barmherzigkeit erfahren.",
-        "authenticity": "Sahih (Bukhari)"
-    }
-]
-[
-    {
-        "arabisch": "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
-        "deutsch": "Die Taten sind nur nach den Absichten.",
-        "authentizitaet": "Sahih Al-Bukhari"
+        "arabisch": "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ",
+        "deutsch": "Wer an Allah und den Jüngsten Tag glaubt, der soll Gutes sprechen oder schweigen.",
+        "authentizitaet": "Sahih Bukhari 6136, Sahih Muslim 47"
     },
     {
-        "arabisch": "مَنْ غَشَّنَا فَلَيْسَ مِنَّا",
-        "deutsch": "Wer uns betrügt, gehört nicht zu uns.",
-        "authentizitaet": "Sahih Muslim"
+        "arabisch": "الرِّفْقُ لَا يَكُونُ فِي شَيْءٍ إِلَّا زَانَهُ",
+        "deutsch": "Sanftmut ist in allem, was es verschönert.",
+        "authentizitaet": "Sahih Muslim 2594"
     }
 ]
