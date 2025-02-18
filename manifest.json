@@ -1,20 +1,21 @@
 {
-  "name": "Usul ad-Deen",
-  "short_name": "Usul ad-Deen",
-  "start_url": "index.html",
-  "display": "standalone",
-  "icons": [
-    {
-      "src": "icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "background_color": "#ffffff",
-  "theme_color": "#004e00"
+    "name": "Usul ad-Deen",
+    "short_name": "UsulDeen",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2e7d32",
+    "description": "Islamische App mit Gebetszeiten, Hadithen und Bittgebeten.",
+    "icons": [
+        {
+            "src": "icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
 }
