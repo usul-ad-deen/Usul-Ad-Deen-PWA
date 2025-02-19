@@ -1,10 +1,12 @@
 [
     {
-        "text": "Die Taten werden nur nach den Absichten beurteilt.",
-        "quelle": "Bukhari, Muslim"
+        "arabisch": "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",
+        "deutsch": "Die Taten werden nur nach den Absichten beurteilt.",
+        "authentizität": "Sahih (Bukhari, Muslim)"
     },
     {
-        "text": "Der Beste unter euch ist derjenige, der den Menschen am nützlichsten ist.",
-        "quelle": "Daraqutni"
+        "arabisch": "خَيْرُ النَّاسِ أَنْفَعُهُمْ لِلنَّاسِ",
+        "deutsch": "Der Beste unter euch ist derjenige, der den Menschen am nützlichsten ist.",
+        "authentizität": "Hasan (Daraqutni)"
     }
 ]
