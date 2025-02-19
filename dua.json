@@ -1,30 +1,8 @@
 [
   {
-    "arabisch": "اللَّهُمَّ إِنِّي أَسْأَلُكَ العَافِيَةَ",
-    "deutsch": "O Allah, ich bitte Dich um Gesundheit.",
-    "transliteration": "Allahumma inni as'aluka al-'afiyah.",
-    "quelle": "Sunan Abi Dawood 5074"
-    "authenzität": "Sahih"
-  },
-  {
-    "arabisch": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
-    "deutsch": "Unser Herr, gib uns Gutes im Diesseits und Gutes im Jenseits und bewahre uns vor der Strafe des Feuers.",
-    "transliteration": "Rabbana atina fi-d-dunya hasanatan wa fi-l-akhirati hasanatan wa qina 'adhab an-nar.",
-    "quelle": "Sahih al-Bukhari 6389"
-    "authenzität": "Sahih"
-  },
-    {
-    "arabisch": "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً",
-    "deutsch": "O Allah, ich bitte Dich um nützliches Wissen, gute Versorgung und annehmbare Taten.",
-    "transliteration": "Allahumma inni as'aluka 'ilman nafi'an, wa rizqan tayyiban, wa 'amalan mutaqabbalan.",
-    "quelle": "Sunan Ibn Majah 925",
-    "authenzität": "Sahih"
-    },
-    {
-    "arabisch": "اللهم اجعلني لك شاكراً، لك ذاكراً، لك مخبتاً، إليك أوّاهاً منيباً",
-    "deutsch": "O Allah, mache mich zu einem dankbaren, gedenkenden, demütigen Diener, der sich Dir zuwendet.",
-    "transliteration": "Allahumma aj'alni laka shakiran, laka dhakiran, laka mukhbitaan, ilayka awwahan muniban.",
-    "quelle": "Sunan Abu Dawood 1510",
-    "authenzität": "Hasan"
-    }
+    "arabisch": "اللهم إني أسألك علما نافعا ورزقا طيبا وعملا متقبلا",
+    "deutsch": "O Allah, ich bitte Dich um nützliches Wissen, guten Lebensunterhalt und akzeptierte Taten.",
+    "transliteration": "Allahumma inni as'aluka ilman naafi‘an wa rizqan tayyiban wa ‘amalan mutaqabbalan",
+    "quelle": "Sunan Ibn Majah 925"
+  }
 ]
