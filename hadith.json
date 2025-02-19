@@ -1,8 +1,10 @@
 [
-  {
-    "arabisch": "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",
-    "deutsch": "Wahrlich, die Taten sind entsprechend der Absicht.",
-    "quelle": "Sahih al-Bukhari 1",
-    "authentizität": "Sahih"
-  }
+    {
+        "text": "Die Taten werden nur nach den Absichten beurteilt.",
+        "quelle": "Bukhari, Muslim"
+    },
+    {
+        "text": "Der Beste unter euch ist derjenige, der den Menschen am nützlichsten ist.",
+        "quelle": "Daraqutni"
+    }
 ]
