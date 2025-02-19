@@ -1,14 +1,16 @@
 [
     {
-        "text": "اللهم إني أسألك العافية",
+        "arabisch": "اللهم إني أسألك العافية",
+        "deutsch": "O Allah, ich bitte dich um Wohlbefinden.",
         "transliteration": "Allahumma inni as’aluka al-afiyah",
-        "übersetzung": "O Allah, ich bitte dich um Wohlbefinden.",
-        "quelle": "Tirmidhi"
+        "quelle": "Tirmidhi",
+        "authentizität": "Sahih"
     },
     {
-        "text": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً",
+        "arabisch": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً",
+        "deutsch": "Unser Herr, gib uns Gutes im Diesseits und Gutes im Jenseits.",
         "transliteration": "Rabbana atina fi dunya hasanah wa fi al-akhirati hasanah",
-        "übersetzung": "Unser Herr, gib uns Gutes im Diesseits und Gutes im Jenseits.",
-        "quelle": "Bukhari, Muslim"
+        "quelle": "Bukhari, Muslim",
+        "authentizität": "Sahih"
     }
 ]
