@@ -16,6 +16,23 @@ header {
     width: 50px;
     opacity: 0.5;
 }
+.gebetszeiten-container {
+    text-align: center;
+    width: 100%;
+}
+
+.gebetszeiten-table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+.gebetszeiten-table th, 
+.gebetszeiten-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
 
 nav ul {
     list-style-type: none;
