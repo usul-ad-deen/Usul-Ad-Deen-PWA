@@ -5,59 +5,37 @@ body {
 }
 
 header {
-    background-color: #008000;
+    background-color: #2E7D32;
     color: white;
-    padding: 10px;
-}
-
-.logo {
-    display: block;
-    margin: 0 auto;
-    width: 50px;
-    opacity: 0.5;
-}
-.gebetszeiten-container {
-    text-align: center;
-    width: 100%;
-}
-
-.gebetszeiten-table {
-    margin: 0 auto;
-    border-collapse: collapse;
-    width: 80%;
-}
-
-.gebetszeiten-table th, 
-.gebetszeiten-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
+    padding: 15px;
 }
 
 nav ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
 }
 
 nav ul li {
     display: inline;
-    margin: 0 10px;
+    margin: 0 15px;
 }
 
-nav ul li a {
-    color: white;
-    text-decoration: none;
+.gebetszeiten-table {
+    width: 60%;
+    margin: auto;
+    border-collapse: collapse;
 }
 
-main {
-    padding: 20px;
+.gebetszeiten-table th, .gebetszeiten-table td {
+    padding: 10px;
+    border: 1px solid black;
 }
 
 footer {
-    background-color: #008000;
+    background-color: #2E7D32;
     color: white;
     padding: 10px;
     position: fixed;
-    bottom: 0;
     width: 100%;
+    bottom: 0;
 }
