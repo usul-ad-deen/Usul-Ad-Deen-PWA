@@ -1,36 +1,47 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
     text-align: center;
 }
 
 header {
-    background-color: #2E7D32;
+    background: #2c3e50;
     color: white;
-    padding: 15px;
+    padding: 10px;
 }
 
-.gebetszeiten-table {
-    width: 60%;
-    margin: auto;
+.logo {
+    width: 40px;
+    vertical-align: middle;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+table {
+    margin: 10px auto;
     border-collapse: collapse;
 }
 
-.gebetszeiten-table th, .gebetszeiten-table td {
+td {
+    padding: 5px;
     border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-}
-
-.bold {
-    font-weight: bold;
 }
 
 footer {
-    background-color: #2E7D32;
+    margin-top: 20px;
+    background: #2c3e50;
     color: white;
     padding: 10px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
 }
