@@ -15,6 +15,25 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function ladeGebetszeiten(latitude, longitude) {
+        const apiURL = `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=3`;
+        fetch(apiURL)
+            .then(response => response.json())
+            .then(data => {
+                const timings = data.data.timings;
+                document.getElementById("fajr").textContent = timings.Fajr;
+                document.getElementById("shuruk").textContent = timings.Sunrise;
+                document.getElementById("dhuhr").textContent = timings.Dhuhr;
+                document.getElementById("asr").textContent = timings.Asr;
+                document.getElementById("maghrib").textContent = timings.Maghrib;
+                document.getElementById("isha").textContent = timings.Isha;
+                berechneNachtzeiten(timings.Fajr, timings.Isha);
+            })
+            .catch(() => {
+                document.querySelectorAll("#gebetszeiten td:nth-child(2)").forEach(td => td.textContent = "00:00");
+            });
+    }
+
     function berechneNachtzeiten(fajr, isha) {
         const fajrZeit = new Date(`1970-01-01T${fajr}:00`);
         const ishaZeit = new Date(`1970-01-01T${isha}:00`);
