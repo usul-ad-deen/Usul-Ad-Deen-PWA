@@ -10,16 +10,6 @@ header {
     padding: 15px;
 }
 
-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 15px;
-}
-
 .gebetszeiten-table {
     width: 60%;
     margin: auto;
@@ -27,8 +17,13 @@ nav ul li {
 }
 
 .gebetszeiten-table th, .gebetszeiten-table td {
+    border: 1px solid #ddd;
     padding: 10px;
-    border: 1px solid black;
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 footer {
