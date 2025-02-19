@@ -5,58 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
-    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192x192.png" type="image/png">
 </head>
 <body>
+
     <header>
-        <h1>Usul ad-Deen</h1>
         <img src="icons/icon-192x192.png" alt="Logo" class="logo">
+        <h1>Usul ad-Deen</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Start</a></li>
-                <li><a href="hadith.html">Hadithsammlungen</a></li>
-                <li><a href="dua.html">Bittgebete</a></li>
-                <li><a href="beitraege.html">Beiträge</a></li>
-                <li><a href="buecher.html">Bücher</a></li>
-                <li><a href="mehr.html">Mehr</a></li>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
+                <li><a href="hadith.html">Hadith des Tages</a></li>
+                <li><a href="dua.html">Dua des Tages</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section id="uhrzeit">
-            <h2 id="aktuelle-uhrzeit"></h2>
-            <h3 id="aktuelles-datum"></h3>
+        <section id="uhrzeit-datum">
+            <p id="aktuelles-datum">Datum: Wird geladen...</p>
+            <p id="aktuelle-uhrzeit">Uhrzeit: Wird geladen...</p>
+            <p id="mekka-uhrzeit">Mekka-Zeit: Wird geladen...</p>
+            <p id="islamisches-datum">Islamisches Datum: Wird geladen...</p>
+            <p id="gregorianisches-datum">Gregorianisches Datum: Wird geladen...</p>
+        </section>
+
+        <section id="standort-auswahl">
+            <p id="aktueller-standort">Ihr Standort: Wird ermittelt...</p>
+            <label for="stadt-auswahl">Manuelle Stadtauswahl:</label>
+            <select id="stadt-auswahl">
+                <option value="">Bitte eine Stadt wählen...</option>
+            </select>
         </section>
 
         <section id="gebetszeiten">
             <h2>Gebetszeiten</h2>
-            <p id="standort">Ihr Standort: Wird ermittelt...</p>
-            <label for="stadt-auswahl">Stadt manuell wählen:</label>
-            <select id="stadt-auswahl"></select>
-            <ul id="gebetszeiten-liste"></ul>
+            <table>
+                <tr><th>Gebet</th><th>Zeit</th></tr>
+                <tr><td>Fajr</td><td id="fajr">00:00</td></tr>
+                <tr><td>Shuruk</td><td id="shuruk">00:00</td></tr>
+                <tr><td>Dhuhr</td><td id="dhuhr">00:00</td></tr>
+                <tr><td>Asr</td><td id="asr">00:00</td></tr>
+                <tr><td>Maghrib</td><td id="maghrib">00:00</td></tr>
+                <tr><td>Isha</td><td id="isha">00:00</td></tr>
+            </table>
         </section>
 
         <section id="hadith-des-tages">
             <h2>Hadith des Tages</h2>
-            <p id="hadith-arabisch"></p>
-            <p id="hadith-deutsch"></p>
-            <p id="hadith-quelle"></p>
-            <p id="hadith-authentizitaet"></p>
+            <p id="hadith-arabisch">Arabisch: Wird geladen...</p>
+            <p id="hadith-deutsch">Deutsch: Wird geladen...</p>
+            <p id="hadith-quelle">Quelle: Wird geladen...</p>
+            <p id="hadith-authentizität">Authentizität: Wird geladen...</p>
         </section>
 
         <section id="dua-des-tages">
-            <h2>Bittgebet des Tages</h2>
-            <p id="dua-arabisch"></p>
-            <p id="dua-deutsch"></p>
-            <p id="dua-transliteration"></p>
-            <p id="dua-quelle"></p>
+            <h2>Dua des Tages</h2>
+            <p id="dua-arabisch">Arabisch: Wird geladen...</p>
+            <p id="dua-deutsch">Deutsch: Wird geladen...</p>
+            <p id="dua-transliteration">Transliteration: Wird geladen...</p>
+            <p id="dua-quelle">Quelle: Wird geladen...</p>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Usul ad-Deen</p>
+        <p>&copy; 2025 Usul ad-Deen. Alle Rechte vorbehalten.</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
