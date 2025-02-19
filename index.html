@@ -5,44 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
+    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
 </head>
 <body>
+
     <header>
-        <h1>Usul ad-Deen</h1>
-       <nav>
+        <h1>Usul ad-Deen <img src="icons/icon-192x192.png" alt="Logo" class="logo"></h1>
+        <nav>
             <ul>
-                <li><a href="#">Startseite</a></li>
-                <li><a href="#">Gebetszeiten</a></li>
-                <li><a href="#">Hadith des Tages</a></li>
-                <li><a href="#">Bittgebete</a></li>
-                <li><a href="#">Über uns</a></li>
+                <li><a href="#">Start</a></li>
+                <li><a href="#">Beiträge</a></li>
+                <li><a href="#">Bücher</a></li>
+                <li><a href="#">Hadithsammlungen</a></li>
+                <li><a href="#">Mehr</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-         <p id="stadt-anzeige">Ihr Standort: <span id="stadtname">Wird ermittelt...</span></p>
-        <p>Islamisches Datum: <span id="islamisches-datum">Lädt...</span></p>
-        <p>Gregorianisches Datum: <span id="gregorianisches-datum">Lädt...</span></p>
-        <p>Uhrzeit Mekka: <span id="uhrzeit-mekka">00:00</span></p>
-        <p>Uhrzeit Berlin: <span id="uhrzeit-berlin">00:00</span></p>
-        <section id="gebetszeiten">
+        <section id="uhrzeit-abschnitt">
+            <h2>Aktuelle Uhrzeit</h2>
+            <p><b>Berlin:</b> <span id="uhrzeit-berlin">00:00</span></p>
+            <p><b>Mekka:</b> <span id="uhrzeit-mekka">00:00</span></p>
+            <p><b>Gregorianisches Datum:</b> <span id="gregorianisches-datum">--</span></p>
+            <p><b>Islamisches Datum:</b> <span id="islamisches-datum">--</span></p>
+        </section>
+
+        <section id="standort">
             <h2>Gebetszeiten</h2>
-            <table class="gebetszeiten-table">
-                <tr><th>Gebet</th><th>Zeit</th></tr>
-                <tr><td class="bold">Fajr</td><td id="fajr">00:00</td></tr>
-                <tr><td>Shuruk</td><td id="shuruk">00:00</td></tr>
-                <tr><td class="bold">Dhuhr</td><td id="dhuhr">00:00</td></tr>
-                <tr><td class="bold">Asr</td><td id="asr">00:00</td></tr>
-                <tr><td class="bold">Maghrib</td><td id="maghrib">00:00</td></tr>
-                <tr><td class="bold">Isha</td><td id="isha">00:00</td></tr>
-                <tr><td>Islamische Mitternacht</td><td id="islamische-mitternacht">00:00</td></tr>
-                <tr><td>Letztes Drittel der Nacht</td><td id="letztes-drittel">00:00</td></tr>
+            <p><b>Ihr Standort:</b> <span id="stadtname">Unbekannt</span></p>
+            <table id="gebetszeiten">
+                <tr><td><b>Fajr:</b></td><td id="fajr">00:00</td></tr>
+                <tr><td>Shuruk:</td><td id="shuruk">00:00</td></tr>
+                <tr><td><b>Dhuhr:</b></td><td id="dhuhr">00:00</td></tr>
+                <tr><td><b>Asr:</b></td><td id="asr">00:00</td></tr>
+                <tr><td><b>Maghrib:</b></td><td id="maghrib">00:00</td></tr>
+                <tr><td><b>Isha:</b></td><td id="isha">00:00</td></tr>
+                <tr><td>Islamische Mitternacht:</td><td id="islamische-mitternacht">00:00</td></tr>
+                <tr><td>Letztes Drittel der Nacht:</td><td id="letztes-drittel">00:00</td></tr>
             </table>
         </section>
 
-        <section id="hadith">
+        <section id="hadith-des-tages">
             <h2>Hadith des Tages</h2>
             <p id="hadith-arabisch"></p>
             <p id="hadith-deutsch"></p>
@@ -62,5 +66,7 @@
     <footer>
         <p>&copy; 2025 Usul ad-Deen</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
