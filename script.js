@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let jetzt = new Date();
         document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
+        document.getElementById("uhrzeitMekka").textContent = jetzt.toLocaleTimeString("de-SA", { hour12: false });
+        
     }
 
     setInterval(updateUhrzeit, 1000);
