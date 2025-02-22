@@ -1,32 +1,99 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Standort ermitteln
+    updateUhrzeit();
+    setInterval(updateUhrzeit, 1000);
+    ladeHadithDesTages();
+    ladeDuaDesTages();
+    ladeStadtAuswahl();
+    ermittleStandort();
+    ladeGebetszeiten();
+});
+
+function updateUhrzeit() {
+    let now = new Date();
+    let uhrzeit = now.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    let datum = now.toLocaleDateString("de-DE");
+
+    document.getElementById("aktuelle-uhrzeit").textContent = `Uhrzeit: ${uhrzeit}`;
+    document.getElementById("aktuelles-datum").textContent = `Datum: ${datum}`;
+}
+
+
+async function ladeStadtAuswahl() {
+    const response = await fetch("stadt.json");
+    const staedte = await response.json();
+    let select = document.getElementById("stadt-auswahl");
+
+    staedte.forEach(stadt => {
+        let option = document.createElement("option");
+        option.value = stadt.name;
+        option.textContent = stadt.name;
+        select.appendChild(option);
+    });
+
+    select.addEventListener("change", function () {
+        document.getElementById("standort").textContent = `Ihr Standort: ${this.value}`;
+    });
+}
+
+function ermittleStandort() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("stadtname").textContent = data.address.city || "Unbekannte Stadt";
+                    let stadt = data.address.city || data.address.town || data.address.village || "Unbekannt";
+                    document.getElementById("standort").textContent = `Ihr Standort: ${stadt}`;
+                })
+                .catch(() => {
+                    document.getElementById("standort").textContent = "Standort konnte nicht ermittelt werden.";
                 });
-            ladeGebetszeiten(latitude, longitude);
         }, () => {
-            document.getElementById("stadtname").textContent = "Bitte Stadt manuell wählen";
+            document.getElementById("standort").textContent = "Standortermittlung deaktiviert.";
         });
+    } else {
+        document.getElementById("standort").textContent = "Standortermittlung nicht unterstützt.";
     }
+}
 
-   document.addEventListener("DOMContentLoaded", () => {
-    function updateUhrzeit() {
-        let jetzt = new Date();
-        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE");
-        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
-document.getElementById("mecca-time").innerText = "Uhrzeit Mekka: " + new Date().toLocaleTimeString("ar-SA", {timeZone: "Asia/riyadh"});
+
+function ermitteleStandort() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                    const data = await response.json();
+                    const stadt = data.address.city || data.address.town || "Unbekannt";
+                    document.getElementById("standort").textContent = `Ihr Standort: ${stadt}`;
+                    ladeGebetszeiten(stadt);
+                } catch (error) {
+                    console.error("Fehler bei der Standortbestimmung:", error);
+                    zeigeManuelleStadtauswahl();
+                }
+            },
+            () => {
+                zeigeManuelleStadtauswahl();
+            }
+        );
+    } else {
+        zeigeManuelleStadtauswahl();
     }
+}
 
-    setInterval(updateUhrzeit, 1000);
-    updateUhrzeit();
+function zeigeManuelleStadtauswahl() {
+    document.getElementById("standort").textContent = "Standort konnte nicht ermittelt werden. Bitte Stadt manuell wählen:";
+    document.getElementById("stadt-auswahl").style.display = "block";
+}
 
-    async function ladeGebetszeiten(position) {
+document.getElementById("stadt-wählen").addEventListener("change", function () {
+    const stadt = this.value;
+    document.getElementById("standort").textContent = `Ihr Standort: ${stadt}`;
+    ladeGebetszeiten(stadt);
+
+ async function ladeGebetszeiten(position) {
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${position}&country=DE&method=3`);
         let data = await response.json();
 
@@ -63,15 +130,6 @@ document.getElementById("mecca-time").innerText = "Uhrzeit Mekka: " + new Date()
         letztesDrittel.setHours(fH - dH, fM - dM)
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
     }
-
-
-
-    ladeGebetszeiten("Berlin");
-    ladeHadith();
-    ladeDua();
-});
-
-
 
 
     fetch("hadith.json")
