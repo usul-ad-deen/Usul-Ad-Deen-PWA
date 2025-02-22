@@ -10,42 +10,43 @@
 <body>
     <header>
         <h1>Usul ad-Deen</h1>
-        <img src="icons/icon-192x192.png" alt="Logo" class="logo">
-        <nav>
-            <ul>
-                <li><a href="index.html">Start</a></li>
-                <li><a href="hadith.html">Hadithsammlungen</a></li>
-                <li><a href="dua.html">Bittgebete</a></li>
-                <li><a href="beiträge.html">Beiträge</a></li>
-                <li><a href="bücher.html">Bücher</a></li>
-                <li><a href="mehr.html">Mehr</a></li>
-            </ul>
-        </nav>
+        <p id="stadt-anzeige">Ihr Standort: <span id="stadtname">Wird ermittelt...</span></p>
+        <p>Islamisches Datum: <span id="islamisches-datum">Lädt...</span></p>
+        <p>Gregorianisches Datum: <span id="gregorianisches-datum">Lädt...</span></p>
+        <p>Uhrzeit Mekka: <span id="uhrzeit-mekka">00:00</span></p>
+        <p>Uhrzeit Berlin: <span id="uhrzeit-berlin">00:00</span></p>
     </header>
 
     <main>
-        <section id="zeit-section">
-            <h2>Aktuelle Uhrzeit</h2>
-            <p id="uhrzeit">00:00:00</p>
-            <p id="datum">Lädt...</p>
-            <p id="islamisches-datum">Lädt...</p>
-            <p id="mekka-uhrzeit">Mekka: 00:00</p>
-        </section>
-
         <section id="gebetszeiten">
             <h2>Gebetszeiten</h2>
-            <p>Ihr Standort: <span id="stadt-name">Unbekannt</span></p>
-            <select id="stadt-auswahl"></select>
-            <ul>
-                <li><strong>Fajr:</strong> <span id="fajr">00:00</span></li>
-                <li><strong>Shuruk:</strong> <span id="shuruk">00:00</span></li>
-                <li><strong>Dhuhr:</strong> <span id="dhuhr">00:00</span></li>
-                <li><strong>Asr:</strong> <span id="asr">00:00</span></li>
-                <li><strong>Maghrib:</strong> <span id="maghrib">00:00</span></li>
-                <li><strong>Isha:</strong> <span id="isha">00:00</span></li>
-                <li>Islamische Mitternacht: <span id="mitternacht">00:00</span></li>
-                <li>Letztes Drittel der Nacht: <span id="letztes-drittel">00:00</span></li>
-            </ul>
+            <table class="gebetszeiten-table">
+                <tr><th>Gebet</th><th>Zeit</th></tr>
+                <tr><td class="bold">Fajr</td><td id="fajr">00:00</td></tr>
+                <tr><td>Shuruk</td><td id="shuruk">00:00</td></tr>
+                <tr><td class="bold">Dhuhr</td><td id="dhuhr">00:00</td></tr>
+                <tr><td class="bold">Asr</td><td id="asr">00:00</td></tr>
+                <tr><td class="bold">Maghrib</td><td id="maghrib">00:00</td></tr>
+                <tr><td class="bold">Isha</td><td id="isha">00:00</td></tr>
+                <tr><td>Islamische Mitternacht</td><td id="islamische-mitternacht">00:00</td></tr>
+                <tr><td>Letztes Drittel der Nacht</td><td id="letztes-drittel">00:00</td></tr>
+            </table>
+        </section>
+
+        <section id="hadith">
+            <h2>Hadith des Tages</h2>
+            <p id="hadith-arabisch"></p>
+            <p id="hadith-deutsch"></p>
+            <p id="hadith-authentizität"></p>
+        </section>
+
+        <section id="dua">
+            <h2>Bittgebet des Tages</h2>
+            <p id="dua-arabisch"></p>
+            <p id="dua-deutsch"></p>
+            <p id="dua-transliteration"></p>
+            <p id="dua-quellenangabe"></p>
+            <p id="dua-authentizität"></p>
         </section>
     </main>
 
