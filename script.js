@@ -1,11 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
     function updateUhrzeit() {
         let jetzt = new Date();
+        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
     }
 
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
+
+    async function ladeIslamischesDatum() {
+        try {
+            let response = await fetch("https://api.aladhan.com/v1/gToH?date=" + new Date().toISOString().split('T')[0]);
+            let data = await response.json();
+            document.getElementById("islamisches-datum").textContent = data.data.hijri.weekday.de;
+        } catch (error) {
+            console.error("Fehler beim Laden des islamischen Datums:", error);
+        }
+    }
+
+    async function ladeMekkaUhrzeit() {
+        try {
+            let response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Riyadh");
+            let data = await response.json();
+            let mekkaZeit = new Date(data.utc_datetime);
+            mekkaZeit.setSeconds(mekkaZeit.getSeconds() + data.raw_offset);
+            document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
+        } catch (error) {
+            console.error("Fehler beim Laden der Mekka-Zeit:", error);
+        }
+    }
 
     async function ladeGebetszeiten(stadt) {
         try {
@@ -18,65 +41,36 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("asr").textContent = data.data.timings.Asr;
             document.getElementById("maghrib").textContent = data.data.timings.Maghrib;
             document.getElementById("isha").textContent = data.data.timings.Isha;
-
-            document.getElementById("mitternacht").textContent = berechneMitternacht(data.data.timings.Fajr, data.data.timings.Maghrib);
-            document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(data.data.timings.Fajr, data.data.timings.Maghrib);
-        } catch (error) {
+            
+            document.getElementById("mitternacht").textContent = (data.data.timings.Fajr - (data.data.timings.Fajr + data.data.timings.Maghrib)/2);
+            document.getElementById("letztes-drittel").textContent = (data.data.timings.Fajr - (data.data.timings.Fajr + data.data.timings.Maghrib)/3);
+        } 
+        catch (error) {
             console.error("Fehler beim Laden der Gebetszeiten:", error);
-        }
+                }
     }
 
-    function berechneMitternacht(maghrib, fajr) {
-        let [mH, mM] = maghrib.split(":").map(Number);
-        let [fH, fH] = fajr.split(":").map(Number);
-        let [nH] = (mH + fH) 
-        let [nM] = (mM + fM) 
-        let [dH] = nH / 2
-        let [dM] = nM / 2
-        let [lH] = fH - dH
-        let [lM] = fM - dM
-        let letztesDrittel = new Date();
-        letztesDrittel.setHours(lH, lM)
-        return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
+    async function ladeHadith() {
+        let response = await fetch("hadith.json");
+        let data = await response.json();
+        let zufallsHadith = data[Math.floor(Math.random() * data.length)];
+        document.getElementById("hadith-arabisch").textContent = zufallsHadith.arabisch;
+        document.getElementById("hadith-deutsch").textContent = zufallsHadith.deutsch;
+        document.getElementById("hadith-quelle").textContent = zufallsHadith.quelle;
+        document.getElementById("hadith-auth").textContent = zufallsHadith.authentizität;
     }
 
-    function berechneLetztesDrittel(fajr) {
-        
-         let [mH, mM] = maghrib.split(":").map(Number);
-        let [fH, fM] = fajr.split(":").map(Number);
-        let [dH] = (mH + fH) / 3
-        let [dM] = (mM + fM) / 3
-        let letztesDrittel = new Date();
-        letztesDrittel.setHours(fH - dH, fM - dM)
-        return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
+    async function ladeDua() {
+        let response = await fetch("dua.json");
+        let data = await response.json();
+        let zufallsDua = data[Math.floor(Math.random() * data.length)];
+        document.getElementById("dua-arabisch").textContent = zufallsDua.arabisch;
+        document.getElementById("dua-deutsch").textContent = zufallsDua.deutsch;
+        document.getElementById("dua-trans").textContent = zufallsDua.transliteration;
+        document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
     }
-
-    fetch("hadith.json")
-        .then(response => response.json())
-        .then(data => {
-            const zufaelligerHadith = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("hadith-arabisch").textContent = zufaelligerHadith.arabisch;
-            document.getElementById("hadith-deutsch").textContent = zufaelligerHadith.deutsch;
-            document.getElementById("hadith-authentizität").textContent = "Authentizität: " + zufaelligerHadith.authentizität;
-        });
-
-    fetch("dua.json")
-        .then(response => response.json())
-        .then(data => {
-            const zufaelligeDua = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("dua-arabisch").textContent = zufaelligeDua.arabisch;
-            document.getElementById("dua-deutsch").textContent = zufaelligeDua.deutsch;
-            document.getElementById("dua-transliteration").textContent = zufaelligeDua.transliteration;
-            document.getElementById("dua-authentizität").textContent = "Authentizität: " + zufaelligeDua.authentizität;
-        });
-    
-
-    async function ladeIslamischesDatum() {
-        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-SA");
-        }
-
-
-    async function ermittleStandort() {
+ 
+   async function ermittleStandort() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 let lat = position.coords.latitude;
@@ -116,15 +110,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 option.textContent = stadt.name;
                 dropdown.appendChild(option);
             });
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Fehler beim Laden der Städte:", error);
         }
     }
 
     ladeStadtAuswahl();
     ermittleStandort();
+    ladeIslamischesDatum();
+    ladeGebetszeiten(Stadt); 
+    ladeMekkaUhrzeit();
     ladeHadith();
     ladeDua();
-    ladeIslamischesDatum();
-    ladeMekkaUhrzeit();
 });
