@@ -36,6 +36,7 @@
             <h2>Gebetszeiten</h2>
             <p>Ihr Standort: <span id="stadt-name">Unbekannt. Bitte manuell wählen.</span></p>
             <select id="stadt-auswahl"></select>
+           
             <ul><div style="margin:auto; border:1px solid #c0c0c0" id="prayer-container">
                 <table>
         <tbody>
@@ -143,12 +144,6 @@
         </tbody>
     </table>
 </div>
-<script>
-    var api_url = 'https://api.pray.zone/v2/times/today.json?ip=auto';
-    document.addEventListener("DOMContentLoaded", function () {
-        PrayerTimesApi();
-    });
-</script>
     </main>
 
     <footer>
