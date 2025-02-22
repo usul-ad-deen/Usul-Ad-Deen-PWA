@@ -28,10 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function berechneMitternacht(maghrib, fajr) {
-        let [n] = ("fajr" + "magrib") /2
-        let mitternacht = new Date();
-        mitternacht.setHours("fajr" - n)
-        return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
+        let [f] = document.getElementById("fajr").textContent
+        let [m] = document.getElementById("maghrib").textContent
+        let [dH] = (f+m) / 3
+        let letztesDrittel = new Date();
+        letztesDrittel.setHours(f - dH)
+        return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
     }
 
     function berechneLetztesDrittel(fajr) {
