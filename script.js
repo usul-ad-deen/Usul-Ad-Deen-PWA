@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let jetzt = new Date();
         document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE");
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
-document.getElementById("mecca-time").innerText = "Uhrzeit Mekka: " + new Date().toLocaleTimeString("ar-SA", {timeZone: "Asia/Riyadh"});
+document.getElementById("mecca-time").innerText = "Uhrzeit Mekka: " + new Date().toLocaleTimeString("ar-SA", {timeZone: "Asia/riyadh"});
     }
 
     setInterval(updateUhrzeit, 1000);
@@ -90,7 +90,6 @@ document.getElementById("mecca-time").innerText = "Uhrzeit Mekka: " + new Date()
             document.getElementById("dua-arabisch").textContent = zufaelligeDua.arabisch;
             document.getElementById("dua-deutsch").textContent = zufaelligeDua.deutsch;
             document.getElementById("dua-transliteration").textContent = zufaelligeDua.transliteration;
-            document.getElementById("dua-quellenangabe").textContent = "Quelle: " + zufaelligeDua.quelle;
             document.getElementById("dua-authentizität").textContent = "Authentizität: " + zufaelligeDua.authentizität;
         });
 });
