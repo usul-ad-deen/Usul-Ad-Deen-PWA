@@ -1,72 +1,32 @@
-ocument.addEventListener("DOMContentLoaded", function () {
-    updateUhrzeit();
-    setInterval(updateUhrzeit, 1000);
-    ladeHadith);
-    ladeDua();
-    ladeManuelleStadtauswahl);
-    ermittleStandort();
-    ladeGebetszeiten();
-});
-
-function updateUhrzeit() {
-    let now = new Date();
-    let uhrzeit = now.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    let datum = now.toLocaleDateString("de-DE");
-
-    document.getElementById("aktuelle-uhrzeit").textContent = `Uhrzeit: ${uhrzeit}`;
-    document.getElementById("aktuelles-datum").textContent = `Datum: ${datum}`;
-}
-
-
-async function ladeManuelleStadtauswahl() {
-    const response = await fetch("stadt.json");
-    const staedte = await response.json();
-    let select = document.getElementById("stadt-auswahl");
-
-    staedte.forEach(stadt => {
-        let option = document.createElement("option");
-        option.value = stadt.name;
-        option.textContent = stadt.name;
-        select.appendChild(option);
-    });
-
-    select.addEventListener("change", function () {
-        document.getElementById("standort").textContent = `Ihr Standort: ${this.value}`;
-    });
-}
-
-
-
-function ermitteleStandort() {
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                try {
-                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                    const data = await response.json();
-                    const stadt = data.address.city || data.address.town || "Unbekannt";
-                    document.getElementById("standort").textContent = `Ihr Standort: ${stadt}`;
-                    ladeGebetszeiten(stadt);
-                } catch (error) {
-                    console.error("Fehler bei der Standortbestimmung:", error);
-                    zeigeManuelleStadtauswahl();
-                }
-            },
-            () => {
-                zeigeManuelleStadtauswahl();
-            }
-        );
-    } else {
-        zeigeManuelleStadtauswahl();
+document.addEventListener("DOMContentLoaded", function () {
+    // Standort ermitteln
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("stadtname").textContent = data.address.city || "Unbekannte Stadt";
+                });
+            ladeGebetszeiten(latitude, longitude);
+        }, () => {
+            document.getElementById("stadtname").textContent = "Bitte Stadt manuell wählen";
+        });
     }
-}
 
-);
+   document.addEventListener("DOMContentLoaded", () => {
+    function updateUhrzeit() {
+        let jetzt = new Date();
+        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE");
+        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
+document.getElementById("mecca-time").innerText = "Uhrzeit Mekka: " + new Date().toLocaleTimeString("ar-SA", {timeZone: "Asia/riyadh"});
+    }
 
- async function ladeGebetszeiten(position) {
+    setInterval(updateUhrzeit, 1000);
+    updateUhrzeit();
+
+    async function ladeGebetszeiten(position) {
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${position}&country=DE&method=3`);
         let data = await response.json();
 
@@ -105,6 +65,15 @@ function ermitteleStandort() {
     }
 
 
+
+    ladeGebetszeiten("Berlin");
+    ladeHadith();
+    ladeDua();
+});
+
+
+
+
     fetch("hadith.json")
         .then(response => response.json())
         .then(data => {
@@ -123,4 +92,4 @@ function ermitteleStandort() {
             document.getElementById("dua-transliteration").textContent = zufaelligeDua.transliteration;
             document.getElementById("dua-authentizität").textContent = "Authentizität: " + zufaelligeDua.authentizität;
         });
-});
+}
