@@ -48,13 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
         catch (error) {
             console.error("Fehler beim Laden der Gebetszeiten:", error);
                 }
-       function berechneMitternacht() {
+    }
+  
+    function berechneMitternacht() {
         let (f) = data.data.timings.Fajr;
         let (m) = data.data.timings.Maghrib; 
         document.getElementById("mitternacht").textContent = (f - ((f + m) /2))
         }
-    }
-
 
     
     async function ladeHadith() {
