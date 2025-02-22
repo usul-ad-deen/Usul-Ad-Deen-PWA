@@ -52,10 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let response = await fetch("hadith.json");
         let data = await response.json();
         let zufallsHadith = data[Math.floor(Math.random() * data.length)];
-        document.getElementById("hadith-arabisch").textContent = Hadith.arabisch;
-        document.getElementById("hadith-deutsch").textContent = Hadith.deutsch;
-        document.getElementById("hadith-quelle").textContent = Hadith.quelle;
-        document.getElementById("hadith-auth").textContent = Hadith.authentizität;
+        document.getElementById("hadith-arabisch").textContent = zufallsHadith.arabisch;
+        document.getElementById("hadith-deutsch").textContent = zufallsHadith.deutsch;
+        document.getElementById("hadith-quelle").textContent = zufallsHadith.quelle;
+        document.getElementById("hadith-auth").textContent = zufallsHadith.authentizität;
     }
 
   function ladeDua() {
