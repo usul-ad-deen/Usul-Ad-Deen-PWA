@@ -30,7 +30,19 @@
             <p id="datum">Lädt...</p>
             <p id="islamisches-datum">Lädt...</p>
             <p id="mekka-uhrzeit">Mekka: 00:00</p>
-            <p id="uhrzeitMekka">Mekka: 00:00</p>
+            <p id="uhrzeitMekka">Mekka: </p>
+<script>
+function addZero(i) {
+  if (i < 10) {i = "0" + i}
+  return i;
+}
+const d = new Date();
+let h = addZero(d.getHours());
+let m = addZero(d.getMinutes());
+let s = addZero(d.getSeconds());
+let time = h + ":" + m + ":" + s;
+document.getElementById("uhrzeitMekka").innerHTML = time;
+</script>
         </section>
 
         <section id="gebetszeiten">
