@@ -11,16 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
     function berechneIslamischeMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
         let [mH, mM] = maghrib.split(":").map(Number);
-        let mitternachtStunde = Math.floor((fH + mH) / 2);
-        let mitternachtMinute = Math.floor((fM + mM) / 2);
+        let mitternachtStunde = Math.floor(fH - (fH - mH) / 2);
+        let mitternachtMinute = Math.floor(fH - (fM - mM) / 2);
         return `${String(mitternachtStunde).padStart(2, "0")}:${String(mitternachtMinute).padStart(2, "0")}`;
     }
 
     function berechneLetztesDrittel(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
         let [mH, mM] = maghrib.split(":").map(Number);
-        let letztesDrittelStunde = Math.floor(fH - ((fH + mH) / 3));
-        let letztesDrittelMinute = Math.floor(fM - ((fM + mM) / 3))
+        let letztesDrittelStunde = Math.floor(fH - ((fH - mH) / 3));
+        let letztesDrittelMinute = Math.floor(fM - ((fM - mM) / 3));
         return `${String(letztesDrittelStunde).padStart(2, "0")}:${String(letztesDrittelMinute).padStart(2, "0")}`;
     }
 
