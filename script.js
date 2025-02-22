@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
-
+ }
     async function ladeIslamischesDatum() {
         try {
             let response = await fetch("https://api.aladhan.com/v1/gToH?date=" + new Date().toISOString().split('T')[0]);
