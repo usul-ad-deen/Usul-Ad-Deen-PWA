@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     function updateUhrzeit() {
         let jetzt = new Date();
-        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
     }
 
@@ -73,26 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
     async function ladeIslamischesDatum() {
-        try {
-            let response = await fetch("https://api.aladhan.com/v1/gToH?date=" + new Date().toISOString().split('T')[0]);
-            let data = await response.json();
-            document.getElementById("islamisches-datum").textContent = data.data.hijri.date;
-        } catch (error) {
-            console.error("Fehler beim Laden des islamischen Datums:", error);
+        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-SA");
         }
-    }
 
-    async function ladeMekkaUhrzeit() {
-        try {
-            let response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Riyadh");
-            let data = await response.json();
-            let mekkaZeit = new Date(data.utc_datetime);
-            mekkaZeit.setSeconds(mekkaZeit.getSeconds() + data.raw_offset);
-            document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
-        } catch (error) {
-            console.error("Fehler beim Laden der Mekka-Zeit:", error);
-        }
-    }
 
     async function ermittleStandort() {
         if (navigator.geolocation) {
