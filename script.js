@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
        let mekka = currentTime.toUTCString(+03);
         document.getElementById("datum").textContent = mekka.toLocaleDateString("de-DE");
-   console.log("uhrzeitMekka " + mekka);
+ 
 
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
