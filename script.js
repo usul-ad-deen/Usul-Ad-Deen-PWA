@@ -21,23 +21,21 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("isha").textContent = data.data.timings.Isha;
 
             document.getElementById("mitternacht").textContent = berechneMitternacht(data.data.timings.Maghrib, data.data.timings.Fajr);
-            document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(data.data.timings.Fajr);
+            document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(data.data.timings.Fajr,data.data.timings.Maghrib);
         } catch (error) {
             console.error("Fehler beim Laden der Gebetszeiten:", error);
         }
     }
 
     function berechneMitternacht(maghrib, fajr) {
-        let [mH, mM] = maghrib;
-        let [fH, fM] = fajr;
-        let [nH] = (mH + fH) / 2
-        let [nM] = (mM + fM) / 2
+        let [n] = (data.data.timings.Fajr + data.data.timings.Maghrib) / 2
         let mitternacht = new Date();
-        mitternacht.setHours(fH - nH, fM - nM)
+        mitternacht.setHours(data.data.timings.Fajr - n)
         return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
     }
 
     function berechneLetztesDrittel(fajr) {
+        
          let [mH, mM] = maghrib.split(":").map(Number);
         let [fH, fM] = fajr.split(":").map(Number);
         let [dH] = (mH + fH) / 3
