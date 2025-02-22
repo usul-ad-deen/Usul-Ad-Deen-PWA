@@ -11,8 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function berechneIslamischeMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
         let [mH, mM] = maghrib.split(":").map(Number);
-        let mitternachtStunde = Math.floor(fH - (fH - mH) / 2);
-        let mitternachtMinute = Math.floor(fH - (fM - mM) / 2);
+       let mS1 = Math.floor((24 - mH)
+         let mS2 = Math.floor(fH - ((fH + mS1) / 3))
+        let mM1 = Math.floor(60 - mM) / 2);
+        let mM2 = Math.floor(fH - (fM - mM1) / 2);
         return `${String(mitternachtStunde).padStart(2, "0")}:${String(mitternachtMinute).padStart(2, "0")}`;
     }
 
