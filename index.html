@@ -26,19 +26,19 @@
     <main>
         <section id="zeit-section">
             <h2>Aktuelle Uhrzeit</h2>
-            <div style="text-align:left;padding:1em 0;"> <span style="color:gray;">Aktuelle Uhrzeit / Ortszeit</span><br />Berlin, Deutschland</a></h4> <iframe src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=de&size=small&timezone=Europe%2FBerlin" width="50%" height="30" frameborder="0" seamless></iframe> <small style="color:gray;">&copy; <a href="https://www.zeitzonenrechner.net/" style="color: gray;">Zeitzonenrechner</a></small> </div>
+            <p id="uhrzeit">00:00:00</p>
             <p id="datum">Lädt...</p>
             <p id="islamisches-datum">Lädt...</p>
-          <div style="text-align:right;padding:1em 0;"> <h4><a style="text-decoration:none;" href="https://www.zeitverschiebung.net/de/city/104515"><span style="color:gray;">Aktuelle Uhrzeit / Ortszeit</span><br />Mecca, Saudi-Arabien</a></h4> <iframe src="https://www.zeitverschiebung.net/clock-widget-iframe-v2?language=de&size=small&timezone=Asia%2FRiyadh" width="50%" height="30" frameborder="0" seamless></iframe> <small style="color:gray;">&copy; <a href="https://www.zeitzonenrechner.net/" style="color: gray;">Zeitzonenrechner</a></small> </div>
+            <p id="mekka-uhrzeit">Mekka: 00:00</p>
         </section>
 
         <section id="gebetszeiten">
             <h2>Gebetszeiten</h2>
-            <p>Ihr Standort: <span id="stadt-name">Unbekannt</span></p>
+            <p>Ihr Standort: <span id="stadt-name">Unbekannt. Bitte manuell wählen.</span></p>
             <select id="stadt-auswahl"></select>
             <ul>
                 <li><strong>Fajr:</strong> <span id="fajr">00:00</span></li>
-                <li>Shuruk (Sonnenaufgang): <span id="shuruk">00:00</span></li>
+                <li><strong>Shuruk:</strong> <span id="shuruk">00:00</span></li>
                 <li><strong>Dhuhr:</strong> <span id="dhuhr">00:00</span></li>
                 <li><strong>Asr:</strong> <span id="asr">00:00</span></li>
                 <li><strong>Maghrib:</strong> <span id="maghrib">00:00</span></li>
@@ -50,9 +50,10 @@
 
         <section id="hadith-des-tages">
             <h2>Hadith des Tages</h2>
-            <p id="hadith-arabisch"></p>
-            <p id="hadith-deutsch"></p>
-            <p><strong>Quelle und Authentizität:</strong> <span id="hadith-Authentizität"></span></p>
+            <p id="hadith-arabisch">Lädt...</p>
+            <p id="hadith-deutsch">Lädt...</p>
+            <p><strong>Quelle:</strong> <span id="hadith-quelle">Lädt...</span></p>
+            <p><strong>Authentizität:</strong> <span id="hadith-auth">Lädt...</span></p>
         </section>
 
         <section id="dua-des-tages">
@@ -60,7 +61,7 @@
             <p id="dua-arabisch">Lädt...</p>
             <p id="dua-deutsch">Lädt...</p>
             <p><strong>Transliteration:</strong> <span id="dua-trans">Lädt...</span></p>
-            <p><strong>Quelle und Authentizität:</strong> <span id="dua-Authentizität">Lädt...</span></p>
+            <p><strong>Quelle:</strong> <span id="dua-quelle">Lädt...</span></p>
         </section>
     </main>
 
