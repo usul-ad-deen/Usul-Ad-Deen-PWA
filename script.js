@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("maghrib").textContent = data.data.timings.Maghrib;
             document.getElementById("isha").textContent = data.data.timings.Isha;
             
-            document.getElementById("mitternacht").textContent = (data.data.timings.Fajr - (data.data.timings.Fajr + data.data.timings.Maghrib)/2);
-            document.getElementById("letztes-drittel").textContent = (data.data.timings.Fajr - (data.data.timings.Fajr + data.data.timings.Maghrib)/3);
+            document.getElementById("mitternacht").textContent = berechneMitternacht(data.data.timings.Fajr - (data.data.timings.Fajr + data.data.timings.Maghrib)/2);
+            document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(data.data.timings.Fajr - (data.data.timings.Fajr + data.data.timings.Maghrib)/3);
         } 
         catch (error) {
             console.error("Fehler beim Laden der Gebetszeiten:", error);
