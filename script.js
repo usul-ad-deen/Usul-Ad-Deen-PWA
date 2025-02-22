@@ -3,142 +3,58 @@ document.addEventListener("DOMContentLoaded", () => {
         let jetzt = new Date();
         document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
-       let mekka = currentTime.toUTCString(+03);
-        document.getElementById("uhrzeitMekka").textContent = mekka.toLocaleDateString("de-DE");
- 
-
-    setInterval(updateUhrzeit, 1000);
-    updateUhrzeit();
- }
-    async function ladeIslamischesDatum() {
-        try {
-            let response = await fetch("https://api.aladhan.com/v1/gToH?date=" + new Date().toISOString().split('T')[0]);
-            let data = await response.json();
-            document.getElementById("islamisches-datum").textContent = data.data.hijri.weekday.de;
-        } catch (error) {
-            console.error("Fehler beim Laden des islamischen Datums:", error);
-        }
-    }
-
-    async function ladeMekkaUhrzeit() {
-            let mekkaZeit = new Date(data.utc_datetime);
-            mekkaZeit.setSeconds(mekkaZeit.getSeconds() + data.raw_offset);
-            document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
-        } catch (error) {
-            console.error("Fehler beim Laden der Mekka-Zeit:", error);
-        }
-    }
-
-    async function ladeGebetszeiten(stadt) {
-        try {
-            let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
-            let data = await response.json();
-
-            document.getElementById("fajr").textContent = data.data.timings.Fajr;
-            document.getElementById("shuruk").textContent = data.data.timings.Sunrise;
-            document.getElementById("dhuhr").textContent = data.data.timings.Dhuhr;
-            document.getElementById("asr").textContent = data.data.timings.Asr;
-            document.getElementById("maghrib").textContent = data.data.timings.Maghrib;
-            document.getElementById("isha").textContent = data.data.timings.Isha;
-          } 
-        catch (error) {
-            console.error("Fehler beim Laden der Gebetszeiten:", error);
-                }
-    }
-  
-
- 
-   async function ermittleStandort() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                let lat = position.coords.latitude;
-                let lon = position.coords.longitude;
-
-                try {
-                    let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-                    let data = await response.json();
-                    let stadt = data.address.city || data.address.town || data.address.village || "Unbekannt";
-                    document.getElementById("stadt-name").textContent = stadt;
-                    ladeGebetszeiten(stadt);
-                } catch (error) {
-                    console.error("Fehler bei der Standortermittlung:", error);
-                }
-            }, () => {
-                console.error("Standort konnte nicht ermittelt werden.");
-                document.getElementById("stadt-name").textContent = "Unbekannt";
-            });
-        }
-    }
-
-    document.getElementById("stadt-auswahl").addEventListener("change", function () {
-        let stadt = this.value;
-        document.getElementById("stadt-name").textContent = stadt;
-        ladeGebetszeiten(stadt);
-    });
-
-    async function ladeStadtAuswahl() {
-        try {
-            let response = await fetch("stadt.json");
-            let städte = await response.json();
-            let dropdown = document.getElementById("stadt-auswahl");
-
-            städte.forEach(stadt => {
-                let option = document.createElement("option");
-                option.value = stadt.name;
-                option.textContent = stadt.name;
-                dropdown.appendChild(option);
-            });
-        } 
-        catch (error) {
-            console.error("Fehler beim Laden der Städte:", error);
-        }
-    }
-    document.addEventListener("DOMContentLoaded", () => {
-    function updateUhrzeit() {
-        let jetzt = new Date();
-        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
-        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
     }
 
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
 
-    async function ladeIslamischesDatum() {
-        try {
-            let response = await fetch("https://api.aladhan.com/v1/gToH?date=" + new Date().toISOString().split('T')[0]);
-            let data = await response.json();
-            document.getElementById("islamisches-datum").textContent = data.data.hijri.weekday.de;
-        } catch (error) {
-            console.error("Fehler beim Laden des islamischen Datums:", error);
-        }
+    function berechneIslamischeMitternacht(fajr, maghrib) {
+        let [fH, fM] = fajr.split(":").map(Number);
+        let [mH, mM] = maghrib.split(":").map(Number);
+        let mitternachtStunde = Math.floor((fH + mH) / 2);
+        let mitternachtMinute = Math.floor((fM + mM) / 2);
+        return `${String(mitternachtStunde).padStart(2, "0")}:${String(mitternachtMinute).padStart(2, "0")}`;
     }
 
-    async function ladeMekkaUhrzeit() {
-        try {
-            let response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Riyadh");
-            let data = await response.json();
-            let mekkaZeit = new Date(data.utc_datetime);
-            mekkaZeit.setSeconds(mekkaZeit.getSeconds() + data.raw_offset);
-            document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
-        } catch (error) {
-            console.error("Fehler beim Laden der Mekka-Zeit:", error);
-        }
+    function berechneLetztesDrittel(fajr, maghrib) {
+        let [fH, fM] = fajr.split(":").map(Number);
+        let [mH, mM] = maghrib.split(":").map(Number);
+        let letztesDrittelStunde = Math.floor(fH - ((fH + mH) / 3));
+        let letztesDrittelMinute = fM;
+        return `${String(letztesDrittelStunde).padStart(2, "0")}:${String(letztesDrittelMinute).padStart(2, "0")}`;
     }
 
     async function ladeGebetszeiten(stadt) {
-        try {
-            let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
-            let data = await response.json();
+        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
+        let data = await response.json();
 
-            document.getElementById("fajr").textContent = data.data.timings.Fajr;
-            document.getElementById("shuruk").textContent = data.data.timings.Sunrise;
-            document.getElementById("dhuhr").textContent = data.data.timings.Dhuhr;
-            document.getElementById("asr").textContent = data.data.timings.Asr;
-            document.getElementById("maghrib").textContent = data.data.timings.Maghrib;
-            document.getElementById("isha").textContent = data.data.timings.Isha;
-        } catch (error) {
-            console.error("Fehler beim Laden der Gebetszeiten:", error);
-        }
+        let fajr = data.data.timings.Fajr;
+        let maghrib = data.data.timings.Maghrib;
+
+        document.getElementById("fajr").textContent = fajr;
+        document.getElementById("shuruk").textContent = data.data.timings.Sunrise;
+        document.getElementById("dhuhr").textContent = data.data.timings.Dhuhr;
+        document.getElementById("asr").textContent = data.data.timings.Asr;
+        document.getElementById("maghrib").textContent = maghrib;
+        document.getElementById("isha").textContent = data.data.timings.Isha;
+        document.getElementById("mitternacht").textContent = berechneIslamischeMitternacht(fajr, maghrib);
+        document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(fajr, maghrib);
+    }
+
+    function ladeIslamischesDatum() {
+        let wochentage = ["Ahad", "Ithnayn", "Thulatha", "Arbi'a", "Khamis", "Jumu'a", "Sabt"];
+        let deutscheÜbersetzung = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+        let heute = new Date();
+        let wochentag = wochentage[heute.getDay()];
+        let übersetzung = deutscheÜbersetzung[heute.getDay()];
+        document.getElementById("islamisches-datum").textContent = `Islamischer Tag: ${übersetzung} (${wochentag})`;
+    }
+
+    function ladeMekkaUhrzeit() {
+        let jetztUTC = new Date();
+        let mekkaOffset = 3 * 60 * 60 * 1000;
+        let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
+        document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
     }
 
     async function ladeHadith() {
@@ -161,20 +77,58 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
     }
 
-    ladeIslamischesDatum();
-    ladeMekkaUhrzeit();
-    ladeHadith();
-    ladeDua();
-});
+    async function ladeStadtAuswahl() {
+        try {
+            let response = await fetch("stadt.json");
+            let städte = await response.json();
+            let dropdown = document.getElementById("stadt-auswahl");
 
+            städte.forEach(stadt => {
+                let option = document.createElement("option");
+                option.value = stadt.name;
+                option.textContent = stadt.name;
+                dropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Fehler beim Laden der Städte:", error);
+        }
+    }
+
+    async function ermittleStandort() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
+
+                try {
+                    let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                    let data = await response.json();
+                    let stadt = data.address.city || data.address.town || data.address.village || "Unbekannt";
+                    document.getElementById("stadt-name").textContent = stadt;
+                    ladeGebetszeiten(stadt);
+                } catch (error) {
+                    console.error("Fehler bei der Standortermittlung:", error);
+                }
+            }, () => {
+                console.error("Standort konnte nicht ermittelt werden.");
+                document.getElementById("stadt-name").textContent = "Unbekannt. Bitte manuell wählen.";
+            });
+        }
+    }
+
+    document.getElementById("stadt-auswahl").addEventListener("change", function () {
+        let stadt = this.value;
+        document.getElementById("stadt-name").textContent = stadt;
+        ladeGebetszeiten(stadt);
+    });
 
     ladeStadtAuswahl();
     ermittleStandort();
-    ladeIslamischesDatum();
-    ladeGebetszeiten(Stadt); 
-    ladeMekkaUhrzeit();
     ladeHadith();
     ladeDua();
+    ladeIslamischesDatum();
+    ladeMekkaUhrzeit();
 });
+
 
 
