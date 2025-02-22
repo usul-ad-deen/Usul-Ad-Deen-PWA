@@ -57,10 +57,10 @@ document.getElementById("mecca-time").innerText = "Uhrzeit Mekka: " + new Date()
     function berechneLetztesDrittel(fajr) {
          let [mH, mM] = maghrib.split(":").map(Number);
         let [fH, fM] = fajr.split(":").map(Number);
-        let [DH] = (mH + fH) / 3
-        let [DM] = (mM + fM) / 3
+        let [dH] = (mH + fH) / 3
+        let [dM] = (mM + fM) / 3
         let letztesDrittel = new Date();
-        letztesDrittel.setHours(fH - nH, fM - nM)
+        letztesDrittel.setHours(fH - dH, fM - dM)
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
     }
 
