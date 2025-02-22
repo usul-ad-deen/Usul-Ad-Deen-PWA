@@ -5,68 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
+    <script defer src="script.js"></script>
 </head>
 <body>
-
     <header>
-        <h1>Usul ad-Deen <img src="icons/icon-192x192.png" alt="Logo" class="logo"></h1>
+        <h1>Usul ad-Deen</h1>
+        <img src="icons/icon-192x192.png" alt="Logo" class="logo">
         <nav>
             <ul>
-                <li><a href="#">Start</a></li>
-                <li><a href="#">Beiträge</a></li>
-                <li><a href="#">Bücher</a></li>
-                <li><a href="#">Hadithsammlungen</a></li>
-                <li><a href="#">Mehr</a></li>
+                <li><a href="index.html">Start</a></li>
+                <li><a href="hadith.html">Hadithsammlungen</a></li>
+                <li><a href="dua.html">Bittgebete</a></li>
+                <li><a href="beiträge.html">Beiträge</a></li>
+                <li><a href="bücher.html">Bücher</a></li>
+                <li><a href="mehr.html">Mehr</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section id="uhrzeit-abschnitt">
+        <section id="zeit-section">
             <h2>Aktuelle Uhrzeit</h2>
-            <p><b>Berlin:</b> <span id="uhrzeit-berlin">00:00</span></p>
-            <p><b>Mekka:</b> <span id="uhrzeit-mekka">00:00</span></p>
-            <p><b>Gregorianisches Datum:</b> <span id="gregorianisches-datum">--</span></p>
-            <p><b>Islamisches Datum:</b> <span id="islamisches-datum">--</span></p>
+            <p id="uhrzeit">00:00:00</p>
+            <p id="datum">Lädt...</p>
+            <p id="islamisches-datum">Lädt...</p>
+            <p id="mekka-uhrzeit">Mekka: 00:00</p>
         </section>
 
-        <section id="standort">
+        <section id="gebetszeiten">
             <h2>Gebetszeiten</h2>
-            <p><b>Ihr Standort:</b> <span id="stadtname">Unbekannt</span></p>
-            <table id="gebetszeiten">
-                <tr><td><b>Fajr:</b></td><td id="fajr">00:00</td></tr>
-                <tr><td>Shuruk:</td><td id="shuruk">00:00</td></tr>
-                <tr><td><b>Dhuhr:</b></td><td id="dhuhr">00:00</td></tr>
-                <tr><td><b>Asr:</b></td><td id="asr">00:00</td></tr>
-                <tr><td><b>Maghrib:</b></td><td id="maghrib">00:00</td></tr>
-                <tr><td><b>Isha:</b></td><td id="isha">00:00</td></tr>
-                <tr><td>Islamische Mitternacht:</td><td id="islamische-mitternacht">00:00</td></tr>
-                <tr><td>Letztes Drittel der Nacht:</td><td id="letztes-drittel">00:00</td></tr>
-            </table>
+            <p>Ihr Standort: <span id="stadt-name">Unbekannt</span></p>
+            <select id="stadt-auswahl"></select>
+            <ul>
+                <li><strong>Fajr:</strong> <span id="fajr">00:00</span></li>
+                <li><strong>Shuruk:</strong> <span id="shuruk">00:00</span></li>
+                <li><strong>Dhuhr:</strong> <span id="dhuhr">00:00</span></li>
+                <li><strong>Asr:</strong> <span id="asr">00:00</span></li>
+                <li><strong>Maghrib:</strong> <span id="maghrib">00:00</span></li>
+                <li><strong>Isha:</strong> <span id="isha">00:00</span></li>
+                <li>Islamische Mitternacht: <span id="mitternacht">00:00</span></li>
+                <li>Letztes Drittel der Nacht: <span id="letztes-drittel">00:00</span></li>
+            </ul>
         </section>
 
         <section id="hadith-des-tages">
             <h2>Hadith des Tages</h2>
-            <p id="hadith-arabisch"></p>
-            <p id="hadith-deutsch"></p>
-            <p id="hadith-authentizität"></p>
+            <p id="hadith-arabisch">Lädt...</p>
+            <p id="hadith-deutsch">Lädt...</p>
+            <p><strong>Quelle:</strong> <span id="hadith-quelle">Lädt...</span></p>
+            <p><strong>Authentizität:</strong> <span id="hadith-auth">Lädt...</span></p>
         </section>
 
-        <section id="dua">
+        <section id="dua-des-tages">
             <h2>Bittgebet des Tages</h2>
-            <p id="dua-arabisch"></p>
-            <p id="dua-deutsch"></p>
-            <p id="dua-transliteration"></p>
-            <p id="dua-quellenangabe"></p>
-            <p id="dua-authentizität"></p>
+            <p id="dua-arabisch">Lädt...</p>
+            <p id="dua-deutsch">Lädt...</p>
+            <p><strong>Transliteration:</strong> <span id="dua-trans">Lädt...</span></p>
+            <p><strong>Quelle:</strong> <span id="dua-quelle">Lädt...</span></p>
         </section>
     </main>
 
     <footer>
         <p>&copy; 2025 Usul ad-Deen</p>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
