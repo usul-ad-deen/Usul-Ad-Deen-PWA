@@ -44,21 +44,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     
-   function ladeIslamischesDatum() {
+   function ladeIslamischerTag() {
         let Monate = ["Ahad", "Ithnayn", "Thulatha", "Arbi'a", "Khamis", "Jumu'a", "Sabt"];
         let deutscheÜbersetzung = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
         let heute = new Date();
         let wochentag = wochentage[heute.getDay()];
         let übersetzung = deutscheÜbersetzung[heute.getDay()];
         document.getElementById("islamischer-tag").textContent = `Islamischer Tag: ${übersetzung} (${wochentag})`;
+    }
 
-    } 
+      function ladeIslamischesDatum() {
+        let islamischeMonate = [
+            "Muharram", "Safar", "Rabi' al-Awwal", "Rabi' al-Thani",
+            "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha'ban",
+            "Ramadan", "Shawwal", "Dhul-Qi'dah", "Dhul-Hijjah"
+        ];
+        let deutscheÜbersetzung = [
+            "Muharram", "Safar", "Erster Rabi'", "Zweiter Rabi'",
+            "Erster Jumada", "Zweiter Jumada", "Rajab", "Sha'ban",
+            "Ramadan", "Shawwal", "Dhul-Qi'dah", "Dhul-Hijjah"
+        ];
+
+        let heute = new Date();
+        let islamischerTag = heute.getUTCDate();
+        let islamischerMonat = islamischeMonate[(heute.getUTCMonth() + 9) % 12];
+        let übersetzung = deutscheÜbersetzung[(heute.getUTCMonth() + 9) % 12];
+
+        document.getElementById("islamisches-datum").textContent = `Islamischer Tag: ${islamischerTag}. ${übersetzung}`;
+    }
+
     function ladeMekkaUhrzeit() {
         let jetztUTC = new Date();
-        let mekkaOffset = 2 * 60 * 60 * 1000;
+        let mekkaOffset = 3 * 60 * 60 * 1000;
         let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
         document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
     }
+
  setInterval(MekkaUhrzeit, 1000);
     MekkaUhrzeitt();
     
@@ -135,5 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ladeMekkaUhrzeit();
 });
 
+
+ 
+ 
 
 
