@@ -1,9 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
+ocument.addEventListener("DOMContentLoaded", function () {
     updateUhrzeit();
     setInterval(updateUhrzeit, 1000);
-    ladeHadithDesTages();
-    ladeDuaDesTages();
-    ladeStadtAuswahl();
+    ladeHadith);
+    ladeDua();
+    ladeManuelleStadtauswahl);
     ermittleStandort();
     ladeGebetszeiten();
 });
@@ -18,7 +18,7 @@ function updateUhrzeit() {
 }
 
 
-async function ladeStadtAuswahl() {
+async function ladeManuelleStadtauswahl() {
     const response = await fetch("stadt.json");
     const staedte = await response.json();
     let select = document.getElementById("stadt-auswahl");
@@ -35,25 +35,6 @@ async function ladeStadtAuswahl() {
     });
 }
 
-function ermittleStandort() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`)
-                .then(response => response.json())
-                .then(data => {
-                    let stadt = data.address.city || data.address.town || data.address.village || "Unbekannt";
-                    document.getElementById("standort").textContent = `Ihr Standort: ${stadt}`;
-                })
-                .catch(() => {
-                    document.getElementById("standort").textContent = "Standort konnte nicht ermittelt werden.";
-                });
-        }, () => {
-            document.getElementById("standort").textContent = "Standortermittlung deaktiviert.";
-        });
-    } else {
-        document.getElementById("standort").textContent = "Standortermittlung nicht unterstützt.";
-    }
-}
 
 
 function ermitteleStandort() {
@@ -83,15 +64,7 @@ function ermitteleStandort() {
     }
 }
 
-function zeigeManuelleStadtauswahl() {
-    document.getElementById("standort").textContent = "Standort konnte nicht ermittelt werden. Bitte Stadt manuell wählen:";
-    document.getElementById("stadt-auswahl").style.display = "block";
-}
-
-document.getElementById("stadt-wählen").addEventListener("change", function () {
-    const stadt = this.value;
-    document.getElementById("standort").textContent = `Ihr Standort: ${stadt}`;
-    ladeGebetszeiten(stadt);
+);
 
  async function ladeGebetszeiten(position) {
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${position}&country=DE&method=3`);
