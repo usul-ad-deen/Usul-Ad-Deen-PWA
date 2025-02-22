@@ -5,6 +5,15 @@
     { "name": "Köln" },
     { "name": "Frankfurt" },
     { "name": "Stuttgart" },
-    { "name": "Düsseldorf" }
-
+    { "name": "Düsseldorf" },
+    { "name": "Dortmund" },
+    { "name": "Essen" },
+    { "name": "Leipzig" },
+    { "name": "Bremen" },
+    { "name": "Dresden" },
+    { "name": "Hannover" },
+    { "name": "Nürnberg" },
+    { "name": "Bochum" },
+    { "name": "Gelsenkirchen" },
+    { "name": "Mannheim" }
 ]
