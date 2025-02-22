@@ -32,6 +32,12 @@ main {
     margin: 20px;
 }
 
+#gebetszeiten ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
 footer {
     background-color: #004e00;
     color: white;
