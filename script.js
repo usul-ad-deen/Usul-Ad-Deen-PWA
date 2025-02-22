@@ -45,34 +45,27 @@ document.addEventListener("DOMContentLoaded", () => {
         let letztesDrittel = new Date();
         letztesDrittel.setHours(fH - dH, fM - dM)
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
-    
-    async function ladeHadith() {
-        try {
-            let response = await fetch("hadith.json");
-            let data = await response.json();
-            let zufallsHadith = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("hadith-arabisch").textContent = zufallsHadith.arabisch;
-            document.getElementById("hadith-deutsch").textContent = zufallsHadith.deutsch;
-            document.getElementById("hadith-quelle").textContent = zufallsHadith.quelle;
-            document.getElementById("hadith-auth").textContent = zufallsHadith.authentizität;
-        } catch (error) {
-            console.error("Fehler beim Laden des Hadiths:", error);
-        }
     }
 
-    async function ladeDua() {
-        try {
-            let response = await fetch("dua.json");
-            let data = await response.json();
-            let zufallsDua = data[Math.floor(Math.random() * data.length)];
-            document.getElementById("dua-arabisch").textContent = zufallsDua.arabisch;
-            document.getElementById("dua-deutsch").textContent = zufallsDua.deutsch;
-            document.getElementById("dua-trans").textContent = zufallsDua.transliteration;
-            document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
-        } catch (error) {
-            console.error("Fehler beim Laden der Dua:", error);
-        }
-    }
+    fetch("hadith.json")
+        .then(response => response.json())
+        .then(data => {
+            const zufaelligerHadith = data[Math.floor(Math.random() * data.length)];
+            document.getElementById("hadith-arabisch").textContent = zufaelligerHadith.arabisch;
+            document.getElementById("hadith-deutsch").textContent = zufaelligerHadith.deutsch;
+            document.getElementById("hadith-authentizität").textContent = "Authentizität: " + zufaelligerHadith.authentizität;
+        });
+
+    fetch("dua.json")
+        .then(response => response.json())
+        .then(data => {
+            const zufaelligeDua = data[Math.floor(Math.random() * data.length)];
+            document.getElementById("dua-arabisch").textContent = zufaelligeDua.arabisch;
+            document.getElementById("dua-deutsch").textContent = zufaelligeDua.deutsch;
+            document.getElementById("dua-transliteration").textContent = zufaelligeDua.transliteration;
+            document.getElementById("dua-authentizität").textContent = "Authentizität: " + zufaelligeDua.authentizität;
+        });
+    
 
     async function ladeIslamischesDatum() {
         try {
