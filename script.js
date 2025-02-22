@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("maghrib").textContent = data.data.timings.Maghrib;
         document.getElementById("isha").textContent = data.data.timings.Isha;
 
-        let mitternacht = berechneMitternacht(data.data.timings.Maghrib, data.data.timings.Fajr);
+            let mitternacht = berechneMitternacht(data.data.timings.Maghrib, data.data.timings.Fajr);
         document.getElementById("mitternacht").textContent = mitternacht;
 
         let letztesDrittel = berechneLetztesDrittel(data.data.timings.Fajr);
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let [fH, fM] = fajr.split(":").map(Number);
         let letztesDrittel = new Date();
         letztesDrittel.setHours(fH - 2, fM);
-        return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+        return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
     async function ladeHadith() {
