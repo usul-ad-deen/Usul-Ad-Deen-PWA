@@ -41,20 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("asr").textContent = data.data.timings.Asr;
             document.getElementById("maghrib").textContent = data.data.timings.Maghrib;
             document.getElementById("isha").textContent = data.data.timings.Isha;
-            
-            document.getElementById("mitternacht").textContent = berechneMitternacht(data.data.timings.Fajr, data.data.timings.Maghrib);
-            document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(data.data.timings.Fajr - (data.data.timings.Fajr + data.data.timings.Maghrib)/3);
-        } 
+          } 
         catch (error) {
             console.error("Fehler beim Laden der Gebetszeiten:", error);
                 }
     }
   
-    function berechneMitternacht() {
-        let (f) = data.data.timings.Fajr;
-        let (m) = data.data.timings.Maghrib; 
-        document.getElementById("mitternacht").textContent = (f - ((f + m) /2))
-        }
+   
 
     
     async function ladeHadith() {
