@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let [fH, fM] = fajr.split(":").map(Number);
         let mitternacht = new Date();
         mitternacht.setHours((mH + fH) / 2, (mM + fM) / 2);
-        return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+        return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
     function berechneLetztesDrittel(fajr) {
