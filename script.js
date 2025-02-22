@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let [mH, mM] = maghrib.split(":").map(Number);
         let [fH, fM] = fajr.split(":").map(Number);
         let mitternacht = new Date();
-        mitternacht.setHours((mH + fH) / 2, (mM + fM) / 2);
+        mitternacht.setHours((fH,fM)-((mH + fH) / 3, (mM + fM) / 3));
         return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
