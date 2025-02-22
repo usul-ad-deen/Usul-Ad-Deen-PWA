@@ -30,74 +30,26 @@
             <p id="datum">Lädt...</p>
             <p id="islamisches-datum">Lädt...</p>
             <p id="mekka-uhrzeit">Mekka: 00:00</p>
-              </section>
-            <p id="uhrzeitMekka">Mekka: </p>
-<script>
-function addZero(i) {
-  if (i < 10) {i = "0" + i}
-  return i;
-}
-const d = new Date();
-let h = addZero(d.getHours());
-let m = addZero(d.getMinutes());
-let s = addZero(d.getSeconds());
-let time = h + ":" + m + ":" + s;
-document.getElementById("uhrzeitMekka").innerHTML = time;
-</script>
-        
+        </section>
 
         <section id="gebetszeiten">
             <h2>Gebetszeiten</h2>
             <p>Ihr Standort: <span id="stadt-name">Unbekannt. Bitte manuell wählen.</span></p>
             <select id="stadt-auswahl"></select>
-           
-            <ul><div style="margin:auto; border:1px solid #c0c0c0" id="prayer-container">
-                <table>
-        <tbody>
-             
-                   <tr>
-                       <td><strong>Fajr:</strong> </td>
-                             <td><span id="fajr">00:00</span></td>
-            </tr>
-                  
-            <tr>
-                       <td>Shuruk (Sonnenaufgang): </td>
-                             <td><span id="shuruk">00:00</span></td>
-              
-                   <tr>
-                      <td><strong>Dhuhr:</strong>   </td>
-                              <td><span id="dhuhr">00:00</span></td>
-             </tr>
-                
-                    <tr>
-                     <td><strong>Asr:</strong> </td>
-                           <td><span id="asr">00:00</span></td>
-               </tr>
-                  
-                    <tr>
-                       <td><strong>Maghrib:</strong>   </td>
-                       <td><span id="maghrib">00:00</span></td>
+            <table>
+                <tr>
+                    <th>Gebet</th>
+                    <th>Uhrzeit</th>
                 </tr>
-                  
-                    <tr>
-                        <td><strong>Isha:</strong> </td>
-                              <td><span id="isha">00:00</span></td>
-             </tr>
-                 
-                    <tr>
-                       <td>Islamische Mitternacht: </td>
-                             <td><span id="mitternacht">00:00</span></td>
-               </tr>
-                  
-                    <tr>
-                      <td>Letztes Drittel der Nacht: </td>
-                            <td><span id="letztes-drittel">00:00</span></td>
-                    </tr>
-       
-                </tbody>
-               </table>
-</div></ul>
-        
+                <tr><td>Fajr</td><td id="fajr">00:00</td></tr>
+                <tr><td>Shuruk</td><td id="shuruk">00:00</td></tr>
+                <tr><td>Dhuhr</td><td id="dhuhr">00:00</td></tr>
+                <tr><td>Asr</td><td id="asr">00:00</td></tr>
+                <tr><td>Maghrib</td><td id="maghrib">00:00</td></tr>
+                <tr><td>Isha</td><td id="isha">00:00</td></tr>
+                <tr><td>Islamische Mitternacht</td><td id="mitternacht">00:00</td></tr>
+                <tr><td>Letztes Drittel</td><td id="letztes-drittel">00:00</td></tr>
+            </table>
         </section>
 
         <section id="hadith-des-tages">
@@ -115,8 +67,6 @@ document.getElementById("uhrzeitMekka").innerHTML = time;
             <p><strong>Transliteration:</strong> <span id="dua-trans">Lädt...</span></p>
             <p><strong>Quelle:</strong> <span id="dua-quelle">Lädt...</span></p>
         </section>
-
-    
     </main>
 
     <footer>
