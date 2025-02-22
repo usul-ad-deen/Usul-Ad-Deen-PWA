@@ -4,6 +4,27 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE");
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
     }
+    function aktualisiereUhrzeiten() {
+        const jetzt = new Date();
+        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE");
+
+        const mekkazeit = new Date(jetzt.getTime() + 2 * 3600000);
+        document.getElementById("uhrzeit-mekka").textContent = mekkazeit.toLocaleTimeString("de-DE");
+
+        document.getElementById("gregorianisches-datum").textContent = jetzt.toLocaleDateString("de-DE");
+        document.getElementById("islamisches-datum").textContent = "Islamisches Datum laden...";
+        ladeIslamischesDatum();
+    }
+
+    function ladeIslamischesDatum() {
+        fetch("https://api.aladhan.com/v1/gToH?date=" + new Date().toISOString().split("T")[0])
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 200) {
+                    document.getElementById("islamisches-datum").textContent = data.data.hijri.date;
+                }
+            });
+    }
 
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
@@ -61,6 +82,27 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
     }
 
+    function bestimmeStandort() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById("stadtname").textContent = data.address.city || "Unbekannte Stadt";
+                            ladeGebetszeiten(lat, lon);
+                        });
+                },
+                () => {
+                    document.getElementById("stadtname").textContent = "Bitte Stadt manuell wählen";
+                    setzeStandardwerte();
+                }
+            );
+        } else {
+            setzeStandardwerte();
+        }
     ladeGebetszeiten("Berlin");
     ladeHadith();
     ladeDua();
