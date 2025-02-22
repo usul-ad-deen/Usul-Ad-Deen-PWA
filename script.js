@@ -20,21 +20,24 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("maghrib").textContent = data.data.timings.Maghrib;
             document.getElementById("isha").textContent = data.data.timings.Isha;
 
-            document.getElementById("mitternacht").textContent = berechneMitternacht(data.data.timings.Fajr,data.data.timings.Maghrib);
-            document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(data.data.timings.Fajr,data.data.timings.Maghrib);
+            document.getElementById("mitternacht").textContent = berechneMitternacht(data.data.timings.Fajr, data.data.timings.Maghrib);
+            document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(data.data.timings.Fajr, data.data.timings.Maghrib);
         } catch (error) {
             console.error("Fehler beim Laden der Gebetszeiten:", error);
         }
     }
 
     function berechneMitternacht(maghrib, fajr) {
-        let [m] = maghrib.map(Number);
-        let [f] = fajr.map(Number);
-        let [n] = (m + f) 
-        let [d] = n / 2
-        let [l] = f - d 
+        let [mH, mM] = maghrib.split(":").map(Number);
+        let [fH, fH] = fajr.split(":").map(Number);
+        let [nH] = (mH + fH) 
+        let [nM] = (mM + fM) 
+        let [dH] = nH / 2
+        let [dM] = nM / 2
+        let [lH] = fH - dH
+        let [lM] = fM - dM
         let letztesDrittel = new Date();
-        letztesDrittel.setHours(l)
+        letztesDrittel.setHours(lH, lM)
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
     }
 
