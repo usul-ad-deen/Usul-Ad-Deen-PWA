@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let jetzt = new Date();
         document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
-      
+       document.getElementyById("uhrzeitMekka").textContent = jetzt.toLocaleTimeSpring ("de-DE", { hour12: false });
+        const options = { timeZone: "UTC+3", timeZoneName: "short" };
 
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
@@ -19,9 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function ladeMekkaUhrzeit() {
-        try {
-            let response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Riyadh");
-            let data = await response.json();
             let mekkaZeit = new Date(data.utc_datetime);
             mekkaZeit.setSeconds(mekkaZeit.getSeconds() + data.raw_offset);
             document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
