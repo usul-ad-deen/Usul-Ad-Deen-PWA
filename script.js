@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let [fH, fM] = fajr.split(":").map(Number);
         let [mH, mM] = maghrib.split(":").map(Number);
         let letztesDrittelStunde = Math.floor(fH - ((fH + mH) / 3));
-        let letztesDrittelMinute = fM;
+        let letztesDrittelMinute = Math.floor(fM - ((fM + mM) / 3))
         return `${String(letztesDrittelStunde).padStart(2, "0")}:${String(letztesDrittelMinute).padStart(2, "0")}`;
     }
 
@@ -41,22 +41,25 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(fajr, maghrib);
     }
 
-    function ladeIslamischesDatum() {
-        let wochentage = ["Ahad", "Ithnayn", "Thulatha", "Arbi'a", "Khamis", "Jumu'a", "Sabt"];
+    
+   function ladeIslamischesDatum() {
+        let Monate = ["Ahad", "Ithnayn", "Thulatha", "Arbi'a", "Khamis", "Jumu'a", "Sabt"];
         let deutscheÜbersetzung = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
         let heute = new Date();
         let wochentag = wochentage[heute.getDay()];
         let übersetzung = deutscheÜbersetzung[heute.getDay()];
-        document.getElementById("islamisches-datum").textContent = `Islamischer Tag: ${übersetzung} (${wochentag})`;
-    }
+        document.getElementById("islamischer-tag").textContent = `Islamischer Tag: ${übersetzung} (${wochentag})`;
 
+    } 
     function ladeMekkaUhrzeit() {
         let jetztUTC = new Date();
-        let mekkaOffset = 3 * 60 * 60 * 1000;
+        let mekkaOffset = 2 * 60 * 60 * 1000;
         let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
         document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
     }
-
+ setInterval(MekkaUhrzeit, 1000);
+    MekkaUhrzeitt();
+    
     async function ladeHadith() {
         let response = await fetch("hadith.json");
         let data = await response.json();
