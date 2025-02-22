@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function berechneMitternacht(maghrib, fajr) {
-        let [mH, mM] = maghrib.split(":").map(Number);
-        let [fH, fM] = fajr.split(":").map(Number);
+        let [mH, mM] = maghrib;
+        let [fH, fM] = fajr;
         let [nH] = (mH + fH) / 2
         let [nM] = (mM + fM) / 2
         let mitternacht = new Date();
