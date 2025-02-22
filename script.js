@@ -15,32 +15,62 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function berechneNachtzeiten(fajr, isha) {
-        const fajrZeit = new Date(`1970-01-01T${fajr}:00`);
-        const ishaZeit = new Date(`1970-01-01T${isha}:00`);
-
-        const nachtLaenge = (fajrZeit - ishaZeit) / 1000 / 60; 
-        const mitternachtZeit = new Date(ishaZeit.getTime() + (nachtLaenge / 2) * 60000);
-        const letztesDrittelZeit = new Date(fajrZeit.getTime() - (nachtLaenge / 3) * 60000);
-
-        document.getElementById("islamische-mitternacht").textContent = mitternachtZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-        document.getElementById("letztes-drittel").textContent = letztesDrittelZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+   document.addEventListener("DOMContentLoaded", () => {
+    function updateUhrzeit() {
+        let jetzt = new Date();
+        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE");
+        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
+document.getElementById("mecca-time").innerText = "Uhrzeit Mekka: " + new Date().toLocaleTimeString("ar-SA", {timeZone: "Asia/Riyadh"});
     }
 
-    function aktualisiereUhrzeiten() {
-        const jetzt = new Date();
-        document.getElementById("uhrzeit-berlin").textContent = jetzt.toLocaleTimeString("de-DE");
-        
-        const mekkazeit = new Date(jetzt.getTime() + 2 * 3600000);
-        document.getElementById("uhrzeit-mekka").textContent = mekkazeit.toLocaleTimeString("de-DE");
+    setInterval(updateUhrzeit, 1000);
+    updateUhrzeit();
 
-        document.getElementById("gregorianisches-datum").textContent = jetzt.toLocaleDateString("de-DE");
-        
-        const islamischesDatum = new Intl.DateTimeFormat("ar-SA", { dateStyle: "full" }).format(jetzt);
-        document.getElementById("islamisches-datum").textContent = islamischesDatum;
+    async function ladeGebetszeiten(position) {
+        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${position}&country=DE&method=3`);
+        let data = await response.json();
+
+        document.getElementById("fajr").textContent = data.data.timings.Fajr;
+        document.getElementById("shuruk").textContent = data.data.timings.Sunrise;
+        document.getElementById("dhuhr").textContent = data.data.timings.Dhuhr;
+        document.getElementById("asr").textContent = data.data.timings.Asr;
+        document.getElementById("maghrib").textContent = data.data.timings.Maghrib;
+        document.getElementById("isha").textContent = data.data.timings.Isha;
+
+        let mitternacht = berechneMitternacht(data.data.timings.Maghrib, data.data.timings.Fajr);
+        document.getElementById("mitternacht").textContent = mitternacht;
+
+        let letztesDrittel = berechneLetztesDrittel(data.data.timings.Fajr);
+        document.getElementById("letztes-drittel").textContent = letztesDrittel;
     }
-    aktualisiereUhrzeiten();
-    setInterval(aktualisiereUhrzeiten, 60000);
+
+    function berechneMitternacht(maghrib, fajr) {
+        let [mH, mM] = maghrib.split(":").map(Number);
+        let [fH, fM] = fajr.split(":").map(Number);
+        let [nH] = (mH + fH) / 2
+        let [nM] = (mM + fM) / 2
+    
+        let mitternacht = new Date();
+        mitternacht.setHours(fH - nH, fM - nM)
+        return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
+    }
+
+    function berechneLetztesDrittel(fajr) {
+        let [fH, fM] = fajr.split(":").map(Number);
+        let letztesDrittel = new Date();
+        letztesDrittel.setHours(fH - 2, fM);
+        return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
+    }
+
+
+
+    ladeGebetszeiten("Berlin");
+    ladeHadith();
+    ladeDua();
+});
+
+
+
 
     fetch("hadith.json")
         .then(response => response.json())
