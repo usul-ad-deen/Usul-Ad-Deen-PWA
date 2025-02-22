@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function berechneMitternacht(maghrib, fajr) {
-        let [n] = (data.data.timings.Fajr + data.data.timings.Maghrib) / 2
+        let [n] = ("fajr" + "magrib") /2
         let mitternacht = new Date();
-        mitternacht.setHours(data.data.timings.Fajr - n)
+        mitternacht.setHours("fajr" - n)
         return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false});
     }
 
