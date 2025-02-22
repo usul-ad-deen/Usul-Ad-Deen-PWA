@@ -2,11 +2,13 @@
     {
         "arabisch": "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ",
         "deutsch": "Die Taten werden nur nach den Absichten beurteilt.",
-        "authentizität": "Bukhari, Muslim, Sahih"
+        "quelle": "Bukhari, Muslim",
+        "authentizität": "Sahih"
     },
     {
         "arabisch": "خَيْرُ النَّاسِ أَنْفَعُهُمْ لِلنَّاسِ",
         "deutsch": "Der Beste unter euch ist derjenige, der den Menschen am nützlichsten ist.",
-        "authentizität": "Daraqutni, Hasan"
+        "quelle": "Daraqutni",
+        "authentizität": "Hasan"
     }
 ]
