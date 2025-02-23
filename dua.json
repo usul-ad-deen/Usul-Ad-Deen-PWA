@@ -3,15 +3,18 @@
         "arabisch": "اللهم إني أسألك العافية",
         "deutsch": "O Allah, ich bitte Dich um Gesundheit.",
         "transliteration": "Allahumma inni as’aluka al-‘afiyah.",
-        "quelle": "Sahih al-Bukhari"
-        "authentizität": "Sahih"
+        "quelle": "Sahih al-Bukhari, Sahih"
     },
     {
         "arabisch": "رَبِّ زِدْنِي عِلْمًا",
         "deutsch": "Mein Herr, mehre mein Wissen.",
         "transliteration": "Rabbi zidni ilma.",
-        "quelle": "Quran 20:114",
-        "authentizität": "Quran"
+        "quelle": "Quran 20:114"
+    },
+    {
+        "arabisch": "اللهم اغفر لي ولوالدي",
+        "deutsch": "O Allah, vergib mir und meinen Eltern.",
+        "transliteration": "Allahumma ighfir li wa liwalidayya.",
+        "quelle": "Sunan Ibn Majah, Sahih"
     }
-
 ]
