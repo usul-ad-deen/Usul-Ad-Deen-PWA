@@ -20,15 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
             let islamischerMonat = data.data.hijri.month.en;
             let islamischesJahr = data.data.hijri.year;
 
-            let monateDeutsch = {
-                "Muharram": "Muharram", "Safar": "Safar", "Rabi' al-Awwal": "Erster Rabi'",
-                "Rabi' al-Thani": "Zweiter Rabi'", "Jumada al-Awwal": "Erster Jumada",
-                "Jumada al-Thani": "Zweiter Jumada", "Rajab": "Rajab", "Sha'ban": "Sha'ban",
-                "Ramadan": "Ramadan", "Shawwal": "Schawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
-                "Dhul-Hijjah": "Dhul-Hiddscha"
             };
 
-            let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
             document.getElementById("islamisches-datum").textContent = 
                 `Islamischer Tag: ${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
         } catch (error) {
@@ -43,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
     }
     setInterval(mekkaUhrzeit, 1000);
-    mekkaUhrzeit();
+    
 
     function berechneMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
