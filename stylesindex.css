@@ -4,15 +4,17 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    background: url('icons/hintergrund.png') no-repeat center center;
+    background-size: cover;
+     opacity: 0.2;
 }
 
 
 header {
-    background: url('icons/hintergrund.png') no-repeat center center;
-    background-size: cover;
+   
     text-align: center;
     padding: 100px 0;
-    opacity: 0.2;
+   
 }
 
 #gebetszeiten-und-feiertage {
