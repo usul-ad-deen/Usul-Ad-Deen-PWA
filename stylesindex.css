@@ -24,7 +24,7 @@ header {
 }
 
 /* Weiße Texte NUR in Kopfzeile, Menü & Zeit-Sektion */
-header h1, header nav ul li a, #zeit-section h2, #zeit-section p {
+header h1, header h2, header nav ul li a, #zeit-section h2, #zeit-section p {
     color: white;
 }
 
