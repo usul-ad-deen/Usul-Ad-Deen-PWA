@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateUhrzeit() {
         let jetzt = new Date();
         document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
+        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
 
         let jetztUTC = new Date();
         let mekkaOffset = 2 * 60 * 60 * 1000;
@@ -142,7 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function ladeDua() {
-        try {
             let response = await fetch("dua.json");
             let data = await response.json();
             let zufallsDua = data[Math.floor(Math.random() * data.length)];
@@ -150,10 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("dua-deutsch").textContent = zufallsDua.deutsch;
             document.getElementById("dua-trans").textContent = zufallsDua.transliteration;
             document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
-        } catch (error) {
-            console.error("Fehler beim Laden der Dua:", error);
         }
-    }
 
   
     ladeGebetszeiten("Berlin");
