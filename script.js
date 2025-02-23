@@ -41,46 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 }
 
-function berechneMitternacht(fajr, maghrib) {
-    let [fH, fM] = fajr.split(":").map(Number);
-    let [mH, mM] = maghrib.split(":").map(Number);
-
-    let maghribZeit = new Date();
-    maghribZeit.setHours(mH, mM, 0);
-
-    let fajrZeit = new Date();
-    fajrZeit.setHours(fH, fM, 0);
-    if (fajrZeit < maghribZeit) {
-        fajrZeit.setDate(fajrZeit.getDate() + 1);
-    }
-
-    let nachtDauer = (fajrZeit - maghribZeit) / 2;
-    let mitternacht = new Date(maghribZeit.getTime() + nachtDauer);
-
-    return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
-}
-
-function berechneLetztesDrittel(fajr, maghrib) {
-    let [fH, fM] = fajr.split(":").map(Number);
-    let [mH, mM] = maghrib.split(":").map(Number);
-
-    let maghribZeit = new Date();
-    maghribZeit.setHours(mH, mM, 0);
-
-    let fajrZeit = new Date();
-    fajrZeit.setHours(fH, fM, 0);
-    if (fajrZeit < maghribZeit) {
-        fajrZeit.setDate(fajrZeit.getDate() + 1);
-    }
-
-    let nachtDauer = (fajrZeit - maghribZeit) / 3;
-    let letztesDrittel = new Date(maghribZeit.getTime() + (2 * nachtDauer));
-
-    return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
-}
-
-   
-async function ladeGebetszeiten(stadt) {
+document.addEventListener("DOMContentLoaded", () => {
+    async function ladeGebetszeiten(stadt) {
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
         let data = await response.json();
 
@@ -91,30 +53,73 @@ async function ladeGebetszeiten(stadt) {
             return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
         }
 
-        document.getElementById("fajr").textContent = zeitAnpassen(data.data.timings.Fajr, -4);
+        let fajr = zeitAnpassen(data.data.timings.Fajr, -4);
+        let maghrib = zeitAnpassen(data.data.timings.Maghrib, 3);
+
+        document.getElementById("fajr").textContent = fajr;
         document.getElementById("shuruk").textContent = zeitAnpassen(data.data.timings.Sunrise, -3);
         document.getElementById("dhuhr").textContent = zeitAnpassen(data.data.timings.Dhuhr, 2);
         document.getElementById("asr").textContent = zeitAnpassen(data.data.timings.Asr, 2);
-        document.getElementById("maghrib").textContent = zeitAnpassen(data.data.timings.Maghrib, 3);
+        document.getElementById("maghrib").textContent = maghrib;
         document.getElementById("isha").textContent = zeitAnpassen(data.data.timings.Isha, 5);
+
+        document.getElementById("mitternacht").textContent = berechneMitternacht(fajr, maghrib);
+        document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(fajr, maghrib);
     }
 
+    function berechneMitternacht(fajr, maghrib) {
+        let [fH, fM] = fajr.split(":").map(Number);
+        let [mH, mM] = maghrib.split(":").map(Number);
+
+        let maghribZeit = new Date();
+        maghribZeit.setHours(mH, mM, 0);
+
+        let fajrZeit = new Date();
+        fajrZeit.setHours(fH, fM, 0);
+        if (fajrZeit < maghribZeit) {
+            fajrZeit.setDate(fajrZeit.getDate() + 1);
+        }
+
+        let nachtDauer = (fajrZeit - maghribZeit) / 2;
+        let mitternacht = new Date(maghribZeit.getTime() + nachtDauer);
+
+        return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
+    }
+
+    function berechneLetztesDrittel(fajr, maghrib) {
+        let [fH, fM] = fajr.split(":").map(Number);
+        let [mH, mM] = maghrib.split(":").map(Number);
+
+        let maghribZeit = new Date();
+        maghribZeit.setHours(mH, mM, 0);
+
+        let fajrZeit = new Date();
+        fajrZeit.setHours(fH, fM, 0);
+        if (fajrZeit < maghribZeit) {
+            fajrZeit.setDate(fajrZeit.getDate() + 1);
+        }
+
+        let nachtDauer = (fajrZeit - maghribZeit) / 3;
+        let letztesDrittel = new Date(maghribZeit.getTime() + (2 * nachtDauer));
+
+        return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
+    }
 
     async function ladeFeiertage() {
-    let response = await fetch("feiertage.json");
-    let feiertage = await response.json();
-    let tabelle = document.getElementById("feiertage-tabelle");
+        let response = await fetch("feiertage.json");
+        let feiertage = await response.json();
+        let tabelle = document.getElementById("feiertage-tabelle");
 
-    feiertage.forEach(feiertag => {
-        let datum = new Date(feiertag.datum);
-        let heute = new Date();
-        let countdown = Math.ceil((datum - heute) / (1000 * 60 * 60 * 24));
+        feiertage.forEach(feiertag => {
+            let datum = new Date(feiertag.datum);
+            let heute = new Date();
+            let countdown = Math.ceil((datum - heute) / (1000 * 60 * 60 * 24));
 
-        let row = document.createElement("tr");
-        row.innerHTML = `<td>${feiertag.name}</td><td>${datum.toLocaleDateString("de-DE")}</td><td class="countdown-bold">${countdown} Tage</td>`;
-        tabelle.appendChild(row);
-    });
-}
+            let row = document.createElement("tr");
+            row.innerHTML = `<td>${feiertag.name}</td><td>${datum.toLocaleDateString("de-DE")}</td><td class="countdown-bold">${countdown} Tage</td>`;
+            tabelle.appendChild(row);
+        });
+    }
 
     async function ermittleStandort() {
         if (navigator.geolocation) {
