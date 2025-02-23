@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let islamischesJahr = data.data.hijri.year;
 
             document.getElementById("islamisches-datum").textContent = 
-                 ${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
+                 :${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
         } catch (error) {
             console.error("Fehler beim Laden des islamischen Datums:", error);
         }
