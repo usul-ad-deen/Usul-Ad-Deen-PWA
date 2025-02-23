@@ -1,5 +1,66 @@
 body {
     font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    position: relative;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    display: inline-block;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 10px;
+    display: block;
+    text-align: left;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+#hadith-dua-box {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+#hadith-box, #dua-box {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 45%;
+}
+body {
+    font-family: Arial, sans-serif;
     color: black;
     text-align: center;
     background-color: #004e00
@@ -9,7 +70,7 @@ body {
 .header-zeit-container {
     background: url('icons/hintergrund.png') no-repeat center center;
     background-size: cover;
-    opacity: 0.5;
+    opacity: 0.1;
     padding: 20px;
     text-align: center;
 }
@@ -26,7 +87,7 @@ header {
 }
 
 /* Weiße Texte NUR in Kopfzeile, Menü & Zeit-Sektion */
-header h1, header h2, header h3, header nav ul li a, #zeit-section h2, #zeit-section p {
+header h1, header h2, header h3, header nav ul li a, #zeit-section h2, #zeit-section h3, #zeit-section p {
     color: white;
 }
 
@@ -63,40 +124,6 @@ header h1, header h2, header h3, header nav ul li a, #zeit-section h2, #zeit-sec
     }
 }
 
-/* Logo */
-.logo {
-    width: 50px;
-    height: 50px;
-}
-
-/* Navigation */
-nav ul {
-    list-style-type: none;
-    padding: 0;
-    color: white;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 10px;
-    color: white;
-}
-
-hadith-des-tages {
-    background-color: white;
-    color: black;
-    padding: 10px;
-    bottom: 0;
-    width: 75%;
-}
-
-dua-des-tages {
-    background-color: white;
-    color: black;
-    padding: 10px;
-    bottom: 0;
-    width: 75%;
-}
 
 /* Countdown-Anzeige */
 .countdown-bold {
