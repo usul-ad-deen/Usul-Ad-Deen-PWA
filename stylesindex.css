@@ -13,7 +13,7 @@ header {
     text-align: center;
     background-color: #004e00;
     color: white;
-    padding: 20px;
+    
     
 }
 
@@ -56,14 +56,14 @@ nav ul {
     list-style-type: none;
     padding: 0;
     color: white;
-    padding: 20px;
+    
 }
 
 nav ul li {
     display: inline;
     margin: 0 10px;
     color: white;
-    padding: 20px;
+    
 }
 
 
