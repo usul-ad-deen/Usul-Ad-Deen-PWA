@@ -1,45 +1,54 @@
-document.addEventListener("DOMContentLoaded", () => {
+
+  document.addEventListener("DOMContentLoaded", () => {
     function updateUhrzeit() {
         let jetzt = new Date();
         document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
-        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
-     let jetztUTC = new Date();
+        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
+
+        // Mekka-Zeit (UTC+3)
+        let jetztUTC = new Date();
         let mekkaOffset = 2 * 60 * 60 * 1000;
         let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
-        document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
-   
+        document.getElementById("mekka-uhrzeit").textContent = mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
     }
-
-    setInterval(updateUhrzeit, 1000);  
-
+    setInterval(updateUhrzeit, 1000);
     
-   async function ladeIslamischesDatum() {
-    try {
-        let heute = new Date();
-        let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
 
-        let response = await fetch(`https://api.aladhan.com/v1/gToH/${gregorianischesDatum}`);
-        let data = await response.json();
+    async function ladeIslamischesDatum() {
+        try {
+            let heute = new Date();
+            let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
+            let response = await fetch(`https://api.aladhan.com/v1/gToH/${gregorianischesDatum}`);
+            let data = await response.json();
 
-        let islamischerTag = data.data.hijri.day;
-        let islamischerMonat = data.data.hijri.month.en;
-        let islamischesJahr = data.data.hijri.year;
+            let islamischerTag = data.data.hijri.day;
+            let islamischerMonat = data.data.hijri.month.en;
+            let islamischesJahr = data.data.hijri.year;
 
-        let monateDeutsch = {
-            "Muharram": "Muharram", "Safar": "Safar", "Rabi' al-Awwal": "Erster Rabi'",
-            "Rabi' al-Thani": "Zweiter Rabi'", "Jumada al-Awwal": "Erster Jumada",
-            "Jumada al-Thani": "Zweiter Jumada", "Rajab": "Rajab", "Sha'ban": "Sha'ban",
-            "Ramadan": "Ramadan", "Shawwal": "Schawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
-            "Dhul-Hijjah": "Dhul-Hijjah"
-        };
+            let monateDeutsch = {
+                "Muharram": "Muharram", "Safar": "Safar", "Rabi' al-Awwal": "Erster Rabi'",
+                "Rabi' al-Thani": "Zweiter Rabi'", "Jumada al-Awwal": "Erster Jumada",
+                "Jumada al-Thani": "Zweiter Jumada", "Rajab": "Rajab", "Sha'ban": "Sha'ban",
+                "Ramadan": "Ramadan", "Shawwal": "Schawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
+                "Dhul-Hijjah": "Dhul-Hijjah"
+            };
 
-        let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
-        document.getElementById("islamisches-datum").textContent = 
-            `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
-    } catch (error) {
-        console.error("Fehler beim Laden des islamischen Datums:", error);
-    }
-}
+            let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
+            
+            // Islamisches Datum soll mit Maghrib aktualisiert werden
+            let jetzt = new Date();
+            let stunden = jetzt.getHours();
+            if (stunden >= 18) { // Maghrib beginnt ab 18:00 Uhr
+                islamischerTag = parseInt(islamischerTag) + 1;
+            }
+
+            document.getElementById("islamisches-datum").textContent = 
+                `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
+        } catch (error) {
+            console.error("Fehler beim Laden des islamischen Datums:", error);
+        }
+    }  
+
 
     async function ladeGebetszeiten(stadt) {
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
@@ -125,7 +134,7 @@ function berechneCountdown(feiertagDatum, elementId) {
     }
 
     async function setzeCountdown() {
-        let maghribZeit = await ladeMaghribZeit("${stadt}"); // Stadt kann angepasst werden
+        let maghribZeit = await ladeMaghribZeit("Berlin"); // Stadt kann angepasst werden
         let [mH, mM] = maghribZeit.split(":").map(Number);
         
         // Berechnung der tatsächlichen Startzeit (Maghrib des Vortages)
