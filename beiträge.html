@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beiträge | Usul ad-Deen</title>
+    <link rel="stylesheet" href="stylesbeitraege.css">
+    <script defer src="beiträge.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Beiträge</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Start</a></li>
+                <li><a href="hadith.html">Hadithsammlungen</a></li>
+                <li><a href="dua.html">Bittgebete</a></li>
+                <li><a href="beiträge.html">Beiträge</a></li>
+                <li><a href="bücher.html">Bücher</a></li>
+                <li><a href="mehr.html">Mehr</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Aktuelle Beiträge</h2>
+        <ul id="beitrags-liste">
+            <!-- Beiträge werden hier geladen -->
+        </ul>
+    </main>
+
+    <section id="beitrag-detail" style="display: none;">
+        <h2 id="beitrag-titel"></h2>
+        <p id="beitrag-datum"></p>
+        <p id="beitrag-inhalt"></p>
+        <button onclick="schließeBeitrag()">Zurück zur Übersicht</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Usul ad-Deen</p>
+    </footer>
+</body>
+</html>
