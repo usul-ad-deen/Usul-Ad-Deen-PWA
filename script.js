@@ -104,25 +104,23 @@ document.addEventListener("DOMContentLoaded", () => {
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
-   async function ladeFeiertage() {
-    let response = await fetch("feiertage.json");
-    let feiertage = await response.json();
-    let tabelle = document.getElementById("feiertage-tabelle");
-
-    tabelle.innerHTML = `<tr><th>Feiertag</th><th>Datum</th><th>Countdown</th></tr>`; 
-
-    feiertage.forEach(feiertag => {
-        let datum = new Date(feiertag.datum);
+ document.addEventListener("DOMContentLoaded", () => {
+    function berechneCountdown(datumString, elementId) {
+        let datum = new Date(datumString);
         let heute = new Date();
         let countdown = Math.ceil((datum - heute) / (1000 * 60 * 60 * 24));
+        document.getElementById(elementId).textContent = countdown + " Tage";
+    }
 
-        let row = document.createElement("tr");
-        row.innerHTML = `<td>${feiertag.name}</td><td>${datum.toLocaleDateString("de-DE")}</td><td class="countdown-bold">${countdown} Tage</td>`;
-        tabelle.appendChild(row);
-    });
-}
-
-
+    berechneCountdown("2025-03-01", "ramadan-countdown");
+    berechneCountdown("2025-03-30", "fitr-countdown");
+      berechneCountdown("2025-06-04", "hajj-countdown");
+      berechneCountdown("2025-06-05", "arafah-countdown");
+    berechneCountdown("2025-06-06", "adha-countdown");
+    berechneCountdown("2025-06-26", "neujahr-countdown");
+      berechneCountdown("2025-07-05", "ashura-countdown");
+      berechneCountdown("2026-01-16", "isra-countdown");
+});
 
 
     async function ermittleStandort() {
