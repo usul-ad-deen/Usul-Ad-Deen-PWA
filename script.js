@@ -29,14 +29,19 @@ document.addEventListener("DOMContentLoaded", () => {
         let islamischerMonat = data.data.hijri.month.en;
         let islamischesJahr = data.data.hijri.year;
 
-        };
-
         document.getElementById("islamisches-datum").textContent = 
-            `${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
+            `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
     } catch (error) {
         console.error("Fehler beim Laden des islamischen Datums:", error);
     }
 }
+        document.getElementById("islamisches-datum").textContent = 
+            `${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
+     catch (error) {
+        console.error("Fehler beim Laden des islamischen Datums:", error);  
+    }
+    }
+
     function berechneMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
         let [mH, mM] = maghrib.split(":").map(Number);
