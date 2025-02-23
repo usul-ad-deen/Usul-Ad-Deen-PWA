@@ -1,5 +1,4 @@
 body {
-    body {
     font-family: Arial, sans-serif;
     color: black;
 }
@@ -27,7 +26,7 @@ header h1, header nav ul li a, #zeit-section h2, #zeit-section p {
     color: white;
 }
 
-
+/* Bereich für Gebetszeiten & Feiertage */
 #gebetszeiten-und-feiertage {
     display: flex;
     flex-wrap: wrap;
@@ -35,9 +34,10 @@ header h1, header nav ul li a, #zeit-section h2, #zeit-section p {
     align-items: flex-start;
     gap: 20px;
     padding: 20px;
-     background-color: white;
+    background-color: white;
 }
 
+/* Einzelne Abschnitte */
 #gebetszeiten, #feiertage {
     flex: 1;
     min-width: 100%;
@@ -47,6 +47,7 @@ header h1, header nav ul li a, #zeit-section h2, #zeit-section p {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
     #gebetszeiten-und-feiertage {
         flex-direction: row;
@@ -58,33 +59,32 @@ header h1, header nav ul li a, #zeit-section h2, #zeit-section p {
     }
 }
 
+/* Logo */
 .logo {
     width: 50px;
     height: 50px;
 }
 
+/* Navigation */
 nav ul {
     list-style-type: none;
     padding: 0;
     color: white;
-    
 }
 
 nav ul li {
     display: inline;
     margin: 0 10px;
     color: white;
-    
 }
 
-
+/* Countdown-Anzeige */
 .countdown-bold {
     font-weight: bold;
     color: black;
 }
 
-
-
+/* Tabellen-Styling */
 table {
     width: 40%;
     margin: 10px auto;
@@ -102,7 +102,7 @@ th {
     color: white;
 }
 
-
+/* Fettgedruckte Gebetszeiten */
 .fajr-bold {
     font-weight: bold;
     color: black;
@@ -124,11 +124,11 @@ th {
     color: black;
 }
 
+/* Footer */
 footer {
     background-color: #004e00;
     color: white;
     padding: 10px;
     bottom: 0;
     width: 100%;
-
 }
