@@ -8,30 +8,41 @@
     <script defer src="script.js"></script>
 </head>
 <body>
-    <div class="header-zeit-container">
-        <header>
-            <h1>Usul ad-Deen</h1>
-            <h2>Startseite</h2>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Start</a></li>
-                    <li><a href="hadith.html">Hadithsammlungen</a></li>
-                    <li><a href="dua.html">Bittgebete</a></li>
-                    <li><a href="beiträge.html">Beiträge</a></li>
-                    <li><a href="bücher.html">Bücher</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </ul>
-            </nav>
-        </header>
+    <header>
+        <h1>Usul ad-Deen</h1>
+        <h2>Startseite</h2>
+        <nav>
+            <header>
+    <h1>Usul ad-Deen</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Start</a></li>
+            <li><a href="hadith.html">Hadithsammlungen</a></li>
+            <li><a href="dua.html">Bittgebete</a></li>
+            <li><a href="beiträge.html">Beiträge</a></li>
+            <li><a href="bücher.html">Bücher</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li class="dropdown">
+                <a href="#">Mehr</a>
+                <div class="dropdown-content">
+                    <a href="ueber.html">Über uns</a>
+                    <a href="einstellungen.html">Einstellungen</a>
+                    <a href="kontakt.html">Kontakt</a>
+                    <a href="impressum.html">Impressum & Datenschutz</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
 
+
+    <main>
         <section id="zeit-section">
             <h3>Aktuelle Zeit & Datum</h3>
             <p><span id="datum">Lädt...</span> | <span id="uhrzeit">Berlin: 00:00</span></p>
             <p><span id="islamisches-datum">Lädt...</span> | <span id="mekka-uhrzeit">Mekka: 00:00</span></p>
         </section>
-    </div>
 
-    <main>
         <section id="gebetszeiten-und-feiertage">
             <div id="gebetszeiten">
                 <h2>Gebetszeiten</h2>
@@ -51,7 +62,15 @@
                 </table>
             </div>
 
-            <div id="berechneCountdown">
+            <div id="feiertage">
+                <h2>Islamische Feiertage</h2>
+                <table id="feiertage-tabelle">
+                    <tr><th>Feiertag</th><th>Datum</th><th>Countdown</th></tr>
+                </table>
+            </div>
+        </section>
+
+        <div id="berechneCountdown">
                 <h2>Islamische Tage</h2>
                 <p>Achtung! Die islamischen Tage beginnen bereits am Vorabend.</p>
                 <table>
@@ -66,22 +85,22 @@
                     <tr><td>Isra' und Mi'raj</td><td>16.01.2026</td><td id="isra-countdown">Lädt...</td></tr>
                 </table>
             </div>
-        </section>
+        
+        <section id="hadith-dua-box">
+            <div id="hadith-box">
+                <h2>Hadith des Tages</h2>
+                <p id="hadith-arabisch">Lädt...</p>
+                <p id="hadith-deutsch">Lädt...</p>
+                <p><strong>Quelle:</strong> <span id="hadith-quelle">Lädt...</span></p>
+            </div>
 
-        <section id="hadith-des-tages">
-            <h2>Hadith des Tages</h2>
-            <p id="hadith-arabisch">Lädt...</p>
-            <p id="hadith-deutsch">Lädt...</p>
-            <p><strong>Quelle:</strong> <span id="hadith-quelle">Lädt...</span></p>
-            <p><strong>Authentizität:</strong> <span id="hadith-auth">Lädt...</span></p>
-        </section>
-
-        <section id="dua-des-tages">
-            <h2>Bittgebet des Tages</h2>
-            <p id="dua-arabisch">Lädt...</p>
-            <p id="dua-deutsch">Lädt...</p>
-            <p><strong>Transliteration:</strong> <span id="dua-trans">Lädt...</span></p>
-            <p><strong>Quelle und Authentizität:</strong> <span id="dua-quelle">Lädt...</span></p>
+            <div id="dua-box">
+                <h2>Bittgebet des Tages</h2>
+                <p id="dua-arabisch">Lädt...</p>
+                <p id="dua-transliteration">Lädt...</p>
+                <p id="dua-deutsch">Lädt...</p>
+                <p><strong>Quelle:</strong> <span id="dua-quelle">Lädt...</span></p>
+            </div>
         </section>
     </main>
 
