@@ -18,21 +18,26 @@ document.addEventListener("DOMContentLoaded", () => {
          }
     
     async function ladeIslamischesDatum() {
-    
-            let heute = new Date();
-            let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
+    try {
+        let heute = new Date();
+        let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
 
-            let response = await fetch(`https://api.aladhan.com/v1/gToH/${gregorianischesDatum}`);
-            let data = await response.json();
+        let response = await fetch(`https://api.aladhan.com/v1/gToH/${gregorianischesDatum}`);
+        let data = await response.json();
 
-            let islamischerTag = data.data.hijri.day;
-            let islamischerMonat = data.data.hijri.month.en;
-            let islamischesJahr = data.data.hijri.year;
+        let islamischerTag = data.data.hijri.day;
+        let islamischerMonat = data.data.hijri.month.en;
+        let islamischesJahr = data.data.hijri.year;
 
-            document.getElementById("islamisches-datum").textContent = 
-                 :${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
-                 };
+        };
 
+        let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
+        document.getElementById("islamisches-datum").textContent = 
+            `${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
+    } catch (error) {
+        console.error("Fehler beim Laden des islamischen Datums:", error);
+    }
+}
     function berechneMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
         let [mH, mM] = maghrib.split(":").map(Number);
