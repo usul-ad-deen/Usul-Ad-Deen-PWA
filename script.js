@@ -191,14 +191,13 @@ document.addEventListener("DOMContentLoaded", () => {
     ladeMekkaUhrzeit();
     ladeDatum();
     updateUhrzeit();
-    ladeFeiertage();
-      berechneCountdown("2025-03-01", "ramadan-countdown");
+    berechneCountdown("2025-03-01", "ramadan-countdown");
     berechneCountdown("2025-03-30", "fitr-countdown");
-      berechneCountdown("2025-06-04", "hajj-countdown");
-      berechneCountdown("2025-06-05", "arafah-countdown");
+    berechneCountdown("2025-06-04", "hajj-countdown");
+    berechneCountdown("2025-06-05", "arafah-countdown");
     berechneCountdown("2025-06-06", "adha-countdown");
     berechneCountdown("2025-06-26", "neujahr-countdown");
-      berechneCountdown("2025-07-05", "ashura-countdown");
-      berechneCountdown("2026-01-16", "isra-countdown");
+    berechneCountdown("2025-07-05", "ashura-countdown");
+    berechneCountdown("2026-01-16", "isra-countdown");
     
 });
