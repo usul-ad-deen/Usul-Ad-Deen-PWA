@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("fajr").textContent = fajr;
         document.getElementById("shuruk").textContent = zeitAnpassen(data.data.timings.Sunrise, -5);
-        document.getElementById("dhuhr").textContent = zeitAnpassen(data.data.timings.Dhuhr, 1);
+        document.getElementById("dhuhr").textContent = zeitAnpassen(data.data.timings.Dhuhr, 3);
         document.getElementById("asr").textContent = zeitAnpassen(data.data.timings.Asr, 3);
         document.getElementById("maghrib").textContent = maghrib;
         document.getElementById("isha").textContent = zeitAnpassen(data.data.timings.Isha, 3);
