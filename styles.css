@@ -51,9 +51,11 @@ th {
     gap: 10px;
 }
 
-#fajr {
+.fajr-bold {
     font-weight: bold;
+    color: black;
 }
+
 
 footer {
     background-color: #004e00;
