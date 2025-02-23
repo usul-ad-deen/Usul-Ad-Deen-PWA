@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         duaTransliteration.textContent = dua.transliteration;
         duaDeutsch.textContent = dua.deutsch;
         duaQuelle.textContent = dua.quelle;
+         duaAuthentizität.textContent = dua.authentizität;
     }
 
     window.schließeDua = function() {
