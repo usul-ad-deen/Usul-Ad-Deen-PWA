@@ -53,15 +53,36 @@
                 <tr><td>Letztes Drittel</td><td id="letztes-drittel">00:00</td></tr>
             </table>
                      </div>
-              <div id="feiertage">
+             <section id="gebetszeiten-und-feiertage">
+    <div id="gebetszeiten">
+        <h2>Gebetszeiten</h2>
+        <p>Ihr Standort: <span id="stadt-name">Unbekannt. Bitte manuell wählen.</span></p>
+        <select id="stadt-auswahl"></select>
+        <table>
+            <tr><th>Gebet</th><th>Uhrzeit</th></tr>
+            <tr><td><strong>Fajr</strong></td><td id="fajr" class="fajr-bold">00:00</td></tr>
+            <tr><td>Shuruk</td><td id="shuruk">00:00</td></tr>
+            <tr><td>Dhuhr</td><td id="dhuhr">00:00</td></tr>
+            <tr><td>Asr</td><td id="asr">00:00</td></tr>
+            <tr><td>Maghrib</td><td id="maghrib">00:00</td></tr>
+            <tr><td>Isha</td><td id="isha">00:00</td></tr>
+            <tr><td>Islamische Mitternacht</td><td id="mitternacht">00:00</td></tr>
+            <tr><td>Letztes Drittel</td><td id="letztes-drittel">00:00</td></tr>
+        </table>
+    </div>
+
+    <div id="feiertage">
         <h2>Islamische Feiertage</h2>
         <table id="feiertage-tabelle">
             <tr><th>Feiertag</th><th>Datum</th><th>Countdown</th></tr>
-            <tr></tr><td>${feiertag.name}</td><td>${datum.toLocaleDateString("de-DE")}</td><td class="countdown-bold">${countdown} Tage</td>`;
-            tabelle.appendChild(row);</tr>
+            <tr><td>Ramadan beginnt</td><td>01.03.2025</td><td id="ramadan-countdown">Lädt...</td></tr>
+            <tr><td>Eid al-Fitr</td><td>01.04.2025</td><td id="fitr-countdown">Lädt...</td></tr>
+            <tr><td>Eid al-Adha</td><td>15.06.2025</td><td id="adha-countdown">Lädt...</td></tr>
+            <tr><td>Islamisches Neujahr</td><td>21.07.2025</td><td id="neujahr-countdown">Lädt...</td></tr>
         </table>
     </div>
-        </section>
+</section>
+
 
         <section id="hadith-des-tages">
             <h2>Hadith des Tages</h2>
