@@ -6,12 +6,10 @@ body {
     padding: 0;
 }
 
-
 header {
-    text-align: center;
-    color: black;
-    padding: 100px 0;
-     background-color: white;
+    background-color: #004e00;
+    color: white;
+    padding: 15px;
     
 }
 
