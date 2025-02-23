@@ -105,19 +105,41 @@ document.addEventListener("DOMContentLoaded", () => {
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
-function berechneCountdown(datumString, elementId) {
-    let datum = new Date(datumString);
-    datum.setHours(18, 0, 0); // Feiertage beginnen mit Maghrib (18:00 Uhr am Vortag)
+function berechneCountdown(feiertagDatum, elementId) {
+    let heute = new Date();
+    let feiertag = new Date(feiertagDatum);
 
-    let jetzt = new Date();
-    let diffMs = datum - jetzt;
-    let tage = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    let stunden = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    // Hole die Maghrib-Zeit des Vortages
+    let gestern = new Date(feiertag);
+    gestern.setDate(feiertag.getDate() - 1);
 
-    document.getElementById(elementId).textContent = `${tage} Tage und ${stunden} Stunden`;
-}
+    async function ladeMaghribZeit(stadt) {
+        try {
+            let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3&date=${gestern.getDate()}-${gestern.getMonth() + 1}-${gestern.getFullYear()}`);
+            let data = await response.json();
+            return data.data.timings.Maghrib;
+        } catch (error) {
+            console.error("Fehler beim Laden der Maghrib-Zeit:", error);
+            return "18:00"; // Falls Fehler, Standardwert 18:00 Uhr
+        }
+    }
 
+    async function setzeCountdown() {
+        let maghribZeit = await ladeMaghribZeit("Berlin"); // Stadt kann angepasst werden
+        let [mH, mM] = maghribZeit.split(":").map(Number);
+        
+        // Berechnung der tatsächlichen Startzeit (Maghrib des Vortages)
+        let startZeit = new Date(gestern);
+        startZeit.setHours(mH, mM, 0); 
 
+        // Berechnung der verbleibenden Zeit
+        let verbleibendMs = startZeit - heute;
+        let tage = Math.floor(verbleibendMs / (1000 * 60 * 60 * 24));
+        let stunden = Math.floor((verbleibendMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+        // Anzeige des Countdowns
+        document.getElementById(elementId).textContent = `${tage} Tage; ${stunden} Stunden`;
+    }
 
 
     async function ermittleStandort() {
@@ -195,6 +217,7 @@ function berechneCountdown(datumString, elementId) {
     ladeMekkaUhrzeit();
     ladeDatum();
     updateUhrzeit();
+    setzeCountdown();
      berechneCountdown("2025-03-01", "ramadan-countdown");
     berechneCountdown("2025-03-30", "fitr-countdown");
     berechneCountdown("2025-06-04", "hajj-countdown");
