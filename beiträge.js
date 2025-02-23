@@ -1,38 +1,36 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const beitragsListe = document.getElementById("beitrags-liste");
-    const beitragDetail = document.getElementById("beitrag-detail");
-    const beitragTitel = document.getElementById("beitrag-titel");
-    const beitragDatum = document.getElementById("beitrag-datum");
-    const beitragInhalt = document.getElementById("beitrag-inhalt");
+    const buchListe = document.getElementById("buch-liste");
+    const buchIframe = document.getElementById("buch-iframe");
 
-    async function ladeBeiträge() {
+    async function ladeBücher() {
         try {
-            let response = await fetch("beiträge.json");
-            let beiträge = await response.json();
+            let response = await fetch("bücher.json");
+            let bücher = await response.json();
 
-            beiträge.forEach(beitrag => {
-                let beitragsItem = document.createElement("li");
-                beitragsItem.innerHTML = `<strong>${beitrag.titel}</strong> - <em>${beitrag.datum}</em>`;
-                beitragsItem.onclick = () => zeigeBeitrag(beitrag);
-                beitragsListe.appendChild(beitragsItem);
+            bücher.forEach(buch => {
+                let buchItem = document.createElement("li");
+
+                let pdfLink = buch.pdf ? `<a href="${buch.pdf}" download>📥 PDF</a>` : "";
+                let epubLink = buch.epub ? `<a href="${buch.epub}" download>📥 EPUB</a>` : "";
+                let appStoreLink = buch.appstore ? `<a href="${buch.appstore}" target="_blank">📱 App Store</a>` : "";
+                let playStoreLink = buch.playstore ? `<a href="${buch.playstore}" target="_blank">📱 Google Play</a>` : "";
+                let leseButton = buch.pdf ? `<button onclick="zeigeBuch('${buch.pdf}')">📖 Lesen</button>` : "";
+
+                buchItem.innerHTML = `<strong>${buch.titel}</strong> ${pdfLink} ${epubLink} ${appStoreLink} ${playStoreLink} ${leseButton}`;
+                buchListe.appendChild(buchItem);
             });
         } catch (error) {
-            console.error("Fehler beim Laden der Beiträge:", error);
+            console.error("Fehler beim Laden der Bücher:", error);
         }
     }
 
-    function zeigeBeitrag(beitrag) {
-        beitragsListe.style.display = "none";
-        beitragDetail.style.display = "block";
-        beitragTitel.textContent = beitrag.titel;
-        beitragDatum.textContent = "Veröffentlicht am: " + beitrag.datum;
-        beitragInhalt.textContent = beitrag.inhalt;
-    }
-
-    window.schließeBeitrag = function() {
-        beitragsListe.style.display = "block";
-        beitragDetail.style.display = "none";
+    window.zeigeBuch = function(datei) {
+        if (datei.endsWith(".pdf")) {
+            buchIframe.src = datei;
+        } else {
+            alert("Dieses Buch kann nur heruntergeladen werden.");
+        }
     };
 
-    ladeBeiträge();
+    ladeBücher();
 });
