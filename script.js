@@ -115,7 +115,7 @@
     }
 
 function berechneCountdown(feiertagDatum, elementId) {
-    let heute = new Date();
+    let heute = new Date ();
     let feiertag = new Date(feiertagDatum);
 
     // Hole die Maghrib-Zeit des Vortages
@@ -134,7 +134,7 @@ function berechneCountdown(feiertagDatum, elementId) {
     }
 
     async function setzeCountdown() {
-        let maghribZeit = await ladeMaghribZeit("Berlin"); // Stadt kann angepasst werden
+        let maghribZeit = await ladeMaghribZeit(stadt); // Stadt kann angepasst werden
         let [mH, mM] = maghribZeit.split(":").map(Number);
         
         // Berechnung der tatsächlichen Startzeit (Maghrib des Vortages)
