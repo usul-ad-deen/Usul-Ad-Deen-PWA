@@ -17,7 +17,7 @@
     async function ladeIslamischesDatum() {
         try {
             let heute = new Date();
-            let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth()}-${heute.getFullYear()}`;
+            let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() +1}-${heute.getFullYear()}`;
             let response = await fetch(`https://api.aladhan.com/v1/gToH/${gregorianischesDatum}`);
             let data = await response.json();
 
