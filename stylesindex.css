@@ -56,17 +56,11 @@ nav ul {
     list-style-type: none;
     padding: 0;
      background-color: White;
-      background: url('icons/hintergrund.png') no-repeat center center;
-    background-size: cover;
-     opacity: 0.01;
 }
 
 nav ul li {
-    display: inline;
-    margin: 0 10px;
-      background: url('icons/hintergrund.png') no-repeat center center;
-    background-size: cover;
-     opacity: 0.01;
+    display: block;
+    margin: 1em;
 }
 
 
