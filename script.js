@@ -53,12 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         let fajr = zeitAnpassen(data.data.timings.Fajr, -2);
-        let maghrib = zeitAnpassen(data.data.timings.Maghrib, 3);
+        let maghrib = zeitAnpassen(data.data.timings.Maghrib, 2);
 
         document.getElementById("fajr").textContent = fajr;
-        document.getElementById("shuruk").textContent = zeitAnpassen(data.data.timings.Sunrise, -4);
-        document.getElementById("dhuhr").textContent = zeitAnpassen(data.data.timings.Dhuhr, 4);
-        document.getElementById("asr").textContent = zeitAnpassen(data.data.timings.Asr, 4);
+        document.getElementById("shuruk").textContent = zeitAnpassen(data.data.timings.Sunrise, -2);
+        document.getElementById("dhuhr").textContent = zeitAnpassen(data.data.timings.Dhuhr, 2);
+        document.getElementById("asr").textContent = zeitAnpassen(data.data.timings.Asr, 2);
         document.getElementById("maghrib").textContent = maghrib;
         document.getElementById("isha").textContent = zeitAnpassen(data.data.timings.Isha, 3);
 
