@@ -168,6 +168,3 @@ document.addEventListener("DOMContentLoaded", () => {
     ladeMekkaUhrzeit();
     ladeDatum();
 });
-
-
-
