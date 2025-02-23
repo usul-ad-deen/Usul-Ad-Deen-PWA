@@ -52,15 +52,15 @@ document.addEventListener("DOMContentLoaded", () => {
             return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
         }
 
-        let fajr = zeitAnpassen(data.data.timings.Fajr, -5);
+        let fajr = zeitAnpassen(data.data.timings.Fajr, -2);
         let maghrib = zeitAnpassen(data.data.timings.Maghrib, 3);
 
         document.getElementById("fajr").textContent = fajr;
-        document.getElementById("shuruk").textContent = zeitAnpassen(data.data.timings.Sunrise, -8);
+        document.getElementById("shuruk").textContent = zeitAnpassen(data.data.timings.Sunrise, -4);
         document.getElementById("dhuhr").textContent = zeitAnpassen(data.data.timings.Dhuhr, 4);
         document.getElementById("asr").textContent = zeitAnpassen(data.data.timings.Asr, 4);
         document.getElementById("maghrib").textContent = maghrib;
-        document.getElementById("isha").textContent = zeitAnpassen(data.data.timings.Isha, );
+        document.getElementById("isha").textContent = zeitAnpassen(data.data.timings.Isha, 3);
 
         document.getElementById("mitternacht").textContent = berechneMitternacht(fajr, maghrib);
         document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(fajr, maghrib);
