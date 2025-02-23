@@ -12,9 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
 
-    function ladeDatum () {
+   async function ladeDatum () {
  let jetzt = new Date();
- document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
+ document.getElementById("datum").textContent = "Berlin: " + jetzt.toLocaleDateString("de-DE");
       }
     
    async function ladeIslamischesDatum() {
