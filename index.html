@@ -8,33 +8,28 @@
     <script defer src="script.js"></script>
 </head>
 <body>
-    <header>
+    <header class="header-zeit-container">
         <h1>Usul ad-Deen</h1>
-        <h2>Startseite</h2>
         <nav>
-            <header>
-    <h1>Usul ad-Deen</h1>
-    <nav>
-        <ul>
-            <li><a href="index.html">Start</a></li>
-            <li><a href="hadith.html">Hadithsammlungen</a></li>
-            <li><a href="dua.html">Bittgebete</a></li>
-            <li><a href="beiträge.html">Beiträge</a></li>
-            <li><a href="bücher.html">Bücher</a></li>
-            <li><a href="login.html">Login</a></li>
-            <li class="dropdown">
-                <a href="#">Mehr</a>
-                <div class="dropdown-content">
-                    <a href="ueber.html">Über uns</a>
-                    <a href="einstellungen.html">Einstellungen</a>
-                    <a href="kontakt.html">Kontakt</a>
-                    <a href="impressum.html">Impressum & Datenschutz</a>
-                </div>
-            </li>
-        </ul>
-    </nav>
-</header>
-
+            <ul>
+                <li><a href="index.html">Start</a></li>
+                <li><a href="hadith.html">Hadithsammlungen</a></li>
+                <li><a href="dua.html">Bittgebete</a></li>
+                <li><a href="beiträge.html">Beiträge</a></li>
+                <li><a href="bücher.html">Bücher</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li class="dropdown">
+                    <a href="#">Mehr</a>
+                    <div class="dropdown-content">
+                        <a href="ueber.html">Über uns</a>
+                        <a href="einstellungen.html">Einstellungen</a>
+                        <a href="kontakt.html">Kontakt</a>
+                        <a href="impressum.html">Impressum & Datenschutz</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
     <main>
         <section id="zeit-section">
@@ -50,13 +45,12 @@
                 <select id="stadt-auswahl"></select>
                 <table>
                     <tr><th>Gebet</th><th>Uhrzeit</th></tr>
-                    <tr><td><strong>Fastenbeginn (Imsak)</strong></td><td id="Imsak"><strong>00:00</strong></td></tr>
-                    <tr><td><strong>Fajr</strong></td><td id="fajr"><strong>00:00</strong></td></tr>
-                    <tr><td>Shuruk (Sonnenaufgang)</td><td id="shuruk">00:00</td></tr>
-                    <tr><td><strong>Dhuhr</strong></td><td id="dhuhr"><strong>00:00</strong></td></tr>
-                    <tr><td><strong>Asr</strong></td><td id="asr"><strong>00:00</strong></td></tr>
-                    <tr><td><strong>Maghrib</strong></td><td id="maghrib"><strong>00:00</strong></td></tr>
-                    <tr><td><strong>Isha</strong></td><td id="isha"><strong>00:00</strong></td></tr>
+                    <tr><td><strong>Fajr</strong></td><td id="fajr" class="fajr-bold">00:00</td></tr>
+                    <tr><td>Shuruk</td><td id="shuruk">00:00</td></tr>
+                    <tr><td><strong>Dhuhr</strong></td><td id="dhuhr">00:00</td></tr>
+                    <tr><td><strong>Asr</strong></td><td id="asr">00:00</td></tr>
+                    <tr><td><strong>Maghrib</strong></td><td id="maghrib">00:00</td></tr>
+                    <tr><td><strong>Isha</strong></td><td id="isha">00:00</td></tr>
                     <tr><td>Islamische Mitternacht</td><td id="mitternacht">00:00</td></tr>
                     <tr><td>Letztes Drittel</td><td id="letztes-drittel">00:00</td></tr>
                 </table>
@@ -70,22 +64,6 @@
             </div>
         </section>
 
-        <div id="berechneCountdown">
-                <h2>Islamische Tage</h2>
-                <p>Achtung! Die islamischen Tage beginnen bereits am Vorabend.</p>
-                <table>
-                    <tr><th>Ereignis</th><th>Datum</th><th>Verbleibende Tage</th></tr>
-                    <tr><td>Ramadan</td><td>01.03.2025</td><td id="ramadan-countdown">Lädt...</td></tr>
-                    <tr><td>Eid al-Fitr</td><td>30.03.2025</td><td id="fitr-countdown">Lädt...</td></tr>
-                    <tr><td>Hajj</td><td>04.06.2025</td><td id="hajj-countdown">Lädt...</td></tr>
-                    <tr><td>Arafah</td><td>05.06.2025</td><td id="arafah-countdown">Lädt...</td></tr>
-                    <tr><td>Eid al-Adha</td><td>06.06.2025</td><td id="adha-countdown">Lädt...</td></tr>
-                    <tr><td>Islamisches Neujahr</td><td>26.06.2025</td><td id="neujahr-countdown">Lädt...</td></tr>
-                    <tr><td>Ashura</td><td>05.07.2025</td><td id="ashura-countdown">Lädt...</td></tr>
-                    <tr><td>Isra' und Mi'raj</td><td>16.01.2026</td><td id="isra-countdown">Lädt...</td></tr>
-                </table>
-            </div>
-        
         <section id="hadith-dua-box">
             <div id="hadith-box">
                 <h2>Hadith des Tages</h2>
