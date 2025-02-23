@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
          }
     
-   function ladeIslamischesDatum() {
+   async function ladeIslamischesDatum() {
+    try {
         let heute = new Date();
         let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
 
@@ -28,11 +29,22 @@ document.addEventListener("DOMContentLoaded", () => {
         let islamischerMonat = data.data.hijri.month.en;
         let islamischesJahr = data.data.hijri.year;
 
-        
+        let monateDeutsch = {
+            "Muharram": "Muharram", "Safar": "Safar", "Rabi' al-Awwal": "Erster Rabi'",
+            "Rabi' al-Thani": "Zweiter Rabi'", "Jumada al-Awwal": "Erster Jumada",
+            "Jumada al-Thani": "Zweiter Jumada", "Rajab": "Rajab", "Sha'ban": "Sha'ban",
+            "Ramadan": "Ramadan", "Shawwal": "Schawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
+            "Dhul-Hijjah": "Dhul-Hiddscha"
+        };
+
+        let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
         document.getElementById("islamisches-datum").textContent = 
-            `${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
-    
+            `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
+    } catch (error) {
+        console.error("Fehler beim Laden des islamischen Datums:", error);
+    }
 }
+
 
     function berechneMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
