@@ -1,8 +1,19 @@
+/* Allgemeine Stile */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
+    background-color: #004e00;
+    color: black;
 }
 
+/* Kopfzeile */
+header {
+    background-color: #004e00;
+    color: white;
+    padding: 20px 0;
+}
+
+/* Navigation */
 nav ul {
     list-style-type: none;
     padding: 0;
@@ -21,6 +32,7 @@ nav ul li a {
     display: inline-block;
 }
 
+/* Dropdown-Menü */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -36,7 +48,7 @@ nav ul li a {
 }
 
 .dropdown-content a {
-    color: white;
+    color: black;
     padding: 10px;
     display: block;
     text-align: left;
@@ -46,52 +58,15 @@ nav ul li a {
     display: block;
 }
 
-#hadith-dua-box {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-}
-
-#hadith-box, #dua-box {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 45%;
-}
-body {
-    font-family: Arial, sans-serif;
-    color: black;
-    text-align: center;
-    background-color: #004e00
-}
-
-/* Hintergrundbild für Kopfzeile & Zeit-Sektion */
-.header-zeit-container {
-    background: url('icons/hintergrund.png') no-repeat center center;
-    background-size: cover;
-    opacity: 0.1;
-    padding: 20px;
-    text-align: center;
-}
-
-/* Kopfzeile */
-header {
-    text-align: center;
-    padding: 50px 0;
-}
-
-/* Zeit-Sektion */
+/* Zeit-Anzeige */
 #zeit-section {
-    padding: 20px;
-}
-
-/* Weiße Texte NUR in Kopfzeile, Menü & Zeit-Sektion */
-header h1, header h2, header h3, header nav ul li a, #zeit-section h2, #zeit-section h3, #zeit-section p {
+    background-color: #004e00;
     color: white;
+    padding: 15px;
+    margin-bottom: 15px;
 }
 
-/* Bereich für Gebetszeiten & Feiertage */
+/* Gebetszeiten & Feiertage nebeneinander */
 #gebetszeiten-und-feiertage {
     display: flex;
     flex-wrap: wrap;
@@ -102,39 +77,19 @@ header h1, header h2, header h3, header nav ul li a, #zeit-section h2, #zeit-sec
     background-color: white;
 }
 
-/* Einzelne Abschnitte */
+/* Gebetszeiten & Feiertage Box */
 #gebetszeiten, #feiertage {
     flex: 1;
-    min-width: 100%;
+    min-width: 45%;
     background: white;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    #gebetszeiten-und-feiertage {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    #gebetszeiten, #feiertage {
-        min-width: 100%;
-    }
-}
-
-
-/* Countdown-Anzeige */
-.countdown-bold {
-    font-weight: bold;
-    color: black;
-}
-
 /* Tabellen-Styling */
 table {
-    width: 40%;
-    margin: 10px auto;
+    width: 100%;
     border-collapse: collapse;
     background-color: white;
 }
@@ -142,6 +97,7 @@ table {
 th, td {
     border: 1px solid #ddd;
     padding: 10px;
+    text-align: center;
 }
 
 th {
@@ -150,32 +106,45 @@ th {
 }
 
 /* Fettgedruckte Gebetszeiten */
-.fajr-bold {
-    font-weight: bold;
-    color: black;
-}
-.duhr-bold {
-    font-weight: bold;
-    color: black;
-}
-.asr-bold {
-    font-weight: bold;
-    color: black;
-}
-.maghrib-bold {
-    font-weight: bold;
-    color: black;
-}
-.isha-bold {
+.fajr-bold, .duhr-bold, .asr-bold, .maghrib-bold, .isha-bold {
     font-weight: bold;
     color: black;
 }
 
+/* Hadith & Dua Boxen */
+#hadith-dua-box {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+#hadith-box, #dua-box {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 45%;
+    min-width: 300px;
+    margin: 10px;
+}
+
 /* Footer */
 footer {
-    background-color: #004e00;
+    background-color: #003300;
     color: white;
     padding: 10px;
-    bottom: 0;
-    width: 100%;
+    margin-top: 20px;
 }
+
+
+/* Hintergrundbild für Kopfzeile & Zeit-Sektion */
+.header-zeit-container {
+    background: url('icons/hintergrund.png') no-repeat center center;
+    background-size: cover;
+    opacity: 0.1;
+    padding: 20px;
+    text-align: center;
+}
+
