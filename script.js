@@ -98,7 +98,52 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(fajr, maghrib);
     }
 
-    async function ladeHadith() {
+    async function ermittleStandort() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
+
+                try {
+                    let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                    let data = await response.json();
+                    let stadt = data.address.city || data.address.town || data.address.village || "Unbekannt";
+                    document.getElementById("stadt-name").textContent = stadt;
+                    ladeGebetszeiten(stadt);
+                } catch (error) {
+                    console.error("Fehler bei der Standortermittlung:", error);
+                    document.getElementById("stadt-name").textContent = "Unbekannt. Bitte manuell wählen.";
+                }
+            }, () => {
+                console.error("Standort konnte nicht ermittelt werden.");
+                document.getElementById("stadt-name").textContent = "Unbekannt. Bitte manuell wählen.";
+            });
+        }
+    }
+
+    async function ladeStadtAuswahl() {
+        try {
+            let response = await fetch("stadt.json");
+            let städte = await response.json();
+            let dropdown = document.getElementById("stadt-auswahl");
+
+            städte.forEach(stadt => {
+                let option = document.createElement("option");
+                option.value = stadt.name;
+                option.textContent = stadt.name;
+                dropdown.appendChild(option);
+            });
+
+            dropdown.addEventListener("change", function () {
+                let gewählteStadt = this.value;
+                document.getElementById("stadt-name").textContent = gewählteStadt;
+                ladeGebetszeiten(gewählteStadt);
+            });
+        } catch (error) {
+            console.error("Fehler beim Laden der Städte:", error);
+        }
+    }
+     async function ladeHadith() {
         let response = await fetch("hadith.json");
         let data = await response.json();
         let zufallsHadith = data[Math.floor(Math.random() * data.length)];
@@ -118,13 +163,15 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
     }
 
-    ladeIslamischesDatum();
-    ladeMekkaUhrzeit();
+  
     ladeGebetszeiten("Berlin");
     ladeHadith();
     ladeDua();
+    ladeStadtAuswahl();
+    ermittleStandort();
+    ladeIslamischesDatum();
+    ladeMekkaUhrzeit();
 });
-
 
 
 
