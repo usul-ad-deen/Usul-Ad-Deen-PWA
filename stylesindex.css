@@ -9,6 +9,7 @@ body {
 .header-zeit-container {
     background: url('icons/hintergrund.png') no-repeat center center;
     background-size: cover;
+    opacity: 0.5;
     padding: 20px;
     text-align: center;
 }
