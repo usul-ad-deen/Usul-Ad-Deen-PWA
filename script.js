@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
     async function ladeGebetszeiten(stadt) {
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
         let data = await response.json();
