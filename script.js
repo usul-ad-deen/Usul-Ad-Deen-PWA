@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     function updateUhrzeit() {
         let jetzt = new Date();
-        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
+        document.getElementById("uhrzeit").textContent = "Berlin: " + jetzt.toLocaleTimeString("de-DE", { hour12: false });
         
         let jetztUTC = new Date();
         let mekkaOffset = 2 * 60 * 60 * 1000;
