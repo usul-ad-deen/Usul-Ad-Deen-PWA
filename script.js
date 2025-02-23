@@ -161,6 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("dua-deutsch").textContent = zufallsDua.deutsch;
         document.getElementById("dua-trans").textContent = zufallsDua.transliteration;
         document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
+         document.getElementById("dua-auth").textContent = zufallsDua.authentizität;
     }
 
   
