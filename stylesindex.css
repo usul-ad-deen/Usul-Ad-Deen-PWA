@@ -12,10 +12,7 @@ header {
     color: black;
     padding: 100px 0;
      background-color: white;
-      background: url('icons/hintergrund.png') no-repeat center center;
-    background-size: auto;
-     opacity: 0.01;
-   
+    
 }
 
 #gebetszeiten-und-feiertage {
