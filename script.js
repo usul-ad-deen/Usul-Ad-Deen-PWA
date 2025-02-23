@@ -2,13 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateUhrzeit() {
         let jetzt = new Date();
         document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
-        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
+
+        let jetztUTC = new Date();
+        let mekkaOffset = 2 * 60 * 60 * 1000;
+        let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
+        document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
     }
 
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
 
-     async function ladeIslamischesDatum() {
+    async function ladeIslamischesDatum() {
         try {
             let heute = new Date();
             let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
@@ -20,23 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
             let islamischerMonat = data.data.hijri.month.en;
             let islamischesJahr = data.data.hijri.year;
 
-            };
-
             document.getElementById("islamisches-datum").textContent = 
-                `Islamischer Tag: ${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
+                `Islamischer Tag: ${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
         } catch (error) {
             console.error("Fehler beim Laden des islamischen Datums:", error);
         }
-    }
-
-    function ladeMekkaUhrzeit() {
-        let jetztUTC = new Date();
-        let mekkaOffset = 2 * 60 * 60 * 1000;
-        let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
-        document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
-    }
-    setInterval(mekkaUhrzeit, 1000);
-    
+    }    
 
     function berechneMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
@@ -149,14 +142,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function ladeDua() {
-        let response = await fetch("dua.json");
-        let data = await response.json();
-        let zufallsDua = data[Math.floor(Math.random() * data.length)];
-        document.getElementById("dua-arabisch").textContent = zufallsDua.arabisch;
-        document.getElementById("dua-deutsch").textContent = zufallsDua.deutsch;
-        document.getElementById("dua-trans").textContent = zufallsDua.transliteration;
-        document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
-        document.getElementById("dua-auth").textContent = zufallsDua.authentizität;
+        try {
+            let response = await fetch("dua.json");
+            let data = await response.json();
+            let zufallsDua = data[Math.floor(Math.random() * data.length)];
+            document.getElementById("dua-arabisch").textContent = zufallsDua.arabisch;
+            document.getElementById("dua-deutsch").textContent = zufallsDua.deutsch;
+            document.getElementById("dua-trans").textContent = zufallsDua.transliteration;
+            document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
+        } catch (error) {
+            console.error("Fehler beim Laden der Dua:", error);
+        }
     }
 
   
