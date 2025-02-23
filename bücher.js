@@ -1,4 +1,4 @@
-edocument.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const buchListe = document.getElementById("buch-liste");
     const buchIframe = document.getElementById("buch-iframe");
 
