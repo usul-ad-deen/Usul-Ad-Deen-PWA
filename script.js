@@ -35,12 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Fehler beim Laden des islamischen Datums:", error);
     }
 }
-        document.getElementById("islamisches-datum").textContent = 
-            `${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
-     catch (error) {
-        console.error("Fehler beim Laden des islamischen Datums:", error);  
-    }
-    }
 
     function berechneMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
@@ -171,4 +165,5 @@ document.addEventListener("DOMContentLoaded", () => {
     ladeIslamischesDatum();
     ladeMekkaUhrzeit();
     ladeDatum();
+    
 });
