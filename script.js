@@ -29,8 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
         let islamischerMonat = data.data.hijri.month.en;
         let islamischesJahr = data.data.hijri.year;
 
+        let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
         document.getElementById("islamisches-datum").textContent = 
-            `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
+            `${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
     } catch (error) {
         console.error("Fehler beim Laden des islamischen Datums:", error);
     }
