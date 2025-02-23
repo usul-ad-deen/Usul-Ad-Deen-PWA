@@ -100,21 +100,23 @@ async function ladeGebetszeiten(stadt) {
         document.getElementById("isha").textContent = zeitAnpassen(data.data.timings.Isha, 5);
     }
 
+
     async function ladeFeiertage() {
-        let response = await fetch("feiertage.json");
-        let feiertage = await response.json();
-        let tabelle = document.getElementById("feiertage-tabelle");
+    let response = await fetch("feiertage.json");
+    let feiertage = await response.json();
+    let tabelle = document.getElementById("feiertage-tabelle");
 
-        feiertage.forEach(feiertag => {
-            let datum = new Date(feiertag.datum);
-            let heute = new Date();
-            let countdown = Math.ceil((datum - heute) / (1000 * 60 * 60 * 24));
+    feiertage.forEach(feiertag => {
+        let datum = new Date(feiertag.datum);
+        let heute = new Date();
+        let countdown = Math.ceil((datum - heute) / (1000 * 60 * 60 * 24));
 
-            let row = document.createElement("tr");
-            row.innerHTML = `<td>${feiertag.name}</td><td>${datum.toLocaleDateString("de-DE")}</td><td>${countdown} Tage</td>`;
-            tabelle.appendChild(row);
-        });
-    }
+        let row = document.createElement("tr");
+        row.innerHTML = `<td>${feiertag.name}</td><td>${datum.toLocaleDateString("de-DE")}</td><td class="countdown-bold">${countdown} Tage</td>`;
+        tabelle.appendChild(row);
+    });
+}
+
     async function ermittleStandort() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (position) => {
