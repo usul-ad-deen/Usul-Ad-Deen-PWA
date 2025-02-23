@@ -4,24 +4,24 @@
         "arabisch": "اللهم بك أصبحنا وبك أمسينا...",
         "transliteration": "Allahumma bika asbahna wa bika amsaina...",
         "deutsch": "O Allah, durch Dich erleben wir den Morgen und den Abend...",
-        "quelle": "Sahih Muslim"
-        "authentizität": "Sahih"
+        "quelle": "Sahih Muslim, Sahih"
+       
     },
     {
         "titel": "Bittgebet für Vergebung",
         "arabisch": "رَبِّ اغْفِرْ لِي وَارْحَمْنِي...",
         "transliteration": "Rabbi ighfir li warhamni...",
         "deutsch": "Mein Herr, vergib mir und sei barmherzig mit mir...",
-        "quelle": "Sahih al-Bukhari"
-        "authentizität": "Sahih"
+        "quelle": "Sahih al-Bukhari, Sahih"
+        
     },
     {
         "titel": "Bittgebet für Gesundheit",
         "arabisch": "اللهم إني أسألك العافية",
         "deutsch": "O Allah, ich bitte Dich um Gesundheit.",
         "transliteration": "Allahumma inni as’aluka al-‘afiyah.",
-        "quelle": "Sahih al-Bukhari"
-        "authentizität": "Sahih"
+        "quelle": "Sahih al-Bukhari, Sahih"
+      
     },
     {
         "titel": "Bittgebet für Wissen",
@@ -29,14 +29,14 @@
         "deutsch": "Mein Herr, mehre mein Wissen.",
         "transliteration": "Rabbi zidni ilma.",
         "quelle": "Quran 20:114"
-        "authentizität": "Quran"
+        
     },
     {
         "titel": "Bittgebet für Vergebung",
         "arabisch": "اللهم اغفر لي ولوالدي",
         "deutsch": "O Allah, vergib mir und meinen Eltern.",
         "transliteration": "Allahumma ighfir li wa liwalidayya.",
-        "quelle": "Sunan Ibn Majah"
-        "authentizität": "Sahih"
+        "quelle": "Sunan Ibn Majah, Sahih"
+       
     }
 ]
