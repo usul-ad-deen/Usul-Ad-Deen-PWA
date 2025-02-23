@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "Rabi' al-Thani": "Zweiter Rabi'", "Jumada al-Awwal": "Erster Jumada",
             "Jumada al-Thani": "Zweiter Jumada", "Rajab": "Rajab", "Sha'ban": "Sha'ban",
             "Ramadan": "Ramadan", "Shawwal": "Schawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
-            "Dhul-Hijjah": "Dhul-Hiddscha"
+            "Dhul-Hijjah": "Dhul-Hijjah"
         };
 
         let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
