@@ -27,50 +27,6 @@ nav ul li {
     margin: 0 10px;
 }
 
-table {
-    width: 40%;
-    margin: 10px auto;
-    border-collapse: collapse;
-    background-color: white;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-th {
-    background-color: #004e00;
-    color: white;
-}
-#zeit-section p {
-    font-size: 1.2em;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.fajr-bold {
-    font-weight: bold;
-    color: black;
-}
-.duhr-bold {
-    font-weight: bold;
-    color: black;
-}
-.asr-bold {
-    font-weight: bold;
-    color: black;
-}
-.maghrib-bold {
-    font-weight: bold;
-    color: black;
-}
-.isha-bold {
-    font-weight: bold;
-    color: black;
-}
 
 footer {
     background-color: #004e00;
