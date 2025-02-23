@@ -1,28 +1,3 @@
-function berechneCountdown(datumString, elementId) {
-    let datum = new Date(datumString);
-    datum.setHours(18, 0, 0); // Feiertage beginnen mit Maghrib (18:00 Uhr)
-
-    let jetzt = new Date();
-    let diffMs = datum - jetzt;
-    let tage = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    let stunden = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-    document.getElementById(elementId).textContent = `${tage} Tage und ${stunden} Stunden`;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    berechneCountdown("2025-03-01", "ramadan-countdown");
-    berechneCountdown("2025-03-30", "fitr-countdown");
-    berechneCountdown("2025-06-04", "hajj-countdown");
-    berechneCountdown("2025-06-05", "arafah-countdown");
-    berechneCountdown("2025-06-06", "adha-countdown");
-    berechneCountdown("2025-06-26", "neujahr-countdown");
-    berechneCountdown("2025-07-05", "ashura-countdown");
-    berechneCountdown("2026-01-16", "isra-countdown");
-});
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
     function updateUhrzeit() {
         let jetzt = new Date();
@@ -130,15 +105,17 @@ document.addEventListener("DOMContentLoaded", () => {
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
+function berechneCountdown(datumString, elementId) {
+    let datum = new Date(datumString);
+    datum.setHours(18, 0, 0); // Feiertage beginnen mit Maghrib (18:00 Uhr)
 
-    function berechneCountdown(datumString, elementId) {
-        let datum = new Date(datumString);
-        let heute = new Date();
-        let countdown = Math.ceil((datum - heute) / (1000 * 60 * 60 * 24));
-        document.getElementById(elementId).textContent = countdown + " Tage";
-    }
+    let jetzt = new Date();
+    let diffMs = datum - jetzt;
+    let tage = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    let stunden = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
-  
+    document.getElementById(elementId).textContent = `${tage} Tage und ${stunden} Stunden`;
+}
 
 
 
