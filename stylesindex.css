@@ -9,7 +9,7 @@ body {
 header {
     background-color: #004e00; 
     background-image: url(icons/hintergrund.png);
-    height: 50px;
+    height: 200px;
     text-align: center;
     background-color: #004e00;
     color: white;
@@ -56,14 +56,14 @@ nav ul {
     list-style-type: none;
     padding: 0;
     color: white;
-    padding: 20px;
+    padding: 40px;
 }
 
 nav ul li {
     display: inline;
     margin: 0 10px;
     color: white;
-    padding: 20px;
+    padding: 40px;
 }
 
 
