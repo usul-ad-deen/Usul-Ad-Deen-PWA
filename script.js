@@ -125,7 +125,7 @@ function berechneCountdown(feiertagDatum, elementId) {
     }
 
     async function setzeCountdown() {
-        let maghribZeit = await ladeMaghribZeit("Berlin"); // Stadt kann angepasst werden
+        let maghribZeit = await ladeMaghribZeit("${stadt}"); // Stadt kann angepasst werden
         let [mH, mM] = maghribZeit.split(":").map(Number);
         
         // Berechnung der tatsächlichen Startzeit (Maghrib des Vortages)
@@ -205,7 +205,8 @@ function berechneCountdown(feiertagDatum, elementId) {
             document.getElementById("dua-deutsch").textContent = zufallsDua.deutsch;
             document.getElementById("dua-trans").textContent = zufallsDua.transliteration;
             document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
-        }
+            document.getElementById("dua-auth").textContent = zufallsDua.authentizität;
+    }
 
   
     ladeGebetszeiten("Berlin");
