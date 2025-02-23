@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         };
 
-        let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
         document.getElementById("islamisches-datum").textContent = 
             `${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
     } catch (error) {
