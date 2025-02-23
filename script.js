@@ -85,10 +85,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function ladeGebetszeiten(stadt) {
-        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3&tune=-5%2C-5%2C-3%2C-5%2C-5%2C-1%2C0%2C-5%2C-6&calendarMethod=UAQ`);
+        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3&tune=-5%2C-5%2C-3%2C-5%2C-5%2C-1%2C0%2C-5%2C-6`);
 let data = await response.json();
 
-        let fajr = data.data.timings.Fajr;
+        let fajr = data.data.timings.Fajr - 00:05;
         let maghrib = data.data.timings.Maghrib;
 
         document.getElementById("fajr").textContent = fajr;
