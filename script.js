@@ -17,8 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
          }
     
-    async function ladeIslamischesDatum() {
-    try {
+   function ladeIslamischesDatum() {
         let heute = new Date();
         let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
 
@@ -29,12 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
         let islamischerMonat = data.data.hijri.month.en;
         let islamischesJahr = data.data.hijri.year;
 
-        let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
+        
         document.getElementById("islamisches-datum").textContent = 
             `${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
-    } catch (error) {
-        console.error("Fehler beim Laden des islamischen Datums:", error);
-    }
+    
 }
 
     function berechneMitternacht(fajr, maghrib) {
