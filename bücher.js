@@ -4,7 +4,7 @@ edocument.addEventListener("DOMContentLoaded", async () => {
 
     async function ladeBücher() {
         try {
-            let response = await fetch("buecher/bücher.json");
+            let response = await fetch("bücher.json");
             let bücher = await response.json();
 
             bücher.forEach(buch => {
