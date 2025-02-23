@@ -6,8 +6,21 @@ body {
     color: black;
 }
 
+.header-bg {
+    background: url('icons/hintergrund.png') no-repeat center center;
+    background-size: cover;
+    height: 150px    
+}
+
+#zeit-section {
+     background-color: #004e00;
+    color: white;
+    padding: 15px;
+}
+
 /* Kopfzeile */
 header {
+    background-color: #004e00;
     color: white;
     padding: 20px 0;
 }
@@ -62,7 +75,6 @@ nav ul li a {
     background-color: #004e00;
     color: white;
     padding: 15px;
-    margin-bottom: 15px;
 }
 
 /* Gebetszeiten & Feiertage nebeneinander */
@@ -131,7 +143,7 @@ th {
 
 /* Footer */
 footer {
-    background-color: #003300;
+    background-color: #004e00;
     color: white;
     padding: 10px;
     margin-top: 20px;
