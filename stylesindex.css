@@ -4,9 +4,6 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    background: url('icons/hintergrund.png') no-repeat center center;
-    background-size: cover;
-     opacity: 0.01;
 }
 
 
@@ -15,6 +12,9 @@ header {
     text-align: center;
     padding: 100px 0;
      background-color: white;
+      background: url('icons/hintergrund.png') no-repeat center center;
+    background-size: cover;
+     opacity: 0.01;
    
 }
 
@@ -57,11 +57,17 @@ nav ul {
     list-style-type: none;
     padding: 0;
      background-color: White;
+      background: url('icons/hintergrund.png') no-repeat center center;
+    background-size: cover;
+     opacity: 0.01;
 }
 
 nav ul li {
     display: inline;
     margin: 0 10px;
+      background: url('icons/hintergrund.png') no-repeat center center;
+    background-size: cover;
+     opacity: 0.01;
 }
 
 
