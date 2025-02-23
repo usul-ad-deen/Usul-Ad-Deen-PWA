@@ -1,21 +1,20 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
 header {
     background-color: #004e00;
     color: white;
     padding: 15px;
-    position: relative;
 }
 
 .logo {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    right: 10px;
-    top: 10px;
+    width: 50px;
+    height: 50px;
 }
 
 nav ul {
@@ -28,46 +27,32 @@ nav ul li {
     margin: 0 10px;
 }
 
-main {
-    margin: 20px;
+table {
+    width: 80%;
+    margin: 10px auto;
+    border-collapse: collapse;
+    background-color: white;
 }
-#prayer-container {
-    width: 300px;
-    text-align: center;
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
 }
-.prayer_time {
-    font-size: 1.6em;
-    font-weight: 800;
-}
-#prayer-container #prayer_city {
-    font-size: 1.2em;
-    font-weight: 800;
-}
-#prayer-container table {
-    width: 100%
-}
-#prayer-container tbody tr:nth-child(odd) {
-    background-color: #f3f3f3;
-}
-#prayer-container tbody td {
-    padding: 10px 20px;
-}
-#prayer-container tbody td:nth-child(1) {
-    text-align: left;
-}
-#prayer-container tbody td:nth-child(2) {
-    text-align: right;
-}
-#gebetszeiten ul {
-    list-style-type: none;
-    padding: 0;
-    text-align: center;
+
+th {
+    background-color: #004e00;
+    color: white;
 }
 
 footer {
     background-color: #004e00;
     color: white;
     padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
     position: fixed;
     bottom: 0;
     width: 100%;
