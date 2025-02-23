@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateUhrzeit() {
         let jetzt = new Date();
         document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
-
+ document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
         let jetztUTC = new Date();
         let mekkaOffset = 2 * 60 * 60 * 1000;
         let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
@@ -12,10 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
 
-    function ladeDatum () {
-        let jetzt = new Date();
-        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
-         }
     
    async function ladeIslamischesDatum() {
     try {
