@@ -140,7 +140,7 @@ function berechneCountdown(feiertagDatum, elementId) {
         // Anzeige des Countdowns
         document.getElementById(elementId).textContent = `${tage} Tage; ${stunden} Stunden`;
     }
-
+ }
 
     async function ermittleStandort() {
         if (navigator.geolocation) {
@@ -218,7 +218,7 @@ function berechneCountdown(feiertagDatum, elementId) {
     ladeDatum();
     updateUhrzeit();
     setzeCountdown();
-     berechneCountdown("2025-03-01", "ramadan-countdown");
+    berechneCountdown("2025-03-01", "ramadan-countdown");
     berechneCountdown("2025-03-30", "fitr-countdown");
     berechneCountdown("2025-06-04", "hajj-countdown");
     berechneCountdown("2025-06-05", "arafah-countdown");
