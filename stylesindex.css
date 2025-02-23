@@ -7,9 +7,17 @@ body {
 }
 
 header {
+    background-color: #004e00; 
+    background-image: url(icons/hintergrund.png);
+    height: 151px;
+}
+
+header p {
+    
+    text-align: center;
     background-color: #004e00;
     color: white;
-    padding: 15px;
+    padding: 20px;
     
 }
 
