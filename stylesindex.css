@@ -7,14 +7,22 @@ body {
 }
 
 header {
-    background-color: #004e00; 
-    background-image: url(icons/hintergrund.png);
-    height: 151px;
-    text-align: center;
-    background-color: #004e00;
+    background: url('icons/hintergrund.png') no-repeat center center;
+    background-size: cover;
     color: white;
-    
-    
+    text-align: center;
+    padding: 50px 0;
+}
+
+#zeit-section {
+    background: url('icons/hintergrund.png') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 20px;
+}
+
+h1, h2, p, nav ul li a {
+    color: white;
 }
 
 #gebetszeiten-und-feiertage {
@@ -91,13 +99,6 @@ th {
     color: white;
 }
 
-#zeit-section p {
-    font-size: 1.2em;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
 
 .fajr-bold {
     font-weight: bold;
