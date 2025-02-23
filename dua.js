@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const duaTransliteration = document.getElementById("dua-trans");
     const duaDeutsch = document.getElementById("dua-deutsch");
     const duaQuelle = document.getElementById("dua-quelle");
-     const duaAuthentizität = document.getElementById("dua-auth");
+    
 
     async function ladeDuas() {
         try {
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         duaTransliteration.textContent = dua.transliteration;
         duaDeutsch.textContent = dua.deutsch;
         duaQuelle.textContent = dua.quelle;
-         duaAuthentizität.textContent = dua.authentizität;
+        
     }
 
     window.schließeDua = function() {
