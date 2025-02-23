@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const duaDetail = document.getElementById("dua-detail");
     const duaTitel = document.getElementById("dua-titel");
     const duaArabisch = document.getElementById("dua-arabisch");
-    const duaTransliteration = document.getElementById("dua-trans");
+    const duaTransliteration = document.getElementById("dua-transliteration");
     const duaDeutsch = document.getElementById("dua-deutsch");
     const duaQuelle = document.getElementById("dua-quelle");
     
