@@ -1,21 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
     function updateUhrzeit() {
         let jetzt = new Date();
-        document.getElementById("uhrzeit").textContent = "Berlin: " + jetzt.toLocaleTimeString("de-DE", { hour12: false });
-        
-        let jetztUTC = new Date();
+        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
+        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+     let jetztUTC = new Date();
         let mekkaOffset = 2 * 60 * 60 * 1000;
         let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
         document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
+   
     }
 
-    setInterval(updateUhrzeit, 1000);
-    updateUhrzeit();
+    setInterval(updateUhrzeit, 1000);  
 
-   function ladeDatum () {
-     let jetzt = new Date();
-     document.getElementById("datum").textContent =  jetzt.toLocaleDateString("de-DE");
-      }
     
    async function ladeIslamischesDatum() {
     try {
@@ -84,23 +80,41 @@ document.addEventListener("DOMContentLoaded", () => {
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
-    async function ladeGebetszeiten(stadt) {
-        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3&tune=5%2C5%2C3%2C5%2C5%2C-5%2C0%2C5%2C6`);
-let data = await response.json();
+   
+async function ladeGebetszeiten(stadt) {
+        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
+        let data = await response.json();
 
-        let fajr = data.data.timings.Fajr;
-        let maghrib = data.data.timings.Maghrib;
+        function zeitAnpassen(zeit, minuten) {
+            let [h, m] = zeit.split(":").map(Number);
+            let neueZeit = new Date();
+            neueZeit.setHours(h, m + minuten);
+            return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
+        }
 
-        document.getElementById("fajr").textContent = fajr;
-        document.getElementById("shuruk").textContent = data.data.timings.Sunrise;
-        document.getElementById("dhuhr").textContent = data.data.timings.Dhuhr;
-        document.getElementById("asr").textContent = data.data.timings.Asr;
-        document.getElementById("maghrib").textContent = maghrib;
-        document.getElementById("isha").textContent = data.data.timings.Isha;
-        document.getElementById("mitternacht").textContent = berechneMitternacht(fajr, maghrib);
-        document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(fajr, maghrib);
+        document.getElementById("fajr").textContent = zeitAnpassen(data.data.timings.Fajr, -4);
+        document.getElementById("shuruk").textContent = zeitAnpassen(data.data.timings.Sunrise, -3);
+        document.getElementById("dhuhr").textContent = zeitAnpassen(data.data.timings.Dhuhr, 2);
+        document.getElementById("asr").textContent = zeitAnpassen(data.data.timings.Asr, 2);
+        document.getElementById("maghrib").textContent = zeitAnpassen(data.data.timings.Maghrib, 3);
+        document.getElementById("isha").textContent = zeitAnpassen(data.data.timings.Isha, 5);
     }
 
+    async function ladeFeiertage() {
+        let response = await fetch("feiertage.json");
+        let feiertage = await response.json();
+        let tabelle = document.getElementById("feiertage-tabelle");
+
+        feiertage.forEach(feiertag => {
+            let datum = new Date(feiertag.datum);
+            let heute = new Date();
+            let countdown = Math.ceil((datum - heute) / (1000 * 60 * 60 * 24));
+
+            let row = document.createElement("tr");
+            row.innerHTML = `<td>${feiertag.name}</td><td>${datum.toLocaleDateString("de-DE")}</td><td>${countdown} Tage</td>`;
+            tabelle.appendChild(row);
+        });
+    }
     async function ermittleStandort() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (position) => {
@@ -175,5 +189,7 @@ let data = await response.json();
     ladeIslamischesDatum();
     ladeMekkaUhrzeit();
     ladeDatum();
+    updateUhrzeit();
+    ladeFeiertage();
     
 });
