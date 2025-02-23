@@ -43,6 +43,18 @@ th {
     background-color: #004e00;
     color: white;
 }
+#zeit-section p {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#fajr {
+    font-weight: bold;
+    color: #d9534f;
+}
 
 footer {
     background-color: #004e00;
