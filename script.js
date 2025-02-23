@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function berechneCountdown(datumString, elementId) {
     let datum = new Date(datumString);
-    datum.setHours(18, 0, 0); // Feiertage beginnen mit Maghrib (18:00 Uhr)
+    datum.setHours(18, 0, 0); // Feiertage beginnen mit Maghrib (18:00 Uhr am Vortag)
 
     let jetzt = new Date();
     let diffMs = datum - jetzt;
@@ -116,6 +116,7 @@ function berechneCountdown(datumString, elementId) {
 
     document.getElementById(elementId).textContent = `${tage} Tage und ${stunden} Stunden`;
 }
+
 
 
 
@@ -194,7 +195,7 @@ function berechneCountdown(datumString, elementId) {
     ladeMekkaUhrzeit();
     ladeDatum();
     updateUhrzeit();
-    berechneCountdown("2025-03-01", "ramadan-countdown");
+     berechneCountdown("2025-03-01", "ramadan-countdown");
     berechneCountdown("2025-03-30", "fitr-countdown");
     berechneCountdown("2025-06-04", "hajj-countdown");
     berechneCountdown("2025-06-05", "arafah-countdown");
@@ -202,5 +203,5 @@ function berechneCountdown(datumString, elementId) {
     berechneCountdown("2025-06-26", "neujahr-countdown");
     berechneCountdown("2025-07-05", "ashura-countdown");
     berechneCountdown("2026-01-16", "isra-countdown");
-    
+
 });
