@@ -9,9 +9,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             bücher.forEach(buch => {
                 let buchItem = document.createElement("li");
-                buchItem.innerHTML = `<strong>${buch.titel}</strong> 
-                    <a href="${buch.datei}" download target="_blank">📥 Download</a> 
-                    <button onclick="zeigeBuch('${buch.datei}')">📖 Lesen</button>`;
+                let downloadLink = document.createElement("a");
+                downloadLink.href = buch.datei;
+                downloadLink.download = buch.datei.split("/").pop();
+                downloadLink.textContent = "📥 Download";
+
+                let leseButton = document.createElement("button");
+                leseButton.textContent = "📖 Lesen";
+                leseButton.onclick = () => zeigeBuch(buch.datei);
+
+                buchItem.innerHTML = `<strong>${buch.titel}</strong> `;
+                buchItem.appendChild(downloadLink);
+                buchItem.appendChild(leseButton);
                 buchListe.appendChild(buchItem);
             });
         } catch (error) {
@@ -19,14 +28,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    window.zeigeBuch = function(datei) {
+    function zeigeBuch(datei) {
         if (datei.endsWith(".pdf")) {
             buchIframe.src = datei;
+        } else if (datei.endsWith(".epub")) {
+            alert("EPUB-Dateien können nur heruntergeladen und in einer EPUB-Reader-App geöffnet werden.");
         } else {
-            alert("EPUB kann derzeit nur heruntergeladen werden.");
+            alert("Dieses Format wird nicht unterstützt.");
         }
-    };
+    }
 
     ladeBücher();
 });
-
