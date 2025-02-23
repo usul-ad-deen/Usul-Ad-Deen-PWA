@@ -55,7 +55,22 @@ th {
     font-weight: bold;
     color: black;
 }
-
+.duhr-bold {
+    font-weight: bold;
+    color: black;
+}
+.asr-bold {
+    font-weight: bold;
+    color: black;
+}
+.maghrib-bold {
+    font-weight: bold;
+    color: black;
+}
+.isha-bold {
+    font-weight: bold;
+    color: black;
+}
 
 footer {
     background-color: #004e00;
