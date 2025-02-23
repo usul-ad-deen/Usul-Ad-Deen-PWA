@@ -104,21 +104,26 @@ document.addEventListener("DOMContentLoaded", () => {
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
-    async function ladeFeiertage() {
-        let response = await fetch("feiertage.json");
-        let feiertage = await response.json();
-        let tabelle = document.getElementById("feiertage-tabelle");
+   async function ladeFeiertage() {
+    let response = await fetch("feiertage.json");
+    let feiertage = await response.json();
+    let tabelle = document.getElementById("feiertage-tabelle");
 
-        feiertage.forEach(feiertag => {
-            let datum = new Date(feiertag.datum);
-            let heute = new Date();
-            let countdown = Math.ceil((datum - heute) / (1000 * 60 * 60 * 24));
+    tabelle.innerHTML = `<tr><th>Feiertag</th><th>Datum</th><th>Countdown</th></tr>`; 
 
-            let row = document.createElement("tr");
-            row.innerHTML = `<td>${feiertag.name}</td><td>${datum.toLocaleDateString("de-DE")}</td><td class="countdown-bold">${countdown} Tage</td>`;
-            tabelle.appendChild(row);
-        });
-    }
+    feiertage.forEach(feiertag => {
+        let datum = new Date(feiertag.datum);
+        let heute = new Date();
+        let countdown = Math.ceil((datum - heute) / (1000 * 60 * 60 * 24));
+
+        let row = document.createElement("tr");
+        row.innerHTML = `<td>${feiertag.name}</td><td>${datum.toLocaleDateString("de-DE")}</td><td class="countdown-bold">${countdown} Tage</td>`;
+        tabelle.appendChild(row);
+    });
+}
+
+
+
 
     async function ermittleStandort() {
         if (navigator.geolocation) {
