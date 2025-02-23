@@ -41,44 +41,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 }
 
+function berechneMitternacht(fajr, maghrib) {
+    let [fH, fM] = fajr.split(":").map(Number);
+    let [mH, mM] = maghrib.split(":").map(Number);
 
-    function berechneMitternacht(fajr, maghrib) {
-        let [fH, fM] = fajr.split(":").map(Number);
-        let [mH, mM] = maghrib.split(":").map(Number);
+    let maghribZeit = new Date();
+    maghribZeit.setHours(mH, mM, 0);
 
-        let maghribZeit = new Date();
-        maghribZeit.setHours(mH, mM, 0);
-
-        let fajrZeit = new Date();
-        fajrZeit.setHours(fH, fM, 0);
-        if (fajrZeit < maghribZeit) {
-            fajrZeit.setDate(fajrZeit.getDate() + 1);
-        }
-
-        let nachtDauer = (fajrZeit - maghribZeit) / 2;
-        let mitternacht = new Date(maghribZeit.getTime() + nachtDauer);
-
-        return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
+    let fajrZeit = new Date();
+    fajrZeit.setHours(fH, fM, 0);
+    if (fajrZeit < maghribZeit) {
+        fajrZeit.setDate(fajrZeit.getDate() + 1);
     }
 
-    function berechneLetztesDrittel(fajr, maghrib) {
-        let [fH, fM] = fajr.split(":").map(Number);
-        let [mH, mM] = maghrib.split(":").map(Number);
+    let nachtDauer = (fajrZeit - maghribZeit) / 2;
+    let mitternacht = new Date(maghribZeit.getTime() + nachtDauer);
 
-        let maghribZeit = new Date();
-        maghribZeit.setHours(mH, mM, 0);
+    return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
+}
 
-        let fajrZeit = new Date();
-        fajrZeit.setHours(fH, fM, 0);
-        if (fajrZeit < maghribZeit) {
-            fajrZeit.setDate(fajrZeit.getDate() + 1);
-        }
+function berechneLetztesDrittel(fajr, maghrib) {
+    let [fH, fM] = fajr.split(":").map(Number);
+    let [mH, mM] = maghrib.split(":").map(Number);
 
-        let nachtDauer = (fajrZeit - maghribZeit) / 3;
-        let letztesDrittel = new Date(maghribZeit.getTime() + (2 * nachtDauer));
+    let maghribZeit = new Date();
+    maghribZeit.setHours(mH, mM, 0);
 
-        return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
+    let fajrZeit = new Date();
+    fajrZeit.setHours(fH, fM, 0);
+    if (fajrZeit < maghribZeit) {
+        fajrZeit.setDate(fajrZeit.getDate() + 1);
     }
+
+    let nachtDauer = (fajrZeit - maghribZeit) / 3;
+    let letztesDrittel = new Date(maghribZeit.getTime() + (2 * nachtDauer));
+
+    return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
+}
 
    
 async function ladeGebetszeiten(stadt) {
