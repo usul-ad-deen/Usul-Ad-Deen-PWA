@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
          }
     
     async function ladeIslamischesDatum() {
-        try {
+    
             let heute = new Date();
             let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
 
@@ -31,10 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             document.getElementById("islamisches-datum").textContent = 
                  :${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
-        } catch (error) {
-            console.error("Fehler beim Laden des islamischen Datums:", error);
-        }
-    }    
+                 };
 
     function berechneMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
