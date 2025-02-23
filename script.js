@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
- document.addEventListener("DOMContentLoaded", () => {
+
     function berechneCountdown(datumString, elementId) {
         let datum = new Date(datumString);
         let heute = new Date();
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     berechneCountdown("2025-06-26", "neujahr-countdown");
       berechneCountdown("2025-07-05", "ashura-countdown");
       berechneCountdown("2026-01-16", "isra-countdown");
-});
+}
 
 
     async function ermittleStandort() {
