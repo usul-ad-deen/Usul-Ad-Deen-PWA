@@ -81,6 +81,22 @@ nav ul li {
     color: white;
 }
 
+hadith {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    bottom: 0;
+    width: 75%;
+}
+
+dua {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    bottom: 0;
+    width: 75%;
+}
+
 /* Countdown-Anzeige */
 .countdown-bold {
     font-weight: bold;
