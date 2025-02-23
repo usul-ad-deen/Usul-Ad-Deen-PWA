@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function ladeMekkaUhrzeit() {
         let jetztUTC = new Date();
-        let mekkaOffset = 3 * 60 * 60 * 1000;
+        let mekkaOffset = 2 * 60 * 60 * 1000;
         let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
         document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
     }
