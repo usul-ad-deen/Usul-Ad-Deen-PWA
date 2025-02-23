@@ -1,10 +1,10 @@
-document.addEventListener("DOMContentLoaded", async () => {
+edocument.addEventListener("DOMContentLoaded", async () => {
     const buchListe = document.getElementById("buch-liste");
     const buchIframe = document.getElementById("buch-iframe");
 
     async function ladeBücher() {
         try {
-            let response = await fetch("bücher.json");
+            let response = await fetch("buecher/bücher.json");
             let bücher = await response.json();
 
             bücher.forEach(buch => {
