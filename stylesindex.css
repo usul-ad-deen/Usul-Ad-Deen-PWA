@@ -1,29 +1,32 @@
 body {
+    body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+    color: black;
 }
 
-header {
+/* Hintergrundbild für Kopfzeile & Zeit-Sektion */
+.header-zeit-container {
     background: url('icons/hintergrund.png') no-repeat center center;
     background-size: cover;
-    color: white;
+    padding: 20px;
+}
+
+/* Kopfzeile */
+header {
     text-align: center;
     padding: 50px 0;
 }
 
+/* Zeit-Sektion */
 #zeit-section {
-    background: url('icons/hintergrund.png') no-repeat center center;
-    background-size: cover;
-    color: white;
     padding: 20px;
 }
 
-h1, h2, p, nav ul li a {
+/* Weiße Texte NUR in Kopfzeile, Menü & Zeit-Sektion */
+header h1, header nav ul li a, #zeit-section h2, #zeit-section p {
     color: white;
 }
+
 
 #gebetszeiten-und-feiertage {
     display: flex;
