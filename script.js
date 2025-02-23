@@ -229,3 +229,113 @@ function berechneCountdown(feiertagDatum, elementId) {
     berechneCountdown("2026-01-16", "isra-countdown");
 
 });
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    function updateUhrzeit() {
+        let jetzt = new Date();
+        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
+        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
+
+        // Mekka-Zeit (UTC+3)
+        let jetztUTC = new Date();
+        let mekkaOffset = 3 * 60 * 60 * 1000;
+        let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
+        document.getElementById("mekka-uhrzeit").textContent = mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
+    }
+    setInterval(updateUhrzeit, 1000);
+    updateUhrzeit();
+
+    async function ladeIslamischesDatum() {
+        try {
+            let heute = new Date();
+            let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
+            let response = await fetch(`https://api.aladhan.com/v1/gToH/${gregorianischesDatum}`);
+            let data = await response.json();
+
+            let islamischerTag = data.data.hijri.day;
+            let islamischerMonat = data.data.hijri.month.en;
+            let islamischesJahr = data.data.hijri.year;
+
+            let monateDeutsch = {
+                "Muharram": "Muharram", "Safar": "Safar", "Rabi' al-Awwal": "Erster Rabi'",
+                "Rabi' al-Thani": "Zweiter Rabi'", "Jumada al-Awwal": "Erster Jumada",
+                "Jumada al-Thani": "Zweiter Jumada", "Rajab": "Rajab", "Sha'ban": "Sha'ban",
+                "Ramadan": "Ramadan", "Shawwal": "Schawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
+                "Dhul-Hijjah": "Dhul-Hijjah"
+            };
+
+            let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
+            
+            // Islamisches Datum soll mit Maghrib aktualisiert werden
+            let jetzt = new Date();
+            let stunden = jetzt.getHours();
+            if (stunden >= 18) { // Maghrib beginnt ab 18:00 Uhr
+                islamischerTag = parseInt(islamischerTag) + 1;
+            }
+
+            document.getElementById("islamisches-datum").textContent = 
+                `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
+        } catch (error) {
+            console.error("Fehler beim Laden des islamischen Datums:", error);
+        }
+    }
+
+    function berechneCountdown(datumString, elementId) {
+        let jetzt = new Date();
+        let feiertag = new Date(datumString);
+        feiertag.setHours(18, 0, 0); // Feiertage beginnen um Maghrib des Vortags
+
+        let diffMs = feiertag - jetzt;
+        if (diffMs <= 0) {
+            document.getElementById(elementId).textContent = "Heute!";
+            return;
+        }
+
+        let tage = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        let stunden = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+        document.getElementById(elementId).textContent = `${tage} Tage, ${stunden} Stunden`;
+    }
+
+    async function ladeHadith() {
+        try {
+            let response = await fetch("hadith.json");
+            let data = await response.json();
+            let zufallsHadith = data[Math.floor(Math.random() * data.length)];
+            document.getElementById("hadith-arabisch").textContent = zufallsHadith.arabisch;
+            document.getElementById("hadith-deutsch").textContent = zufallsHadith.deutsch;
+            document.getElementById("hadith-quelle").textContent = zufallsHadith.quelle;
+            document.getElementById("hadith-auth").textContent = zufallsHadith.authentizität;
+        } catch (error) {
+            console.error("Fehler beim Laden des Hadiths:", error);
+        }
+    }
+
+    async function ladeDua() {
+        try {
+            let response = await fetch("dua.json");
+            let data = await response.json();
+            let zufallsDua = data[Math.floor(Math.random() * data.length)];
+            document.getElementById("dua-arabisch").textContent = zufallsDua.arabisch;
+            document.getElementById("dua-transliteration").textContent = zufallsDua.transliteration;
+            document.getElementById("dua-deutsch").textContent = zufallsDua.deutsch;
+            document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
+        } catch (error) {
+            console.error("Fehler beim Laden des Bittgebets:", error);
+        }
+    }
+
+    ladeHadith();
+    ladeDua();
+    ladeIslamischesDatum();
+    berechneCountdown("2025-03-01", "ramadan-countdown");
+    berechneCountdown("2025-03-30", "fitr-countdown");
+    berechneCountdown("2025-06-04", "hajj-countdown");
+    berechneCountdown("2025-06-05", "arafah-countdown");
+    berechneCountdown("2025-06-06", "adha-countdown");
+    berechneCountdown("2025-06-26", "neujahr-countdown");
+    berechneCountdown("2025-07-05", "ashura-countdown");
+    berechneCountdown("2026-01-16", "isra-countdown");
+});
+
