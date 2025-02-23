@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateUhrzeit, 1000);
     updateUhrzeit();
 
-    async function ladeIslamischesDatum() {
+     async function ladeIslamischesDatum() {
         try {
             let heute = new Date();
             let gregorianischesDatum = `${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`;
@@ -24,11 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Muharram": "Muharram", "Safar": "Safar", "Rabi' al-Awwal": "Erster Rabi'",
                 "Rabi' al-Thani": "Zweiter Rabi'", "Jumada al-Awwal": "Erster Jumada",
                 "Jumada al-Thani": "Zweiter Jumada", "Rajab": "Rajab", "Sha'ban": "Sha'ban",
-                "Ramadan": "Ramadan", "Shawwal": "Shawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
-                "Dhul-Hijjah": "Dhul-Hijjah"
+                "Ramadan": "Ramadan", "Shawwal": "Schawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
+                "Dhul-Hijjah": "Dhul-Hiddscha"
             };
 
-            let islamischerMonatDeutsch = monateDeutsch[islamischerMonat];
+            let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
             document.getElementById("islamisches-datum").textContent = 
                 `Islamischer Tag: ${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
         } catch (error) {
@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let mekkaZeit = new Date(jetztUTC.getTime() + mekkaOffset);
         document.getElementById("mekka-uhrzeit").textContent = "Mekka: " + mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
     }
+    setInterval(mekkaUhrzeit, 1000);
+    mekkaUhrzeit();
 
     function berechneMitternacht(fajr, maghrib) {
         let [fH, fM] = fajr.split(":").map(Number);
@@ -161,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("dua-deutsch").textContent = zufallsDua.deutsch;
         document.getElementById("dua-trans").textContent = zufallsDua.transliteration;
         document.getElementById("dua-quelle").textContent = zufallsDua.quelle;
-         document.getElementById("dua-auth").textContent = zufallsDua.authentizität;
+        document.getElementById("dua-auth").textContent = zufallsDua.authentizität;
     }
 
   
