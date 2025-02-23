@@ -10,10 +10,6 @@ header {
     background-color: #004e00; 
     background-image: url(icons/hintergrund.png);
     height: 151px;
-}
-
-header p {
-    
     text-align: center;
     background-color: #004e00;
     color: white;
@@ -59,12 +55,11 @@ header p {
 nav ul {
     list-style-type: none;
     padding: 0;
-     background-color: White;
 }
 
 nav ul li {
-    display: block;
-    margin: 1em;
+    display: inline;
+    margin: 0 10px;
 }
 
 
