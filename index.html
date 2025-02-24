@@ -5,38 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usul ad-Deen</title>
     <link rel="stylesheet" href="stylesindex.css">
+    <link rel="manifest" href="manifest.json">
     <script defer src="script.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Usul ad-Deen</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Start</a></li>
-                <li><a href="hadith.html">Hadithsammlungen</a></li>
-                <li><a href="dua.html">Bittgebete</a></li>
-                <li><a href="beiträge.html">Beiträge</a></li>
-                <li><a href="bücher.html">Bücher</a></li>
-                <li><a href="login.html">Login</a></li>
-                <li class="dropdown">
-                    <a href="#">Mehr</a>
-                    <div class="dropdown-content">
-                        <a href="ueber.html">Über uns</a>
-                        <a href="einstellungen.html">Einstellungen</a>
-                        <a href="kontakt.html">Kontakt</a>
-                        <a href="impressum.html">Impressum & Datenschutz</a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-        <div class="header-bg"></div>
-        <section id="zeit-section">
-            <h3>Aktuelle Zeit & Datum</h3>
-            <p><span id="datum">Lädt...</span> | <span id="uhrzeit">Berlin: 00:00</span></p>
-            <p><span id="islamisches-datum">Lädt...</span> | <span id="mekka-uhrzeit">Mekka: 00:00</span></p>
-        </section>
-    </header>
 
+<header class="header">
+    <div class="header-top">
+        <img src="logo.png" alt="App Logo" class="logo">
+        <h1>Usul ad-Deen</h1>
+        <h2>Startseite</h2>
+    </div>
+    <div class="header-info">
+        <p><span id="datum">Lädt...</span> | <span id="uhrzeit">Berlin: 00:00</span></p>
+        <p><span id="islamisches-datum">Lädt...</span> | <span id="mekka-uhrzeit">Mekka: 00:00</span></p>>
+        <p>Nächstes Gebet: <span id="next-prayer"></span> (in: <span id="prayer-countdown"></span>)</p>
+    </div>
+</header>
+    
+<nav class="menu">
+    <button class="menu-button">☰</button>
+    <ul class="menu-list">
+        <li><a href="index.html">Startseite</a></li>
+        <li><a href="beiträge.html">Beiträge</a></li>
+        <li><a href="bücher.html">Bücher</a></li>
+        <li><a href="hadith.html">Hadithsammlung</a></li>
+        <li><a href="dua.html">Bittgebete</a></li>
+        <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
+        <li><a href="kalender.html">islamischer Kalender</a></li>
+        <li><a href="login.html">Login/Registrierung</a></li>
+        <li><a href="über-uns.html">Über uns</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+         <li><a href="impressum.html">Impressum & Dattenschutz</a></li>
+        <li><a href="app-teilen.html">App teilen</a></li>
+        <li><a href="#" id="dark-mode-toggle">Dark Mode</a></li>
+    </ul>
+</nav>
+    
     <main>
 
         <section id="gebetszeiten-und-feiertage">
@@ -45,16 +50,16 @@
                 <p>Ihr Standort: <span id="stadt-name">Unbekannt. Bitte manuell wählen.</span></p>
                 <select id="stadt-auswahl"></select>
                 <table>
-                    <tr><th>Gebet</th><th>Uhrzeit</th></tr>
-                    <tr><td><strong>Imsak (Fastenbeginn)</strong></td><td id="Imsak" class="fajr-bold">00:00</td></tr>
-                    <tr><td><strong>Fajr</strong></td><td id="fajr" class="fajr-bold">00:00</td></tr>
-                    <tr><td>Shuruk (Sonnenaufgang) </td><td id="shuruk">00:00</td></tr>
-                    <tr><td><strong>Dhuhr</strong></td><td id="dhuhr" class="duhr-bold">00:00</td></tr>
-                    <tr><td><strong>Asr</strong></td><td id="asr" class="asr-bold">00:00</td></tr>
-                    <tr><td><strong>Maghrib (Ende Fastenzeit)</strong></td><td id="maghrib" class="fajr-bold">00:00</td></tr>
-                    <tr><td><strong>Isha</strong></td><td id="isha" class="fajr-bold">00:00</td></tr>
-                    <tr><td>Islamische Mitternacht (Ende Isha)</td><td id="mitternacht">00:00</td></tr>
-                    <tr><td>Letztes Drittel</td><td id="letztes-drittel">00:00</td></tr>
+                    <tr><th>Gebet</th><th>Uhrzeit</th></tr><th>In</th></tr>
+                    <tr><td><strong>Imsak (Fastenbeginn)</strong></td><td id="Imsak" class="fajr-bold">00:00</td><td id="imsak-countdown" class="fajr-bold"> 00:00:00 </td></tr>
+                    <tr><td><strong>Fajr</strong></td><td id="fajr" class="fajr-bold">00:00</td></td><td id="fajr-countdown" class="fajr-bold"> 00:00:00 </td></tr>
+                    <tr><td>Shuruk (Sonnenaufgang) </td><td id="shuruk">00:00</td></td><td id="shuruk-countdown" class="fajr-bold"> 00:00:00 </td></tr>
+                    <tr><td><strong>Dhuhr</strong></td><td id="dhuhr" class="duhr-bold">00:00</td></td><td id="duhr-countdown" class="duhr-bold"> 00:00:00 </td></tr>
+                    <tr><td><strong>Asr</strong></td><td id="asr" class="asr-bold">00:00</td></td><td id="fajr-countdown" class="asr-bold"> 00:00:00 </td></tr>
+                    <tr><td><strong>Maghrib (Ende Fastenzeit)</strong></td><td id="maghrib" class="fajr-bold">00:00</td></td><td id="maghrib-countdown" class="fajr-bold"> 00:00:00 </td></tr>
+                    <tr><td><strong>Isha</strong></td><td id="isha" class="fajr-bold">00:00</td></td><td id="isha-countdown" class="fajr-bold"> 00:00:00 </td></tr>
+                    <tr><td>Islamische Mitternacht (Ende Isha)</td><td id="mitternacht">00:00</td></td><td id="mitternacht-countdown" class="fajr-bold"> 00:00:00 </td></tr>
+                    <tr><td>Letztes Drittel</td><td id="letztes-drittel">00:00</td></td><td id="letztesDrittel-countdown" class="fajr-bold"> 00:00:00 </td></tr>
                 </table>
             </div>
 
