@@ -13,7 +13,17 @@
     }
     setInterval(updateUhrzeit, 1000);
     
+ const darkModeToggle = document.getElementById("dark-mode-toggle");
+    darkModeToggle.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+    });
 
+    // Menü ein-/ausblenden
+    document.querySelector(".menu-button").addEventListener("click", function () {
+        document.querySelector(".menu-list").classList.toggle("show");
+  
+      });
+    
      async function ladeIslamischesDatum() {
         try {
             let heute = new Date();
@@ -200,6 +210,62 @@
     }
 
   
+    const prayerTimes = 
+        document.getElementById("Imsak").textContent = zeitAnpassen(data.data.timings.Fajr, -3);
+        document.getElementById("fajr").textContent = fajr;
+        document.getElementById("shuruk").textContent = zeitAnpassen(data.data.timings.Sunrise, -2);
+        document.getElementById("dhuhr").textContent = zeitAnpassen(data.data.timings.Dhuhr, 2);
+        document.getElementById("asr").textContent = zeitAnpassen(data.data.timings.Asr, 2);
+        document.getElementById("maghrib").textContent = maghrib;
+        document.getElementById("isha").textContent = zeitAnpassen(data.data.timings.Isha, 3);
+        document.getElementById("mitternacht").textContent = berechneMitternacht(fajr, maghrib);
+        document.getElementById("letztes-drittel").textContent = berechneLetztesDrittel(fajr, maghrib);
+  
+
+    // Setze die Gebetszeiten in die HTML-Elemente
+    Object.keys(prayerTimes).forEach(prayer => {
+        document.getElementById(`${prayer.toLowerCase()}-time`).textContent = prayerTimes[prayer];
+    });
+
+    function getNextPrayer() {
+        const now = new Date();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
+        let nextPrayer = null;
+        let nextPrayerTime = null;
+
+        Object.entries(prayerTimes).forEach(([prayer, time]) => {
+            const [hours, minutes] = time.split(":").map(Number);
+            const prayerMinutes = hours * 60 + minutes;
+            if (prayerMinutes > currentTime && !nextPrayer) {
+                nextPrayer = prayer;
+                nextPrayerTime = prayerMinutes;
+            }
+        });
+
+        if (!nextPrayer) {
+            nextPrayer = "Fajr";
+            nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]);
+        }
+
+        return { nextPrayer, nextPrayerTime };
+    }
+
+    function updatePrayerCountdown() {
+        const now = new Date();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
+        const { nextPrayer, nextPrayerTime } = getNextPrayer();
+
+        const remainingMinutes = nextPrayerTime - currentTime;
+        const hours = Math.floor(remainingMinutes / 60);
+        const minutes = remainingMinutes % 60;
+
+        document.getElementById("next-prayer").textContent = nextPrayer;
+        document.getElementById("countdown").textContent = `${hours} Std ${minutes} Min`;
+    }
+
+    setInterval(updateCountdown, 10000);
+
+
     ladeGebetszeiten("Berlin");
     ladeHadith();
     ladeDua();
@@ -209,6 +275,7 @@
     ladeMekkaUhrzeit();
     ladeDatum();
     updateUhrzeit();
+    updatePrayerCountdown();
     setzeCountdown();
     berechneCountdown("2025-03-01", "ramadan-countdown");
     berechneCountdown("2025-03-30", "fitr-countdown");
