@@ -27,13 +27,6 @@ body {
     margin-top: 10px;
 }
 
-.prayer-times {
-    background: white;
-    padding: 20px;
-    margin: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 
 
 #zeit-section {
@@ -43,57 +36,57 @@ body {
 }
 
 
-/* Navigation */
-nav ul {
+
+.menu {
+    background-color: #002060;
+    color: white;
+    padding: 10px;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.menu-list {
+    display: none;
     list-style-type: none;
     padding: 0;
 }
 
-nav ul li {
-    display: inline-block;
-    position: relative;
-    margin: 0 10px;
+.menu-list li {
+    padding: 10px;
 }
 
-nav ul li a {
+.menu-list li a {
+    color: white;
     text-decoration: none;
+}
+
+.menu-list li:hover {
+    background-color: #0050a0;
+}
+
+.prayer-times {
+    background: white;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#dark-mode-toggle {
+    cursor: pointer;
+}
+
+.dark-mode {
+    background-color: #222;
     color: white;
-    padding: 10px;
-    display: inline-block;
 }
 
-/* Dropdown-Menü */
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 150px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 10px;
-    display: block;
-    text-align: left;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-/* Zeit-Anzeige */
-#zeit-section {
-    background-color: #004e00;
-    color: white;
-    padding: 15px;
-}
 
 /* Gebetszeiten & Feiertage nebeneinander */
 #gebetszeiten-und-feiertage {
