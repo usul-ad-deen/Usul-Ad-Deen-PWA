@@ -16,13 +16,13 @@
  const darkModeToggle = document.getElementById("dark-mode-toggle");
     darkModeToggle.addEventListener("click", function () {
         document.body.classList.toggle("dark-mode");
-    });
+      }
 
     // Menü ein-/ausblenden
     document.querySelector(".menu-button").addEventListener("click", function () {
         document.querySelector(".menu-list").classList.toggle("show");
   
-      });
+      }
     
      async function ladeIslamischesDatum() {
         try {
