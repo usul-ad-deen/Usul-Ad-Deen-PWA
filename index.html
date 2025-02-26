@@ -15,14 +15,14 @@
         <img src="icons/hintergrund.png" alt="App Logo" class="logo">
         <h1>Usul ad-Deen</h1>
         <h2>Startseite</h2>
-    </div>
+    </div>    
     <div class="header-info">
         <p><span id="datum">Lädt...</span> | <span id="uhrzeit">Berlin: 00:00</span></p>
-        <p><span id="islamisches-datum">Lädt...</span> | <span id="mekka-uhrzeit">Mekka: 00:00</span></p>>
+        <p><span id="islamisches-datum">Lädt...</span> | <span id="mekka-uhrzeit">Mekka: 00:00</span></p>
         <p>Nächstes Gebet: <span id="next-prayer"></span> (in: <span id="prayer-countdown"></span>)</p>
     </div>
 </header>
-    
+
 <nav class="menu">
     <button class="menu-button">☰</button>
     <ul class="menu-list">
@@ -32,42 +32,42 @@
         <li><a href="hadith.html">Hadithsammlung</a></li>
         <li><a href="dua.html">Bittgebete</a></li>
         <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
-        <li><a href="kalender.html">islamischer Kalender</a></li>
+        <li><a href="kalender.html">Islamischer Kalender</a></li>
         <li><a href="login.html">Login/Registrierung</a></li>
         <li><a href="über-uns.html">Über uns</a></li>
         <li><a href="kontakt.html">Kontakt</a></li>
-         <li><a href="impressum.html">Impressum & Dattenschutz</a></li>
+        <li><a href="impressum.html">Impressum & Datenschutz</a></li>
         <li><a href="app-teilen.html">App teilen</a></li>
         <li><a href="#" id="dark-mode-toggle">Dark Mode</a></li>
     </ul>
 </nav>
-    
-    <main>
 
-        <section id="gebetszeiten-und-feiertage">
-            <div id="gebetszeiten">
-                <h2>Gebetszeiten</h2>
-                <p>Ihr Standort: <span id="stadt-name">Unbekannt. Bitte manuell wählen.</span></p>
-                <select id="stadt-auswahl"></select>
-                <table>
-                    <tr><th>Gebet</th><th>Uhrzeit</th></tr><th>In</th></tr>
-                    <tr><td><strong>Imsak (Fastenbeginn)</strong></td><td id="Imsak" class="fajr-bold">00:00</td><td id="imsak-countdown" class="fajr-bold"> 00:00:00 </td></tr>
-                    <tr><td><strong>Fajr</strong></td><td id="fajr" class="fajr-bold">00:00</td></td><td id="fajr-countdown" class="fajr-bold"> 00:00:00 </td></tr>
-                    <tr><td>Shuruk (Sonnenaufgang) </td><td id="shuruk">00:00</td></td><td id="shuruk-countdown" class="fajr-bold"> 00:00:00 </td></tr>
-                    <tr><td><strong>Dhuhr</strong></td><td id="dhuhr" class="duhr-bold">00:00</td></td><td id="duhr-countdown" class="duhr-bold"> 00:00:00 </td></tr>
-                    <tr><td><strong>Asr</strong></td><td id="asr" class="asr-bold">00:00</td></td><td id="fajr-countdown" class="asr-bold"> 00:00:00 </td></tr>
-                    <tr><td><strong>Maghrib (Ende Fastenzeit)</strong></td><td id="maghrib" class="fajr-bold">00:00</td></td><td id="maghrib-countdown" class="fajr-bold"> 00:00:00 </td></tr>
-                    <tr><td><strong>Isha</strong></td><td id="isha" class="fajr-bold">00:00</td></td><td id="isha-countdown" class="fajr-bold"> 00:00:00 </td></tr>
-                    <tr><td>Islamische Mitternacht (Ende Isha)</td><td id="mitternacht">00:00</td></td><td id="mitternacht-countdown" class="fajr-bold"> 00:00:00 </td></tr>
-                    <tr><td>Letztes Drittel</td><td id="letztes-drittel">00:00</td></td><td id="letztesDrittel-countdown" class="fajr-bold"> 00:00:00 </td></tr>
-                </table>
-            </div>
+<main>
 
-            <div id="feiertage">
-                <h2>Islamische Feiertage & Countdown</h2>
-                <p> Bitte beachtet, dass die islamischen Tage bereits am Vorabend des Tages beginnen und sich aufgrund der Mondsichtungen verschieben können. Und Allah swt weiß es am Besten.</p>
-                <table id="feiertage-tabelle">
-                    <tr><th>islamischer Tag</th><th>Datum</th><th>Verbleibende Tage</th></tr>
+    <section id="gebetszeiten-und-feiertage">
+        <div id="gebetszeiten">
+            <h2>Gebetszeiten</h2>
+            <p>Ihr Standort: <span id="stadt-name">Unbekannt. Bitte manuell wählen.</span></p>
+            <select id="stadt-auswahl"></select>
+            <table>
+                <tr><th>Gebet</th><th>Uhrzeit</th><th>In</th></tr>
+                <tr><td><strong>Imsak (Fastenbeginn)</strong></td><td id="imsak" class="fajr-bold">00:00</td><td id="imsak-countdown" class="fajr-bold">00:00:00</td></tr>
+                <tr><td><strong>Fajr</strong></td><td id="fajr" class="fajr-bold">00:00</td><td id="fajr-countdown" class="fajr-bold">00:00:00</td></tr>
+                <tr><td>Shuruk (Sonnenaufgang)</td><td id="shuruk">00:00</td><td id="shuruk-countdown" class="fajr-bold">00:00:00</td></tr>
+                <tr><td><strong>Dhuhr</strong></td><td id="dhuhr" class="duhr-bold">00:00</td><td id="duhr-countdown" class="duhr-bold">00:00:00</td></tr>
+                <tr><td><strong>Asr</strong></td><td id="asr" class="asr-bold">00:00</td><td id="asr-countdown" class="asr-bold">00:00:00</td></tr>
+                <tr><td><strong>Maghrib (Fastenbrechen)</strong></td><td id="maghrib" class="maghrib-bold">00:00</td><td id="maghrib-countdown" class="maghrib-bold">00:00:00</td></tr>
+                <tr><td><strong>Isha</strong></td><td id="isha" class="isha-bold">00:00</td><td id="isha-countdown" class="isha-bold">00:00:00</td></tr>
+                <tr><td>Islamische Mitternacht</td><td id="mitternacht">00:00</td><td id="mitternacht-countdown">00:00:00</td></tr>
+                <tr><td>Letztes Drittel der Nacht</td><td id="letztes-drittel">00:00</td><td id="letztesDrittel-countdown">00:00:00</td></tr>
+            </table>
+        </div>
+
+        <div id="feiertage">
+            <h2>Islamische Feiertage & Countdown</h2>
+            <p>Bitte beachtet, dass die islamischen Tage bereits am Vorabend beginnen und sich aufgrund der Mondsichtungen verschieben können. Und Allah (swt) weiß es am besten.</p>
+            <table id="feiertage-tabelle">
+                    <tr><th>Islamischer Tag</th><th>Datum</th><th>Verbleibende Tage</th></tr>
                     <tr><td>Ramadan</td><td>01.03.2025</td><td id="ramadan-countdown" class="fajr-bold">00 Tage 00 Stunden</td></tr>
                     <tr><td>Eid al-Fitr</td><td>30.03.2025</td><td id="fitr-countdown" class="fajr-bold">Lädt...</td></tr>
                     <tr><td>Hajj</td><td>04.06.2025</td><td id="hajj-countdown" class="fajr-bold">Lädt...</td></tr>
@@ -77,30 +77,34 @@
                     <tr><td>Ashura</td><td>05.07.2025</td><td id="ashura-countdown" class="fajr-bold">Lädt...</td></tr>
                     <tr><td>Isra' und Mi'raj</td><td>16.01.2026</td><td id="isra-countdown" class="fajr-bold">Lädt...</td></tr>
                 </table>
-            </div>
-        </section>
+            </table>
+        </div>
+    </section>
 
-        <section id="hadith-dua-box">
-            <div id="hadith-box">
-                <h2>Hadith des Tages</h2>
+    <section id="hadith-dua-box">
+        <div id="hadith-box">
+            <h2>Hadith des Tages</h2>
                 <p id="hadith-arabisch">Lädt...</p>
                 <p id="hadith-deutsch">Lädt...</p>
                 <p><strong>Quelle:</strong> <span id="hadith-quelle">Lädt...</span></p>
                 <p><strong>Authentizität:</strong> <span id="hadith-auth">Lädt...</span></p>
-            </div>
+        </div>
 
-            <div id="dua-box">
+     <div id="dua-box">
                 <h2>Bittgebet des Tages</h2>
                 <p id="dua-arabisch">Lädt...</p>
                 <p id="dua-trans">Lädt...</p>
                 <p id="dua-deutsch">Lädt...</p>
                 <p><strong>Quelle und Authentizität:</strong> <span id="dua-quelle">Lädt...</span></p>
             </div>
-        </section>
-    </main>
+    </section>
 
-    <footer>
-        <p>&copy; 2025 Usul ad-Deen</p>
-    </footer>
+</main>
+
+<footer>
+    <p>&copy; 2025 Usul ad-Deen</p>
+</footer>
+
 </body>
 </html>
+
