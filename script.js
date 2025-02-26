@@ -12,11 +12,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     setInterval(updateUhrzeit, 1000);
 
-   // 📌 Menü-Steuerung (Fix: Menü funktioniert jetzt richtig)
-    document.querySelector(".menu-button").addEventListener("click", function () {
-        let menu = document.querySelector(".menu-list");
-        menu.classList.toggle("show");
+
+    const menuButton = document.querySelector(".menu-button");
+    const menuList = document.querySelector(".menu-list");
+
+    menuButton.addEventListener("click", () => {
+        menuList.classList.toggle("show");
     });
+
+    // Schließt das Menü, wenn man außerhalb klickt
+    document.addEventListener("click", (event) => {
+        if (!menuButton.contains(event.target) && !menuList.contains(event.target)) {
+            menuList.classList.remove("show");
+        }
+    });
+
+
 
      // 📌 Dark Mode umschalten & speichern
     document.getElementById("dark-mode-toggle").addEventListener("click", function () {
