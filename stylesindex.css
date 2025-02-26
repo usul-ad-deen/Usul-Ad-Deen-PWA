@@ -1,15 +1,15 @@
-/* Hintergrundbild mit Scroll-Effekt */
+/* 📌 Hintergrundbild */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background: url('icons/hintergrund.png') center top no-repeat;
-    background-size: contain;
-    background-attachment: scroll; 
+    background-size: cover;
+    background-attachment: fixed;
     color: #fff;
 }
 
-/* Top-Info mit Uhrzeit in voller Breite */
+/* 📌 Top-Info mit Uhrzeit */
 .top-info {
     display: flex;
     flex-direction: column;
@@ -33,7 +33,7 @@ body {
     border-radius: 8px;
 }
 
-/* Layout für Tabellen (nebeneinander) */
+/* 📌 Layout für Tabellen (nebeneinander) */
 .container {
     display: flex;
     justify-content: space-around;
@@ -42,7 +42,7 @@ body {
     gap: 20px;
 }
 
-/* Allgemeine Box-Stile */
+/* 📌 Allgemeine Box-Stile */
 .box {
     background: rgba(0, 0, 0, 0.8);
     padding: 15px;
@@ -52,7 +52,7 @@ body {
     min-width: 300px;
 }
 
-/* Tabellen */
+/* 📌 Tabellen */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -68,7 +68,7 @@ th {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Dark Mode */
+/* 📌 Dark Mode */
 .dark-mode {
     background: #222;
     color: #ddd;
@@ -78,7 +78,7 @@ th {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Footer */
+/* 📌 Footer */
 footer {
     text-align: center;
     padding: 10px;
