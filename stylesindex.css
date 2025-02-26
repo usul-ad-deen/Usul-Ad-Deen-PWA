@@ -1,156 +1,81 @@
-/* Allgemeine Stile */
+/* Hintergrundbild mit Scroll-Effekt */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: url('icons/hintergrund.png') no-repeat center center fixed;
-    background-size: cover;
+    background: url('icons/hintergrund.png') center top no-repeat;
+    background-size: contain;
+    background-attachment: scroll; 
     color: #fff;
 }
 
-/* Header (Kopfzeile) */
-.header {
-    text-align: center;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.7);
-}
-
-.header-top h1 {
-    font-size: 26px;
-    margin: 5px 0;
-}
-
-.header-info {
-    font-size: 16px;
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Verhindert Überlappung der Uhrzeit & Datum */
-.header-info p {
-    margin: 3px 0;
-    font-weight: bold;
-}
-
-/* Menü */
-.menu {
-    position: relative;
-    text-align: center;
-}
-
-.menu-button {
-    font-size: 24px;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 10px;
-}
-
-.menu-list {
-    display: none;
-    list-style: none;
-    padding: 0;
-    background: rgba(0, 0, 0, 0.8);
-}
-
-.menu-list.show {
-    display: block;
-}
-
-.menu-list li {
-    padding: 10px;
-    border-bottom: 1px solid #444;
-}
-
-.menu-list a {
-    color: white;
-    text-decoration: none;
-}
-
-.menu-list a:hover {
-    text-decoration: underline;
-}
-
-/* Gebetszeiten-Box */
-#gebetszeiten {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    margin: 15px auto;
-    max-width: 400px;
-}
-
-/* Tabelle der Gebetszeiten */
-#gebetszeiten table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#gebetszeiten th, #gebetszeiten td {
-    padding: 8px;
-    border: 1px solid #fff;
-}
-
-#gebetszeiten th {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-#gebetszeiten tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-/* Islamische Feiertage */
-#feiertage {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    margin: 15px auto;
-    max-width: 400px;
-}
-
-#feiertage table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#feiertage th, #feiertage td {
-    padding: 8px;
-    border: 1px solid #fff;
-}
-
-#feiertage th {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-#feiertage tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-/* Hadith- und Dua-Box */
-#hadith-dua-box {
+/* Top-Info mit Uhrzeit in voller Breite */
+.top-info {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px auto;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    width: 100%;
 }
 
-#hadith-box, #dua-box {
+.startseite-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.header-info {
+    text-align: center;
+    width: 80%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+/* Layout für Tabellen (nebeneinander) */
+.container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 15px;
+    gap: 20px;
+}
+
+/* Allgemeine Box-Stile */
+.box {
     background: rgba(0, 0, 0, 0.8);
     padding: 15px;
     border-radius: 8px;
     text-align: center;
-    width: 80%;
-    margin-bottom: 10px;
+    width: 45%;
+    min-width: 300px;
+}
+
+/* Tabellen */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #fff;
+    text-align: center;
+}
+
+th {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Dark Mode */
 .dark-mode {
     background: #222;
-    color: #fff;
+    color: #ddd;
+}
+
+.dark-mode .box {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Footer */
