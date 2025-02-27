@@ -134,9 +134,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 }
 
 
-   document.addEventListener("DOMContentLoaded", async () => {
-    console.log("🚀 Skript wird geladen...");
-
     // 📌 Gebetszeiten abrufen & setzen (mit Anpassung)
     async function ladeGebetszeiten(stadt) {
         try {
