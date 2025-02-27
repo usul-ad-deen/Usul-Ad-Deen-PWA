@@ -134,6 +134,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 }
 
 
+   document.addEventListener("DOMContentLoaded", async () => {
+    console.log("🚀 Skript wird geladen...");
+
     // 📌 Gebetszeiten abrufen & setzen (mit Anpassung)
     async function ladeGebetszeiten(stadt) {
         try {
@@ -217,66 +220,63 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 📌 Countdown für jedes Gebet berechnen
     function updatePrayerCountdowns(prayerTimes) {
-    let jetzt = new Date();
-    let jetztMinuten = jetzt.getHours() * 60 + jetzt.getMinutes();
+        let jetzt = new Date();
+        let jetztMinuten = jetzt.getHours() * 60 + jetzt.getMinutes();
 
-    let nextPrayer = null;
-    let nextPrayerTime = null;
-    let currentPrayer = null;
-    let currentPrayerTime = null;
+        let nextPrayer = null;
+        let nextPrayerTime = null;
+        let currentPrayer = null;
+        let currentPrayerTime = null;
 
-    Object.keys(prayerTimes).forEach((prayer, index, array) => {
-        let [h, m] = prayerTimes[prayer].split(":").map(Number);
-        let prayerStartMin = h * 60 + m;
+        Object.keys(prayerTimes).forEach(prayer => {
+            let [h, m] = prayerTimes[prayer].split(":").map(Number);
+            let prayerStartMin = h * 60 + m;
 
-        let countdownElement = document.getElementById(`${prayer}-countdown`);
-        if (countdownElement) {
-            let verbleibendeMinuten = prayerStartMin - jetztMinuten;
+            let countdownElement = document.getElementById(`${prayer}-countdown`);
+            if (countdownElement) {
+                let verbleibendeMinuten = prayerStartMin - jetztMinuten;
 
-            if (verbleibendeMinuten > 0) {
-                let stunden = Math.floor(verbleibendeMinuten / 60);
-                let minuten = verbleibendeMinuten % 60;
-                countdownElement.textContent = `Beginnt in: ${stunden} Std ${minuten} Min`;
-            } else {
-                countdownElement.textContent = "Beginnt in: 00:00";
+                if (verbleibendeMinuten > 0) {
+                    let stunden = Math.floor(verbleibendeMinuten / 60);
+                    let minuten = verbleibendeMinuten % 60;
+                    countdownElement.textContent = `Beginnt in: ${stunden} Std ${minuten} Min`;
+                } else {
+                    countdownElement.textContent = "Beginnt in: 00:00";
+                }
             }
+
+            if (prayerStartMin > jetztMinuten && !nextPrayer) {
+                nextPrayer = prayer;
+                nextPrayerTime = prayerTimes[prayer];
+            }
+
+            if (prayerStartMin <= jetztMinuten) {
+                currentPrayer = prayer;
+                currentPrayerTime = prayerTimes[prayer];
+            }
+        });
+
+        document.getElementById("current-prayer").textContent = currentPrayer
+            ? `${currentPrayer.toUpperCase()} (${currentPrayerTime})`
+            : "Kein aktuelles Gebet";
+
+        document.getElementById("next-prayer").textContent = nextPrayer
+            ? `${nextPrayer.toUpperCase()} (${nextPrayerTime})`
+            : "Kein weiteres Gebet";
+
+        if (nextPrayerTime) {
+            let [nh, nm] = nextPrayerTime.split(":").map(Number);
+            let nextPrayerMin = nh * 60 + nm;
+            let verbleibendeMinuten = nextPrayerMin - jetztMinuten;
+            let stunden = Math.floor(verbleibendeMinuten / 60);
+            let minuten = verbleibendeMinuten % 60;
+
+            document.getElementById("next-prayer-countdown").textContent = `${stunden} Std ${minuten} Min`;
+        } else {
+            document.getElementById("next-prayer-countdown").textContent = "Kein weiteres Gebet";
         }
-
-        // Bestimme das aktuelle Gebet
-        if (prayerStartMin <= jetztMinuten) {
-            currentPrayer = prayer;
-            currentPrayerTime = prayerTimes[prayer];
-        }
-
-        // Bestimme das nächste Gebet
-        if (prayerStartMin > jetztMinuten && !nextPrayer) {
-            nextPrayer = prayer;
-            nextPrayerTime = prayerTimes[prayer];
-        }
- 
-
-    // Zeige das aktuelle und nächste Gebet mit Uhrzeit an
-    document.getElementById("current-prayer").textContent = currentPrayer
-        ? `${currentPrayer.toUpperCase()} (${currentPrayerTime})`
-        : "Kein aktuelles Gebet";
-        
-    document.getElementById("next-prayer").textContent = nextPrayer
-        ? `${nextPrayer.toUpperCase()} (${nextPrayerTime})`
-        : "Kein weiteres Gebet";
-
-    // Countdown für das nächste Gebet setzen
-    if (nextPrayerTime) {
-        let [nh, nm] = nextPrayerTime.split(":").map(Number);
-        let nextPrayerMin = nh * 60 + nm;
-        let verbleibendeMinuten = nextPrayerMin - jetztMinuten;
-        let stunden = Math.floor(verbleibendeMinuten / 60);
-        let minuten = verbleibendeMinuten % 60;
-
-        document.getElementById("next-prayer-countdown").textContent = `${stunden} Std ${minuten} Min`;
-    } else {
-        document.getElementById("next-prayer-countdown").textContent = "Kein weiteres Gebet";
     }
-}}
+
 
 
     // 📌 Hadith & Dua laden
