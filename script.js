@@ -14,6 +14,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             menuList.classList.remove("show");
         }
     });
+    
+       // 📌 Dark Mode umschalten & speichern
+    document.getElementById("dark-mode-toggle").addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
+    });
+
+    if (localStorage.getItem("darkMode") === "enabled") {
+        document.body.classList.add("dark-mode");
+    }
+
 
     // 📌 Aktuelle Uhrzeit & Datum setzen (Berlin & Mekka)
     function updateUhrzeit() {
