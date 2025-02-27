@@ -264,8 +264,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     ladeDua();
     ladeStadtAuswahl();
     berechneMitternachtUndDrittel();
-    updateGebetszeitenCountdown();
-    ladeGebetszeiten("Berlin");
     ladeIslamischesDatum();
 
     
