@@ -27,15 +27,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateUhrzeit();
     setInterval(updateUhrzeit, 1000);
 
-    // 📌 Dark Mode umschalten & speichern
-    document.getElementById("dark-mode-toggle").addEventListener("click", function () {
-        document.body.classList.toggle("dark-mode");
-        localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
-    });
-
-    if (localStorage.getItem("darkMode") === "enabled") {
-        document.body.classList.add("dark-mode");
-    }
 
     // 📌 Standort ermitteln & Gebetszeiten abrufen
     async function ermittleStandort() {
