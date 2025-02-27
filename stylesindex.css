@@ -1,15 +1,63 @@
-/* 📌 Hintergrundbild */
+/* 📌 Allgemeine Einstellungen */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background: url('icons/hintergrund.png') center top no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
+    background-size: contain;
+    background-attachment: scroll; 
     color: #fff;
 }
 
-/* 📌 Top-Info mit Uhrzeit */
+/* 📌 Usul-Ad-Deen Titel oben groß */
+.usul-ad-deen-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* 📌 Menü-Button & Liste */
+.menu {
+    position: relative;
+}
+
+.menu-button {
+    background: black;
+    color: white;
+    font-size: 24px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.menu-list {
+    display: none;
+    list-style: none;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 100;
+}
+
+.menu-list.show {
+    display: block;
+}
+
+.menu-list li {
+    padding: 10px;
+    border-bottom: 1px solid white;
+}
+
+.menu-list a {
+    text-decoration: none;
+    color: white;
+}
+
+/* 📌 Header & Zeit-Anzeige */
 .top-info {
     display: flex;
     flex-direction: column;
@@ -33,7 +81,7 @@ body {
     border-radius: 8px;
 }
 
-/* 📌 Layout für Tabellen (nebeneinander) */
+/* 📌 Tabellen & Boxen Layout */
 .container {
     display: flex;
     justify-content: space-around;
@@ -42,7 +90,7 @@ body {
     gap: 20px;
 }
 
-/* 📌 Allgemeine Box-Stile */
+/* 📌 Box-Design */
 .box {
     background: rgba(0, 0, 0, 0.8);
     padding: 15px;
@@ -78,12 +126,23 @@ th {
     background: rgba(255, 255, 255, 0.2);
 }
 
+/* 📌 Platz für Hadith & Dua Box */
+.hadith-dua-container {
+    margin-bottom: 50px; /* Abstand zur Fußzeile */
+}
+
+/* 📌 Asr-Hinweis in Rot */
+.asr-hinweis a {
+    color: red;
+    font-weight: bold;
+}
+
 /* 📌 Footer */
 footer {
-    text-align: center;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    padding: 10px;
 }
