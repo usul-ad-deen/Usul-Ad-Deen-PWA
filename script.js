@@ -96,13 +96,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         let prayerTimes = {
-            "Imsak": zeitAnpassen(data.data.timings.Fajr, -5),
-            "Fajr": zeitAnpassen(data.data.timings.Fajr, 2),
-            "Shuruk": zeitAnpassen(data.data.timings.Sunrise, -2),
-            "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 2),
-            "Asr": zeitAnpassen(data.data.timings.Asr, 2),
-            "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 2),
-            "Isha": zeitAnpassen(data.data.timings.Isha, 3)
+            "imsak": zeitAnpassen(data.data.timings.Fajr, -5),
+            "fajr": zeitAnpassen(data.data.timings.Fajr, 2),
+            "shuruk": zeitAnpassen(data.data.timings.Sunrise, -2),
+            "dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 2),
+            "asr": zeitAnpassen(data.data.timings.Asr, 2),
+            "maghrib": zeitAnpassen(data.data.timings.Maghrib, 2),
+            "isha": zeitAnpassen(data.data.timings.Isha, 3)
         };
 
         // 📌 Sunnah-Gebete berechnen
