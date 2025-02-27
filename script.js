@@ -289,6 +289,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("hadith-arabisch").textContent = zufallsHadith.arabisch;
             document.getElementById("hadith-deutsch").textContent = zufallsHadith.deutsch;
             document.getElementById("hadith-quelle").textContent = zufallsHadith.quelle;
+             document.getElementById("hadith-auth").textContent = zufallsHadith.authentizität;
         } catch (error) {
             console.error("Fehler beim Laden des Hadiths:", error);
         }
