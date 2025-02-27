@@ -10,6 +10,8 @@
 </head>
 <body>
 
+    <h1 class="usul-ad-deen-title">Usul-Ad-Deen</h1>
+
     <!-- 📌 Navigationsmenü -->
     <nav class="menu">
         <button class="menu-button">☰</button>
@@ -43,7 +45,6 @@
 
     <main>
         <div class="container">
-            <!-- 📌 Gebetszeiten -->
             <div class="box">
                 <h2>Gebetszeiten</h2>
                 <p>Ihr Standort: <span id="stadt-name">Unbekannt. Bitte manuell wählen.</span></p>
@@ -56,7 +57,7 @@
                     <tr><td><strong>Dhuhr</strong></td><td id="dhuhr">00:00</td><td id="dhuhr-countdown">00:00:00</td></tr>
                      <tr>
                         <td><strong>Asr</strong> <br> 
-                            <small><a href="beiträge/asr-zeit.html">🔗 Regelungen zum Ende des Asr-Gebets</a></small>
+                            <small class="asr-hinweis"><a href="beiträge/asr-zeit.html">🔗 Beachtet bitte die Regelungen zum Ende des Asr-Gebets (hier)</a></small>
                         </td>
                         <td id="asr">00:00</td>
                         <td id="asr-countdown">00:00:00</td>
@@ -68,26 +69,26 @@
                     <tr><td>Sunnah-Gebet: Nachtgebet - Letztes Drittel</td><td id="nachtgebet-letztes-drittel">Lädt...</td><td id="nachtgebet-letztes-drittel-countdown">00:00:00</td></tr>
                 </table>
             </div>
-
-            <!-- 📌 Islamische Feiertage -->
-            <div class="box">
-                <h2>Islamische Feiertage & Countdown</h2>
-                <table>
-                    <tr><th>Islamischer Tag</th><th>Datum</th><th>Verbleibende Zeit</th></tr>
-                    <tr><td>Ramadan</td><td>01.03.2025</td><td id="ramadan-countdown">Lädt...</td></tr>
-                    <tr><td>Eid al-Fitr</td><td>30.03.2025</td><td id="fitr-countdown">Lädt...</td></tr>
-                    <tr><td>Hajj</td><td>04.06.2025</td><td id="hajj-countdown">Lädt...</td></tr>
-                    <tr><td>Arafah</td><td>05.06.2025</td><td id="arafah-countdown">Lädt...</td></tr>
-                    <tr><td>Eid al-Adha</td><td>06.06.2025</td><td id="adha-countdown">Lädt...</td></tr>
-                    <tr><td>Islamisches Neujahr</td><td>26.06.2025</td><td id="neujahr-countdown">Lädt...</td></tr>
-                    <tr><td>Ashura</td><td>05.07.2025</td><td id="ashura-countdown">Lädt...</td></tr>
-                    <tr><td>Isra' und Mi'raj</td><td>16.01.2026</td><td id="isra-countdown">Lädt...</td></tr>
-                </table>
-            </div>
+            <div class="container">
+    <!-- 📌 Islamische Feiertage -->
+    <div class="box">
+        <h2>Islamische Feiertage & Countdown</h2>
+        <table>
+            <tr><th>Islamischer Tag</th><th>Datum</th><th>Verbleibende Zeit</th></tr>
+            <tr><td>Ramadan</td><td>01.03.2025</td><td id="ramadan-countdown">Lädt...</td></tr>
+            <tr><td>Eid al-Fitr</td><td>30.03.2025</td><td id="fitr-countdown">Lädt...</td></tr>
+            <tr><td>Hajj</td><td>04.06.2025</td><td id="hajj-countdown">Lädt...</td></tr>
+            <tr><td>Arafah</td><td>05.06.2025</td><td id="arafah-countdown">Lädt...</td></tr>
+            <tr><td>Eid al-Adha</td><td>06.06.2025</td><td id="adha-countdown">Lädt...</td></tr>
+            <tr><td>Islamisches Neujahr</td><td>26.06.2025</td><td id="neujahr-countdown">Lädt...</td></tr>
+            <tr><td>Ashura</td><td>05.07.2025</td><td id="ashura-countdown">Lädt...</td></tr>
+            <tr><td>Isra' und Mi'raj</td><td>16.01.2026</td><td id="isra-countdown">Lädt...</td></tr>
+        </table>
+    </div>
+</div>
         </div>
 
-        <div class="container">
-            <!-- 📌 Hadith & Dua -->
+        <div class="container hadith-dua-container">
             <div class="box">
                 <h2>Hadith des Tages</h2>
                 <p id="hadith-arabisch">Lädt...</p>
