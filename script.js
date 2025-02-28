@@ -40,28 +40,32 @@ document.addEventListener("DOMContentLoaded", async () => {
    async function ladeIslamischesDatum(stadt) {
     try {
         let heute = new Date();
+
+        // 1️⃣ Abrufen der Maghrib-Zeit für die Stadt
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
         let data = await response.json();
         let maghribZeit = data.data.timings.Maghrib;
 
+        // 2️⃣ Maghrib-Zeit in Stunden und Minuten umwandeln
         let [mH, mM] = maghribZeit.split(":").map(Number);
-        let maghribDatum = new Date();
+        let maghribDatum = new Date(heute);
         maghribDatum.setHours(mH, mM, 0, 0);
 
-        // Falls der aktuelle Zeitpunkt nach Maghrib ist, wechsle zum nächsten Tag
+        // 3️⃣ Falls es nach Maghrib ist, nutze das islamische Datum für den nächsten Tag
         if (heute >= maghribDatum) {
             heute.setDate(heute.getDate() + 1);
         }
 
-        // Islamisches Datum abrufen
+        // 4️⃣ Umwandlung in das islamische Datum
         let islamischesDatumResponse = await fetch(`https://api.aladhan.com/v1/gToH/${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`);
         let islamischesDatumData = await islamischesDatumResponse.json();
 
+        // 5️⃣ Islamisches Datum extrahieren
         let islamischerTag = islamischesDatumData.data.hijri.day;
         let islamischerMonat = islamischesDatumData.data.hijri.month.en;
         let islamischesJahr = islamischesDatumData.data.hijri.year;
 
-        // Islamischer Monat auf Deutsch übersetzen
+        // 6️⃣ Islamische Monatsnamen ins Deutsche übersetzen
         let monateDeutsch = {
             "Muharram": "Muharram", "Safar": "Safar", "Rabi' al-Awwal": "Rabi' al-Awwal",
             "Rabi' al-Thani": "Rabi' al-Thani", "Jumada al-Awwal": "Jumada al-Awwal",
@@ -71,9 +75,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         };
 
         let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
+
+        // 7️⃣ Islamisches Datum in HTML einfügen
         document.getElementById("islamisches-datum").textContent = `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
+
     } catch (error) {
-        console.error("Fehler beim Laden des islamischen Datums:", error);
+        console.error("❌ Fehler beim Laden des islamischen Datums:", error);
         document.getElementById("islamisches-datum").textContent = "Fehler beim Laden";
     }
 }
@@ -408,9 +415,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 📌 ALLE Funktionen starten
     await ermittleStandort();
     await ladeIslamischesDatum();
-    ladeIslamischesDatum();
+    
     await ladeFeiertagsCountdowns();
-ladeFeiertagsCountdowns();
+
 
     await ladeHadith();
     await ladeDua();
