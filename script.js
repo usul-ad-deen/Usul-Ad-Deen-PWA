@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             "Muharram": "Muharram", "Safar": "Safar", "Rabi' al-Awwal": "Rabi' al-Awwal",
             "Rabi' al-Thani": "Rabi' al-Thani", "Jumada al-Awwal": "Jumada al-Awwal",
             "Jumada al-Thani": "Jumada al-Thani", "Rajab": "Rajab", "Sha'ban": "Sha'ban",
-            "Ramadan": "Ramadan", "Shawwal": "Shawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
+            "Ramadan": "Ramadan", "Shawwal": "Schawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
             "Dhul-Hijjah": "Dhul-Hijjah"
         };
 
@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("islamisches-datum").textContent = `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
     } catch (error) {
         console.error("Fehler beim Laden des islamischen Datums:", error);
+        document.getElementById("islamisches-datum").textContent = "Fehler beim Laden";
     }
 }
 
@@ -108,14 +109,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
    async function ladeFeiertagsCountdowns(stadt) {
     let feiertage = {
-        "ramadan": { datum: "2025-03-01", dauer: "bis fitr" }, // Ramadan endet mit Eid-Al-Fitr
-        "fitr": { datum: "2025-03-30", dauer: 3 },
-        "hajj": { datum: "2025-06-04", dauer: 1 },
-        "arafah": { datum: "2025-06-05", dauer: 1 },
-        "adha": { datum: "2025-06-06", dauer: 4 },
-        "neujahr": { datum: "2025-06-26", dauer: 1 },
-        "ashura": { datum: "2025-07-05", dauer: 1 },
-        "isra": { datum: "2026-01-16", dauer: 1 },
+        "ramadan": { start: "2025-03-01", ende: "2025-03-30" }, // Ramadan endet mit Eid al-Fitr
+        "fitr": { start: "2025-03-30", dauer: 4 },
+        "hajj": { start: "2025-06-04", dauer: 1 },
+        "arafah": { start: "2025-06-05", dauer: 1 },
+        "adha": { start: "2025-06-06", dauer: 3 },
+        "neujahr": { start: "2025-06-26", dauer: 1 },
+        "ashura": { start: "2025-07-05", dauer: 1 },
+        "isra": { start: "2026-01-16", dauer: 1 },
         
     };
 
@@ -126,14 +127,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         let [mH, mM] = maghribZeit.split(":").map(Number);
 
         Object.keys(feiertage).forEach(id => {
-            let feiertagsDatum = new Date(feiertage[id].datum);
+            let feiertagsDatum = new Date(feiertage[id].start);
             let maghribVorFeiertag = new Date(feiertagsDatum);
             maghribVorFeiertag.setDate(maghribVorFeiertag.getDate() - 1);
             maghribVorFeiertag.setHours(mH, mM, 0, 0);
 
             let endeFeiertag;
-            if (feiertage[id].dauer === "bis fitr") {
-                endeFeiertag = new Date(feiertage["fitr"].datum);
+            if (feiertage[id].ende) {
+                endeFeiertag = new Date(feiertage[id].ende);
                 endeFeiertag.setHours(mH, mM, 0, 0);
             } else {
                 endeFeiertag = new Date(feiertagsDatum);
