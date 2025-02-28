@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateUhrzeit();
     setInterval(updateUhrzeit, 1000);
 
-    async function ladeIslamischesDatum(stadt) {
+   async function ladeIslamischesDatum(stadt) {
     try {
         let heute = new Date();
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
@@ -48,21 +48,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         let maghribDatum = new Date();
         maghribDatum.setHours(mH, mM, 0, 0);
 
+        // Falls der aktuelle Zeitpunkt nach Maghrib ist, wechsle zum nächsten Tag
         if (heute >= maghribDatum) {
             heute.setDate(heute.getDate() + 1);
         }
 
+        // Islamisches Datum abrufen
         let islamischesDatumResponse = await fetch(`https://api.aladhan.com/v1/gToH/${heute.getDate()}-${heute.getMonth() + 1}-${heute.getFullYear()}`);
         let islamischesDatumData = await islamischesDatumResponse.json();
+
         let islamischerTag = islamischesDatumData.data.hijri.day;
         let islamischerMonat = islamischesDatumData.data.hijri.month.en;
         let islamischesJahr = islamischesDatumData.data.hijri.year;
 
-        document.getElementById("islamisches-datum").textContent = `${islamischerTag}. ${islamischerMonat} ${islamischesJahr}`;
+        // Islamischer Monat auf Deutsch übersetzen
+        let monateDeutsch = {
+            "Muharram": "Muharram", "Safar": "Safar", "Rabi' al-Awwal": "Rabi' al-Awwal",
+            "Rabi' al-Thani": "Rabi' al-Thani", "Jumada al-Awwal": "Jumada al-Awwal",
+            "Jumada al-Thani": "Jumada al-Thani", "Rajab": "Rajab", "Sha'ban": "Sha'ban",
+            "Ramadan": "Ramadan", "Shawwal": "Shawwal", "Dhul-Qi'dah": "Dhul-Qi'dah",
+            "Dhul-Hijjah": "Dhul-Hijjah"
+        };
+
+        let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
+        document.getElementById("islamisches-datum").textContent = `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
     } catch (error) {
         console.error("Fehler beim Laden des islamischen Datums:", error);
     }
 }
+
 
 
     // 📌 Standort ermitteln & Stadt manuell auswählen
@@ -94,15 +108,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
    async function ladeFeiertagsCountdowns(stadt) {
     let feiertage = {
-        "ramadan-countdown": "2025-03-01",
-        "fitr-countdown": "2025-03-30",
-        "hajj-countdown": "2025-06-04",
-        "arafah-countdown": "2025-06-05",
-        "adha-countdown": "2025-06-06",
-        "neujahr-countdown": "2025-06-26",
-        "ashura-countdown": "2025-07-05",
-        "isra-countdown": "2026-01-16",
-        "mawlid-countdown": "2025-09-15"
+        "ramadan": { datum: "2025-03-01", dauer: "bis fitr" }, // Ramadan endet mit Eid-Al-Fitr
+        "fitr": { datum: "2025-03-30", dauer: 3 },
+        "hajj": { datum: "2025-06-04", dauer: 1 },
+        "arafah": { datum: "2025-06-05", dauer: 1 },
+        "adha": { datum: "2025-06-06", dauer: 4 },
+        "neujahr": { datum: "2025-06-26", dauer: 1 },
+        "ashura": { datum: "2025-07-05", dauer: 1 },
+        "isra": { datum: "2026-01-16", dauer: 1 },
+        
     };
 
     try {
@@ -112,26 +126,49 @@ document.addEventListener("DOMContentLoaded", async () => {
         let [mH, mM] = maghribZeit.split(":").map(Number);
 
         Object.keys(feiertage).forEach(id => {
-            let feiertagsDatum = new Date(feiertage[id]);
+            let feiertagsDatum = new Date(feiertage[id].datum);
             let maghribVorFeiertag = new Date(feiertagsDatum);
             maghribVorFeiertag.setDate(maghribVorFeiertag.getDate() - 1);
             maghribVorFeiertag.setHours(mH, mM, 0, 0);
 
-            let jetzt = new Date();
-            let diffMs = maghribVorFeiertag - jetzt;
-            let tage = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            let stunden = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-            if (tage < 0) {
-                document.getElementById(id).textContent = "Heute";
+            let endeFeiertag;
+            if (feiertage[id].dauer === "bis fitr") {
+                endeFeiertag = new Date(feiertage["fitr"].datum);
+                endeFeiertag.setHours(mH, mM, 0, 0);
             } else {
-                document.getElementById(id).textContent = `${tage} Tage, ${stunden} Stunden`;
+                endeFeiertag = new Date(feiertagsDatum);
+                endeFeiertag.setDate(endeFeiertag.getDate() + feiertage[id].dauer - 1);
+                endeFeiertag.setHours(mH, mM, 0, 0);
+            }
+
+            let jetzt = new Date();
+            let diffMsStart = maghribVorFeiertag - jetzt;
+            let diffMsEnde = endeFeiertag - jetzt;
+
+            let tageBisStart = Math.floor(diffMsStart / (1000 * 60 * 60 * 24));
+            let stundenBisStart = Math.floor((diffMsStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+            let tageBisEnde = Math.floor(diffMsEnde / (1000 * 60 * 60 * 24));
+            let stundenBisEnde = Math.floor((diffMsEnde % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+            let countdownElement = document.getElementById(`${id}-countdown`);
+
+            if (diffMsStart > 0) {
+                // Feiertag noch nicht begonnen
+                countdownElement.textContent = `${tageBisStart} Tage, ${stundenBisStart} Stunden`;
+            } else if (diffMsEnde > 0) {
+                // Feiertag läuft gerade
+                countdownElement.textContent = `Begonnen. Endet in: ${tageBisEnde} Tage, ${stundenBisEnde} Stunden`;
+            } else {
+                // Feiertag abgelaufen
+                countdownElement.textContent = "-";
             }
         });
     } catch (error) {
         console.error("Fehler beim Laden des Feiertags-Countdowns:", error);
     }
 }
+
 
 
     // 📌 Gebetszeiten abrufen & setzen (mit Anpassung)
@@ -225,25 +262,43 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentPrayerTime = null;
     let nextPrayerCountdown = "";
 
+    let prayerEndTimes = {
+        "imsak": "fajr",
+        "fajr": "shuruk",
+        "dhuhr": "asr",
+        "asr": "maghrib",
+        "maghrib": "isha",
+        "isha": "mitternacht"
+    };
+
     Object.keys(prayerTimes).forEach(prayer => {
         let [h, m] = prayerTimes[prayer].split(":").map(Number);
         let prayerStartMin = h * 60 + m;
 
+        let endPrayer = prayerEndTimes[prayer];
+        let endPrayerTime = endPrayer ? prayerTimes[endPrayer] : null;
+        let endPrayerMin = endPrayerTime ? endPrayerTime.split(":").map(Number)[0] * 60 + endPrayerTime.split(":").map(Number)[1] : null;
+
         let countdownElement = document.getElementById(`${prayer}-countdown`);
         if (countdownElement) {
             let verbleibendeMinuten = prayerStartMin - jetztMinuten;
+            let endVerbleibendeMinuten = endPrayerMin ? endPrayerMin - jetztMinuten : null;
 
             if (verbleibendeMinuten > 0) {
                 let stunden = Math.floor(verbleibendeMinuten / 60);
                 let minuten = verbleibendeMinuten % 60;
                 countdownElement.textContent = `Beginnt in: ${stunden} Std ${minuten} Min`;
+            } else if (endVerbleibendeMinuten > 0) {
+                let stunden = Math.floor(endVerbleibendeMinuten / 60);
+                let minuten = endVerbleibendeMinuten % 60;
+                countdownElement.textContent = `Begonnen. Endet in: ${stunden} Std ${minuten} Min`;
             } else {
-                countdownElement.textContent = "Begonnen";
+                countdownElement.textContent = `Beginnt in: ${zeitAnpassen(prayerTimes[prayer], 24 * 60)}`;
             }
         }
 
         // Bestimme das aktuelle Gebet
-        if (prayerStartMin <= jetztMinuten) {
+        if (prayerStartMin <= jetztMinuten && (!endPrayerMin || jetztMinuten < endPrayerMin)) {
             currentPrayer = prayer;
             currentPrayerTime = prayerTimes[prayer];
         }
@@ -256,42 +311,32 @@ document.addEventListener("DOMContentLoaded", async () => {
             let verbleibendeMinuten = prayerStartMin - jetztMinuten;
             let stunden = Math.floor(verbleibendeMinuten / 60);
             let minuten = verbleibendeMinuten % 60;
-            nextPrayerCountdown = `(${stunden} Std ${minuten} Min)`;
+            nextPrayerCountdown = `(in: ${stunden} Std ${minuten} Min)`;
         }
     });
 
     // Falls kein nächstes Gebet gefunden wurde (nach Isha), setze Fajr für den nächsten Tag
     if (!nextPrayer) {
-        nextPrayer = "Fajr";
-        nextPrayerTime = prayerTimes["fajr"];
+        nextPrayer = "fajr";
+        nextPrayerTime = zeitAnpassen(prayerTimes["fajr"], 24 * 60);
 
         let [nh, nm] = nextPrayerTime.split(":").map(Number);
-        let nextPrayerMin = nh * 60 + nm + 24 * 60; // Fajr am nächsten Tag
+        let nextPrayerMin = nh * 60 + nm;
         let verbleibendeMinuten = nextPrayerMin - jetztMinuten;
         let stunden = Math.floor(verbleibendeMinuten / 60);
         let minuten = verbleibendeMinuten % 60;
-        nextPrayerCountdown = `(${stunden} Std ${minuten} Min)`;
-    }
-
-    // Falls das aktuelle Gebet bereits begonnen hat, zeige stattdessen die Zeit bis zum nächsten Gebet
-    let currentPrayerCountdown = "";
-    if (currentPrayer) {
-        let [ch, cm] = currentPrayerTime.split(":").map(Number);
-        let currentPrayerMin = ch * 60 + cm;
-        let verbleibendeMinuten = currentPrayerMin - jetztMinuten;
-        let stunden = Math.floor(verbleibendeMinuten / 60);
-        let minuten = verbleibendeMinuten % 60;
-        currentPrayerCountdown = verbleibendeMinuten > 0 ? `(${stunden} Std ${minuten} Min)` : "(Begonnen)";
+        nextPrayerCountdown = `(in: ${stunden} Std ${minuten} Min)`;
     }
 
     document.getElementById("current-prayer").textContent = currentPrayer
-        ? `${currentPrayer.toUpperCase()} (${currentPrayerTime}) ${currentPrayerCountdown}`
+        ? `${currentPrayer.toUpperCase()} (${currentPrayerTime})`
         : "Kein aktuelles Gebet";
 
     document.getElementById("next-prayer").textContent = nextPrayer
         ? `${nextPrayer.toUpperCase()} (${nextPrayerTime}) ${nextPrayerCountdown}`
         : "Kein weiteres Gebet";
 }
+
 
 
     // 📌 Hadith & Dua laden
