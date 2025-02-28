@@ -397,7 +397,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 📌 ALLE Funktionen starten
     await ermittleStandort();
     await ladeIslamischesDatum();
+    ladeIslamischesDatum();
     await ladeFeiertagsCountdowns();
+ladeFeiertagsCountdowns();
+
     await ladeHadith();
     await ladeDua();
     await ladeStadtAuswahl();
