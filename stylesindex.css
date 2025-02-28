@@ -11,7 +11,7 @@ body {
 
 /* 📌 Usul-Ad-Deen Titel oben groß */
 .usul-ad-deen-title {
-    text-align: center;
+    text-align: left;
     font-size: 36px;
     font-weight: bold;
     margin-top: 20px;
@@ -71,6 +71,7 @@ body {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .header-info {
