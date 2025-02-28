@@ -91,6 +91,10 @@ body {
     gap: 20px;
 }
 
+.nextprayer-bold {
+     font-weight: bold;
+}
+
 /* 📌 Box-Design */
 .box {
     background: rgba(0, 0, 0, 0.8);
