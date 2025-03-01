@@ -124,23 +124,8 @@ ladeIslamischesDatum();
     }
     setInterval(updateUhrzeit, 1000);
 
-    document.addEventListener("DOMContentLoaded", async () => {
-    console.log("🚀 Skript wird geladen...");
 
-    // 📌 Menü-Steuerung
-    const menuButton = document.querySelector(".menu-button");
-    const menuList = document.querySelector(".menu-list");
-
-    menuButton.addEventListener("click", () => {
-        menuList.classList.toggle("show");
-    });
-
-    document.addEventListener("click", (event) => {
-        if (!menuButton.contains(event.target) && !menuList.contains(event.target)) {
-            menuList.classList.remove("show");
-        }
-    });
-
+   
     // 📌 Gebetszeiten abrufen
     async function ladeGebetszeiten(stadt) {
         try {
