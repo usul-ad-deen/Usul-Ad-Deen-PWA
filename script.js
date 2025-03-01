@@ -177,9 +177,9 @@ function berechneFeiertagsCountdown(datumString, elementId, maghribZeit) {
                 "fajr": zeitAnpassen(timings.Fajr, 0),
                 "shuruk": zeitAnpassen(timings.Sunrise, -2),
                 "dhuhr": zeitAnpassen(timings.Dhuhr, 2),
-                "asr": zeitAnpassen(timings.Asr, 2),
-                "maghrib": zeitAnpassen(timings.Maghrib, 2),
-                "isha": zeitAnpassen(timings.Isha, 3),
+                "asr": zeitAnpassen(timings.Asr, 3),
+                "maghrib": zeitAnpassen(timings.Maghrib, 1),
+                "isha": zeitAnpassen(timings.Isha, 1),
                  "duha": zeitAnpassen(timings.Sunrise, 15), // Beginn von Duha
             "nachtgebet": zeitAnpassen(timings.Isha, 0),
             "nachtgebet-letztes-drittel": berechneLetztesDrittel(timings.Fajr, timings.Maghrib),
