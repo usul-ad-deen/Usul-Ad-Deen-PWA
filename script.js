@@ -185,12 +185,12 @@ async function ladeGebetszeiten(stadt) {
     }
 
     let prayerTimes = {
-        "Fajr": zeitAnpassen(data.data.timings.Fajr, 2),
+        "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
         "Shuruk": zeitAnpassen(data.data.timings.Sunrise, -2),
-        "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 2),
-        "Asr": zeitAnpassen(data.data.timings.Asr, 2),
-        "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 2),
-        "Isha": zeitAnpassen(data.data.timings.Isha, 3)
+        "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 1),
+        "Asr": zeitAnpassen(data.data.timings.Asr, 1),
+        "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
+        "Isha": zeitAnpassen(data.data.timings.Isha, 1)
     };
 
     // 📌 Sunnah-Gebete berechnen
