@@ -1,11 +1,12 @@
-/* 📌 Allgemeine Einstellungen */
+
+    /* Hintergrundbild soll mitscrollen */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background: url('icons/hintergrund.png') center top no-repeat;
-    background-size: contain;
-    background-attachment: scroll; 
+    background-size: cover;
+    background-attachment: fixed; /* 🔹 FIX: Hintergrundbild scrollt mit */
     color: #fff;
 }
 
