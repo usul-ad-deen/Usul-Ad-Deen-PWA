@@ -410,6 +410,5 @@ ladeFeiertagsCountdowns("Berlin");
     await ermittleStandort();
     await ladeHadith();
     await ladeDua();
-    await ladeStadtAuswahl();
-   
+    await ladeStadtAuswahl()
 });
