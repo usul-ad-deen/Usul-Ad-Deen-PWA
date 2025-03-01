@@ -147,10 +147,10 @@ ladeIslamischesDatum();
 
             let prayerTimes = {
                 "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
-                "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
+                "Shuruk": zeitAnpassen(data.data.timings.Sunrise, -1),
                 "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
                 "Asr": zeitAnpassen(data.data.timings.Asr, 0),
-                "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 0),
+                "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
                 "Isha": zeitAnpassen(data.data.timings.Isha, 0)
             };
 
@@ -221,7 +221,7 @@ ladeIslamischesDatum();
         let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
 
         let nextPrayer = null, nextPrayerTime = null;
-        let prayerOrder = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+        let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Nachtgebet - Letztes Drittel"];
 
         for (let prayer of prayerOrder) {
             if (!prayerTimes[prayer]) continue;
