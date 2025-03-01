@@ -81,10 +81,27 @@ async function ladeIslamischesDatum() {
 }
 
 // 📌 Automatisches Laden beim Start
-ladeIslamischesDatum();
+ladeIslamischesDatum(); 
 
 
-    // 📌 Standort ermitteln & Stadt manuell auswählen
+   document.addEventListener("DOMContentLoaded", async () => {
+    console.log("🚀 Skript wird geladen...");
+
+    // 📌 Menü-Steuerung
+    const menuButton = document.querySelector(".menu-button");
+    const menuList = document.querySelector(".menu-list");
+
+    menuButton.addEventListener("click", () => {
+        menuList.classList.toggle("show");
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!menuButton.contains(event.target) && !menuList.contains(event.target)) {
+            menuList.classList.remove("show");
+        }
+    });
+
+    // 📌 Standort ermitteln & Stadt setzen
     async function ermittleStandort() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (position) => {
@@ -100,9 +117,9 @@ ladeIslamischesDatum();
                     await ladeGebetszeiten(stadt);
                     await ladeFeiertagsCountdowns();
                 } catch (error) {
-                    console.error("Fehler bei der Standortermittlung:", error);
+                    console.error("Fehler bei Standortermittlung:", error);
                     await ladeGebetszeiten("Berlin");
-                    await ladeFeiertagsCountdowns();
+                     await ladeFeiertagsCountdowns();
                 }
             });
         } else {
@@ -110,21 +127,6 @@ ladeIslamischesDatum();
             await ladeFeiertagsCountdowns();
         }
     }
-
-
-    // 📌 Uhrzeit & Datum aktualisieren (Berlin & Mekka)
-    function updateUhrzeit() {
-        let jetzt = new Date();
-        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
-        document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
-
-        // Mekka-Zeit (UTC+3)
-        let mekkaZeit = new Date(jetzt.getTime() + 2 * 60 * 60 * 1000);
-        document.getElementById("mekka-uhrzeit").textContent = mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
-    }
-    setInterval(updateUhrzeit, 1000);
-
-
 
     // 📌 Gebetszeiten abrufen
     async function ladeGebetszeiten(stadt) {
@@ -147,7 +149,7 @@ ladeIslamischesDatum();
 
             let prayerTimes = {
                 "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
-                "Shuruk": zeitAnpassen(data.data.timings.Sunrise, -1),
+                "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
                 "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
                 "Asr": zeitAnpassen(data.data.timings.Asr, 0),
                 "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
@@ -221,7 +223,7 @@ ladeIslamischesDatum();
         let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
 
         let nextPrayer = null, nextPrayerTime = null;
-        let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Nachtgebet - Letztes Drittel"];
+        let prayerOrder = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
         for (let prayer of prayerOrder) {
             if (!prayerTimes[prayer]) continue;
@@ -249,10 +251,8 @@ ladeIslamischesDatum();
         document.getElementById("prayer-countdown").textContent = `${nextHours} Std ${nextMinutes} Min`;
     }
 
+
    
-
-
-
 async function ladeFeiertagsCountdowns(stadt) {
     let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
     let data = await response.json();
