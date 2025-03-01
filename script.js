@@ -113,44 +113,39 @@ ladeIslamischesDatum();
         }
     }
 
- async function ladeFeiertagsCountdowns(stadt) {
-    try {
-        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
-        let data = await response.json();
+async function ladeFeiertagsCountdowns(stadt) {
+    let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
+    let data = await response.json();
+    let maghribZeitHeute = data.data.timings.Maghrib;
 
-        // Maghrib-Zeit für den Standort abrufen
-        let maghribZeit = data.data.timings.Maghrib;
+    // 📌 Feiertage mit ihren realen Daten
+    let feiertage = {
+        "ramadan-countdown": "2025-03-01",
+        "fitr-countdown": "2025-03-30",
+        "hajj-countdown": "2025-06-04",
+        "arafah-countdown": "2025-06-05",
+        "adha-countdown": "2025-06-06",
+        "neujahr-countdown": "2025-06-26",
+        "ashura-countdown": "2025-07-05",
+        "isra-countdown": "2026-01-16"
+    };
 
-        let feiertage = {
-            "ramadan-countdown": "2025-03-01",
-            "fitr-countdown": "2025-03-30",
-            "hajj-countdown": "2025-06-04",
-            "arafah-countdown": "2025-06-05",
-            "adha-countdown": "2025-06-06",
-            "neujahr-countdown": "2025-06-26",
-            "ashura-countdown": "2025-07-05",
-            "isra-countdown": "2026-01-16"
-        };
-
-        for (let id in feiertage) {
-            berechneFeiertagsCountdown(feiertage[id], id, maghribZeit);
-        }
-    } catch (error) {
-        console.error("Fehler beim Laden der Maghrib-Zeit:", error);
+    // 📌 Für jeden Feiertag den Countdown berechnen
+    for (let id in feiertage) {
+        berechneFeiertagsCountdown(feiertage[id], id, maghribZeitHeute, stadt);
     }
 }
 
-function berechneFeiertagsCountdown(datumString, elementId, maghribZeit) {
-    let jetzt = new Date();
+// 📌 Berechnet den Countdown ab Maghrib des Vortages des Feiertages
+async function berechneFeiertagsCountdown(datumString, elementId, maghribZeitHeute, stadt) {
     let feiertag = new Date(datumString);
+    feiertag.setDate(feiertag.getDate() - 1); // ❗ Feiertag -1 Tag nehmen
+    let maghribZeitVortag = await holeMaghribZeit(feiertag, stadt); // Maghrib-Zeit des Vortages holen
 
-    // Maghrib-Zeit in Stunden & Minuten umwandeln
-    let [maghribStunde, maghribMinute] = maghribZeit.split(":").map(Number);
+    let [maghribStunde, maghribMinute] = maghribZeitVortag.split(":").map(Number);
+    feiertag.setHours(maghribStunde, maghribMinute, 0); // Maghrib als Startzeit setzen
 
-    // Feiertag beginnt am Vortag mit Maghrib
-    feiertag.setDate(feiertag.getDate() - 1);
-    feiertag.setHours(maghribStunde, maghribMinute, 0);
-
+    let jetzt = new Date();
     let diffMs = feiertag - jetzt;
 
     if (diffMs <= 0) {
@@ -164,43 +159,30 @@ function berechneFeiertagsCountdown(datumString, elementId, maghribZeit) {
     document.getElementById(elementId).textContent = `${tage} Tage, ${stunden} Stunden`;
 }
 
+// 📌 Holt die Maghrib-Zeit des Vortages für eine Stadt
+async function holeMaghribZeit(datum, stadt) {
+    let tag = datum.getDate();
+    let monat = datum.getMonth() + 1;
+    let jahr = datum.getFullYear();
+    
+    let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3&date=${tag}-${monat}-${jahr}`);
+    let data = await response.json();
+    return data.data.timings.Maghrib;
+}
+
+// 📌 Initialisiert den Feiertags-Countdown
+ladeFeiertagsCountdowns("Berlin");
 
 
-    // 📌 Gebetszeiten abrufen & setzen (mit Anpassung)
-    async function ladeGebetszeiten(stadt) {
-        try {
-            let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
-            let data = await response.json();
-            let timings = data.data.timings;
 
-            let prayerTimes = {
-                "fajr": zeitAnpassen(timings.Fajr, 0),
-                "shuruk": zeitAnpassen(timings.Sunrise, -2),
-                "dhuhr": zeitAnpassen(timings.Dhuhr, 2),
-                "asr": zeitAnpassen(timings.Asr, 3),
-                "maghrib": zeitAnpassen(timings.Maghrib, 1),
-                "isha": zeitAnpassen(timings.Isha, 1),
-                 "duha": zeitAnpassen(timings.Sunrise, 15), // Beginn von Duha
-            "nachtgebet": zeitAnpassen(timings.Isha, 0),
-            "nachtgebet-letztes-drittel": berechneLetztesDrittel(timings.Fajr, timings.Maghrib),
-            "mitternacht": berechneMitternacht(timings.Fajr, timings.Maghrib)
-            };
+   async function updateGebetszeitenCountdown() {
+    let jetzt = new Date();
+    let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes(); // Zeit in Minuten umrechnen
 
-            Object.keys(prayerTimes).forEach(prayer => {
-                let element = document.getElementById(`${prayer}`);
-                if (element) {
-                    element.textContent = prayerTimes[prayer];
-                }
-            });
-
-            updatePrayerCountdowns(prayerTimes);
-            setInterval(() => updatePrayerCountdowns(prayerTimes), 1000);
-        } catch (error) {
-            console.error("Fehler beim Laden der Gebetszeiten:", error);
-        }
-    }
-
-    // 📌 Funktion zur Anpassung der Gebetszeiten
+    // 📌 Hole die aktuellen Gebetszeiten aus der API
+    let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=Berlin&country=DE&method=3`);
+    let data = await response.json();
+    
     function zeitAnpassen(zeit, minuten) {
         let [h, m] = zeit.split(":").map(Number);
         let neueZeit = new Date();
@@ -208,72 +190,50 @@ function berechneFeiertagsCountdown(datumString, elementId, maghribZeit) {
         return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
     }
 
-    // 📌 Letztes Drittel der Nacht berechnen
-    function berechneLetztesDrittel(fajr, maghrib) {
-        let [fH, fM] = fajr.split(":").map(Number);
-        let [mH, mM] = maghrib.split(":").map(Number);
+    let prayerTimes = {
+        "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
+        "Shuruk": zeitAnpassen(data.data.timings.Sunrise, -2),
+        "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 2),
+        "Asr": zeitAnpassen(data.data.timings.Asr, 1),
+        "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 0),
+        "Isha": zeitAnpassen(data.data.timings.Isha, 1)
+    };
 
-        let maghribZeit = new Date();
-        maghribZeit.setHours(mH, mM, 0);
+    // 📌 Sunnah-Gebete berechnen
+    prayerTimes["Duha"] = `${zeitAnpassen(data.data.timings.Sunrise, 15)} - ${zeitAnpassen(data.data.timings.Dhuhr, -15)}`;
+    prayerTimes["Nachtgebet"] = `${zeitAnpassen(data.data.timings.Isha, 0)} - ${berechneLetztesDrittel(data.data.timings.Fajr, data.data.timings.Maghrib)}`;
+    prayerTimes["Nachtgebet - Letztes Drittel"] = `${berechneLetztesDrittel(data.data.timings.Fajr, data.data.timings.Maghrib)} - ${zeitAnpassen(data.data.timings.Fajr, -5)}`;
 
-        let fajrZeit = new Date();
-        fajrZeit.setHours(fH, fM, 0);
-        if (fajrZeit < maghribZeit) {
-            fajrZeit.setDate(fajrZeit.getDate() + 1);
-        }
+    let nextPrayer = null;
+    let nextPrayerTime = null;
+    let currentPrayer = null;
+    let currentPrayerEndTime = null;
 
-        let nachtDauer = fajrZeit - maghribZeit;
-        let letztesDrittel = new Date(maghribZeit.getTime() + (2 * (nachtDauer / 3)));
-
-        return letztesDrittel.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-    }
-
-    // 📌 Mitternacht berechnen
-    function berechneMitternacht(fajr, maghrib) {
-        let [fH, fM] = fajr.split(":").map(Number);
-        let [mH, mM] = maghrib.split(":").map(Number);
-
-        let maghribZeit = new Date();
-        maghribZeit.setHours(mH, mM, 0);
-
-        let fajrZeit = new Date();
-        fajrZeit.setHours(fH, fM, 0);
-        if (fajrZeit < maghribZeit) {
-            fajrZeit.setDate(fajrZeit.getDate() + 1);
-        }
-
-        let mitternacht = new Date(maghribZeit.getTime() + ((fajrZeit - maghribZeit) / 2));
-        return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
-    }
-
-  function updateGebetszeitenCountdown(prayerTimes) {
-    let jetzt = new Date();
-    let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
-
-    let nextPrayer = null, nextPrayerTime = null;
-    let currentPrayer = null, currentPrayerEndTime = null;
-
-    // Reihenfolge der Gebete inklusive Sunnah-Gebete
+    // 📌 Reihenfolge der Gebete inkl. Sunnah-Gebete
     let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Nachtgebet - Letztes Drittel"];
 
+    // 📌 Bestimme das nächste Gebet
     for (let i = 0; i < prayerOrder.length; i++) {
         let prayer = prayerOrder[i];
         if (!prayerTimes[prayer]) continue;
 
-        let [startHours, startMinutes] = prayerTimes[prayer].split(":")[0].split(":").map(Number);
-        let prayerStartMinutes = startHours * 60 + startMinutes;
+        let [hours, minutes] = prayerTimes[prayer].split(":")[0].split(":").map(Number);
+        let prayerMinutes = hours * 60 + minutes;
 
-        if (prayerStartMinutes > currentTime) {
+        if (prayerMinutes > currentTime) {
             nextPrayer = prayer;
-            nextPrayerTime = prayerStartMinutes;
+            nextPrayerTime = prayerMinutes;
             break;
         }
     }
 
-    // Falls alle Gebete des Tages vorbei sind → Zeige Fajr von morgen an
+    // 📌 Falls das letzte Gebet vorbei ist, wird "Nächstes Gebet morgen" angezeigt
     if (!nextPrayer) {
-        nextPrayer = "Fajr (morgen)";
-        nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]) + (24 * 60);
+        nextPrayer = "Fajr";
+        nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]);
+        document.getElementById("next-prayer").textContent = `${nextPrayer} (morgen)`;
+    } else {
+        document.getElementById("next-prayer").textContent = nextPrayer;
     }
 
     // 📌 Berechnung für das aktuelle Gebet
@@ -294,24 +254,24 @@ function berechneFeiertagsCountdown(datumString, elementId, maghribZeit) {
         }
     }
 
-    // 📌 Berechnung der verbleibenden Zeit für das nächste Gebet
+    // 📌 Countdown für das nächste Gebet berechnen
     let remainingNextMinutes = nextPrayerTime - currentTime;
     let nextHours = Math.floor(remainingNextMinutes / 60);
     let nextMinutes = remainingNextMinutes % 60;
-    document.getElementById("next-prayer").textContent = nextPrayer;
     document.getElementById("prayer-countdown").textContent = `${nextHours} Std ${nextMinutes} Min`;
 
-    // 📌 Berechnung der verbleibenden Zeit für das aktuelle Gebet
+    // 📌 Countdown für das aktuelle Gebet berechnen
     let remainingCurrentMinutes = currentPrayerEndTime - currentTime;
     let currentHours = Math.floor(remainingCurrentMinutes / 60);
     let currentMinutes = remainingCurrentMinutes % 60;
-    document.getElementById("current-prayer").textContent = currentPrayer || "-";
-    document.getElementById("current-prayer-countdown").textContent = currentPrayer ? `${currentHours} Std ${currentMinutes} Min` : "-";
+    document.getElementById("current-prayer").textContent = currentPrayer;
+    document.getElementById("current-prayer-countdown").textContent = `${currentHours} Std ${currentMinutes} Min`;
 }
 
+// 📌 Funktion wird alle 60 Sekunden aktualisiert, aber auch neu geladen, wenn sich die Gebetszeiten ändern
+setInterval(updateGebetszeitenCountdown, 1000);
+updateGebetszeitenCountdown();
 
-// 📌 Aktualisiert den Countdown jede Sekunde
-setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000);
 
 
 
