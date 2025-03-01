@@ -124,29 +124,34 @@ ladeIslamischesDatum();
     }
     setInterval(updateUhrzeit, 1000);
 
-    // 📌 Gebetszeiten abrufen
     async function ladeGebetszeiten(stadt) {
-        try {
-            let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
-            let data = await response.json();
+    try {
+        console.log(`📡 Lade Gebetszeiten für: ${stadt}`);
+        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
+        let data = await response.json();
 
-            function zeitAnpassen(zeit, minuten) {
-                let [h, m] = zeit.split(":").map(Number);
-                let neueZeit = new Date();
-                neueZeit.setHours(h, m + minuten);
-                return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
-            }
+        if (!data || !data.data || !data.data.timings) {
+            console.error("❌ API-Fehler: Gebetszeiten konnten nicht geladen werden!");
+            return;
+        }
 
-            let prayerTimes = {
-                "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
-                "Shuruk": zeitAnpassen(data.data.timings.Sunrise, -2),
-                "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 1),
-                "Asr": zeitAnpassen(data.data.timings.Asr, 1),
-                "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
-                "Isha": zeitAnpassen(data.data.timings.Isha, 1)
-            };
+        function zeitAnpassen(zeit, minuten) {
+            let [h, m] = zeit.split(":").map(Number);
+            let neueZeit = new Date();
+            neueZeit.setHours(h, m + minuten);
+            return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
+        }
 
-            // 📌 Sunnah-Gebete berechnen
+        let prayerTimes = {
+            "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
+            "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
+            "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
+            "Asr": zeitAnpassen(data.data.timings.Asr, 0),
+            "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 0),
+            "Isha": zeitAnpassen(data.data.timings.Isha, 0)
+        };
+
+         // 📌 Sunnah-Gebete berechnen
             prayerTimes["Duha"] = `${zeitAnpassen(data.data.timings.Sunrise, 15)} - ${zeitAnpassen(data.data.timings.Dhuhr, -15)}`;
             prayerTimes["Nachtgebet"] = `${zeitAnpassen(data.data.timings.Isha, 0)} - ${berechneLetztesDrittel(data.data.timings.Fajr, data.data.timings.Maghrib)}`;
             prayerTimes["Nachtgebet - Letztes Drittel"] = `${berechneLetztesDrittel(data.data.timings.Fajr, data.data.timings.Maghrib)} - ${zeitAnpassen(data.data.timings.Fajr, -5)}`;
@@ -154,20 +159,33 @@ ladeIslamischesDatum();
             // 📌 Mitternacht & letztes Drittel der Nacht berechnen
             berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
 
-            // 📌 Gebetszeiten in HTML ausgeben
-            Object.keys(prayerTimes).forEach(prayer => {
-                let element = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}`);
-                if (element) {
-                    element.textContent = prayerTimes[prayer];
-                }
-            });
+        // ✅ Sicherstellen, dass die IDs mit dem HTML übereinstimmen
+        Object.keys(prayerTimes).forEach(prayer => {
+            let element = document.getElementById(`${prayer.toLowerCase()}`);
+            if (element) {
+                element.textContent = prayerTimes[prayer];
+            } else {
+                console.warn(`⚠️ Warnung: Kein HTML-Element für ${prayer} gefunden!`);
+            }
+        });
 
-            updateGebetszeitenCountdown(prayerTimes);
-            setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000);
-        } catch (error) {
-            console.error("Fehler beim Abrufen der Gebetszeiten:", error);
-        }
+        // ✅ Gebetszeiten-Countdown starten
+        updateGebetszeitenCountdown(prayerTimes);
+        setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000);
+    } catch (error) {
+        console.error("❌ Fehler beim Abrufen der Gebetszeiten:", error);
     }
+}
+
+// 🛠 **Testausgabe in der Konsole anzeigen**
+document.getElementById("stadt-auswahl").addEventListener("change", async function () {
+    let gewählteStadt = this.value;
+    console.log(`🌍 Manuelle Stadtwahl: ${gewählteStadt}`);
+    document.getElementById("stadt-name").textContent = gewählteStadt;
+    await ladeGebetszeiten(gewählteStadt);
+});
+
+  
 
     // 📌 Mitternacht & letztes Drittel berechnen
     function berechneMitternachtUndDrittel(fajr, maghrib) {
