@@ -8,7 +8,7 @@ body {
     background-size: cover;
     background-attachment: fixed; /* 🔹 FIX: Hintergrundbild scrollt mit */
     color: #fff;
-    align-items: center;
+  
 }
 
 /* 📌 Usul-Ad-Deen Titel oben groß */
@@ -82,8 +82,6 @@ margin-left: 40px;
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
-    
-    
 }
 
 .header-info {
