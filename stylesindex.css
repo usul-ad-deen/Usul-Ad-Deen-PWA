@@ -64,7 +64,9 @@ body {
 .top-info {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: center; /* ✅ Sorgt für zentrierte Elemente */
+    justify-content: center;
+    text-align: center; /* ✅ Fix: Zentriert den Text */
     padding: 15px;
     background: rgba(0, 0, 0, 0.7);
     width: 100%;
