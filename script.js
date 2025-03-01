@@ -84,23 +84,6 @@ async function ladeIslamischesDatum() {
 ladeIslamischesDatum(); 
 
 
-   document.addEventListener("DOMContentLoaded", async () => {
-    console.log("🚀 Skript wird geladen...");
-
-    // 📌 Menü-Steuerung
-    const menuButton = document.querySelector(".menu-button");
-    const menuList = document.querySelector(".menu-list");
-
-    menuButton.addEventListener("click", () => {
-        menuList.classList.toggle("show");
-    });
-
-    document.addEventListener("click", (event) => {
-        if (!menuButton.contains(event.target) && !menuList.contains(event.target)) {
-            menuList.classList.remove("show");
-        }
-    });
-
     // 📌 Standort ermitteln & Stadt setzen
     async function ermittleStandort() {
         if (navigator.geolocation) {
