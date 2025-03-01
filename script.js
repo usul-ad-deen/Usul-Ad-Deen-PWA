@@ -411,5 +411,5 @@ ladeFeiertagsCountdowns("Berlin");
     await ladeHadith();
     await ladeDua();
     await ladeStadtAuswahl();
-    await ladeMitternachtUndDrittel();
+   
 });
