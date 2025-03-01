@@ -113,11 +113,12 @@ ladeIslamischesDatum();
         }
     }
 
-   // 📌 Feiertags-Countdown abrufen & setzen
-async function ladeFeiertagsCountdowns(stadt) {
+ async function ladeFeiertagsCountdowns(stadt) {
     try {
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
         let data = await response.json();
+
+        // Maghrib-Zeit für den Standort abrufen
         let maghribZeit = data.data.timings.Maghrib;
 
         let feiertage = {
@@ -136,20 +137,22 @@ async function ladeFeiertagsCountdowns(stadt) {
         }
     } catch (error) {
         console.error("Fehler beim Laden der Maghrib-Zeit:", error);
-        berechneFeiertagsCountdown("2025-03-01", "ramadan-countdown", "18:00"); // Fallback: Berlin Maghrib
     }
 }
 
-// 📌 Feiertags-Countdown berechnen
 function berechneFeiertagsCountdown(datumString, elementId, maghribZeit) {
-    let [maghribStunde, maghribMinute] = maghribZeit.split(":").map(Number);
     let jetzt = new Date();
     let feiertag = new Date(datumString);
-    
-    // Feiertag beginnt ab Maghrib des Vortags
+
+    // Maghrib-Zeit in Stunden & Minuten umwandeln
+    let [maghribStunde, maghribMinute] = maghribZeit.split(":").map(Number);
+
+    // Feiertag beginnt am Vortag mit Maghrib
+    feiertag.setDate(feiertag.getDate() - 1);
     feiertag.setHours(maghribStunde, maghribMinute, 0);
 
     let diffMs = feiertag - jetzt;
+
     if (diffMs <= 0) {
         document.getElementById(elementId).textContent = "Heute!";
         return;
@@ -161,8 +164,6 @@ function berechneFeiertagsCountdown(datumString, elementId, maghribZeit) {
     document.getElementById(elementId).textContent = `${tage} Tage, ${stunden} Stunden`;
 }
 
-// 📌 Feiertags-Countdown bei jedem Standort-Update neu berechnen
-ladeFeiertagsCountdowns("Berlin"); // Standardmäßig für Berlin
 
 
     // 📌 Gebetszeiten abrufen & setzen (mit Anpassung)
@@ -245,16 +246,15 @@ ladeFeiertagsCountdowns("Berlin"); // Standardmäßig für Berlin
         return mitternacht.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
     }
 
-   function updateGebetszeitenCountdown(prayerTimes) {
+  function updateGebetszeitenCountdown(prayerTimes) {
     let jetzt = new Date();
     let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
-    
-    let nextPrayer = null;
-    let nextPrayerTime = null;
-    let currentPrayer = null;
-    let currentPrayerEndTime = null;
 
-    let prayerOrder = [ "Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Nachtgebet - Letztes Drittel"];
+    let nextPrayer = null, nextPrayerTime = null;
+    let currentPrayer = null, currentPrayerEndTime = null;
+
+    // Reihenfolge der Gebete inklusive Sunnah-Gebete
+    let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Nachtgebet - Letztes Drittel"];
 
     for (let i = 0; i < prayerOrder.length; i++) {
         let prayer = prayerOrder[i];
@@ -270,20 +270,11 @@ ladeFeiertagsCountdowns("Berlin"); // Standardmäßig für Berlin
         }
     }
 
-    // Wenn kein nächstes Gebet für heute mehr da ist
+    // Falls alle Gebete des Tages vorbei sind → Zeige Fajr von morgen an
     if (!nextPrayer) {
-        nextPrayer = "Fajr";
-        let [fajrH, fajrM] = prayerTimes["Fajr"].split(":")[0].split(":").map(Number);
-        nextPrayerTime = (fajrH * 60) + fajrM + (24 * 60); // Fajr morgen
-        document.getElementById("next-prayer").textContent = "Fajr (Morgen)";
-    } else {
-        document.getElementById("next-prayer").textContent = nextPrayer;
+        nextPrayer = "Fajr (morgen)";
+        nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]) + (24 * 60);
     }
-
-    let remainingNextMinutes = nextPrayerTime - currentTime;
-    let nextHours = Math.floor(remainingNextMinutes / 60);
-    let nextMinutes = remainingNextMinutes % 60;
-    document.getElementById("prayer-countdown").textContent = `${nextHours} Std ${nextMinutes} Min`;
 
     // 📌 Berechnung für das aktuelle Gebet
     for (let i = 0; i < prayerOrder.length - 1; i++) {
@@ -303,17 +294,21 @@ ladeFeiertagsCountdowns("Berlin"); // Standardmäßig für Berlin
         }
     }
 
-    if (currentPrayer) {
-        let remainingCurrentMinutes = currentPrayerEndTime - currentTime;
-        let currentHours = Math.floor(remainingCurrentMinutes / 60);
-        let currentMinutes = remainingCurrentMinutes % 60;
-        document.getElementById("current-prayer").textContent = currentPrayer;
-        document.getElementById("current-prayer-countdown").textContent = `${currentHours} Std ${currentMinutes} Min`;
-    } else {
-        document.getElementById("current-prayer").textContent = "Kein aktuelles Gebet";
-        document.getElementById("current-prayer-countdown").textContent = "-";
-    }
+    // 📌 Berechnung der verbleibenden Zeit für das nächste Gebet
+    let remainingNextMinutes = nextPrayerTime - currentTime;
+    let nextHours = Math.floor(remainingNextMinutes / 60);
+    let nextMinutes = remainingNextMinutes % 60;
+    document.getElementById("next-prayer").textContent = nextPrayer;
+    document.getElementById("prayer-countdown").textContent = `${nextHours} Std ${nextMinutes} Min`;
+
+    // 📌 Berechnung der verbleibenden Zeit für das aktuelle Gebet
+    let remainingCurrentMinutes = currentPrayerEndTime - currentTime;
+    let currentHours = Math.floor(remainingCurrentMinutes / 60);
+    let currentMinutes = remainingCurrentMinutes % 60;
+    document.getElementById("current-prayer").textContent = currentPrayer || "-";
+    document.getElementById("current-prayer-countdown").textContent = currentPrayer ? `${currentHours} Std ${currentMinutes} Min` : "-";
 }
+
 
 // 📌 Aktualisiert den Countdown jede Sekunde
 setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000);
