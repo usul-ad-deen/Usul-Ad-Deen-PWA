@@ -199,13 +199,14 @@ ladeIslamischesDatum();
 
         return { mitternacht: mitternachtZeit, letztesDrittel: letztesDrittelZeit };
     }
-// 📌 **Countdown für das nächste & aktuelle Gebet**
+    
+// 📌 Countdown für das nächste & aktuelle Gebet
 function updateGebetszeitenCountdown(prayerTimes) {
     let jetzt = new Date();
     let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
 
     let nextPrayer = null, nextPrayerTime = null;
-    let currentPrayer = null;
+    let currentPrayer = null, currentPrayerEndTime = null;
 
     let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Nachtgebet - Letztes Drittel"];
 
@@ -213,24 +214,47 @@ function updateGebetszeitenCountdown(prayerTimes) {
         let prayer = prayerOrder[i];
         if (!prayerTimes[prayer]) continue;
 
-        let [hours, minutes] = prayerTimes[prayer].split(":")[0].split(":").map(Number);
-        let prayerMinutes = hours * 60 + minutes;
+        let [startHours, startMinutes] = prayerTimes[prayer].split(":")[0].split(":").map(Number);
+        let prayerStartMinutes = startHours * 60 + startMinutes;
 
-        if (prayerMinutes > currentTime) {
+        if (prayerStartMinutes > currentTime) {
             nextPrayer = prayer;
-            nextPrayerTime = prayerMinutes;
+            nextPrayerTime = prayerStartMinutes;
             break;
         }
         currentPrayer = prayer;
+        currentPrayerEndTime = prayerTimes[prayerOrder[i + 1]];
     }
 
     let remainingNextMinutes = nextPrayerTime - currentTime;
     let nextHours = Math.floor(remainingNextMinutes / 60);
     let nextMinutes = remainingNextMinutes % 60;
 
-    document.getElementById("next-prayer").textContent = nextPrayer;
-    document.getElementById("prayer-countdown").textContent = `${nextHours} Std ${nextMinutes} Min`;
-    document.getElementById("current-prayer").textContent = currentPrayer || "Kein aktuelles Gebet";
+    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (Beginn: ${prayerTimes[nextPrayer]}; Beginnt in ${nextHours} Std ${nextMinutes} Min)`;
+    document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (Beginn: ${prayerTimes[currentPrayer]}; Endet in: ${currentPrayerEndTime})`;
+
+    // Update der Tabelle mit den Countdowns
+    prayerOrder.forEach((prayer) => {
+        let countdownElement = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}-countdown`);
+        if (!countdownElement) return;
+
+        let [prayerHours, prayerMinutes] = prayerTimes[prayer].split(":")[0].split(":").map(Number);
+        let prayerMinutesTotal = prayerHours * 60 + prayerMinutes;
+
+        if (prayerMinutesTotal > currentTime) {
+            let remainingMinutes = prayerMinutesTotal - currentTime;
+            let remainingHours = Math.floor(remainingMinutes / 60);
+            let remainingMins = remainingMinutes % 60;
+            countdownElement.textContent = `${remainingHours} Std ${remainingMins} Min`;
+        } else {
+            let nextPrayerIndex = prayerOrder.indexOf(prayer) + 1;
+            if (nextPrayerIndex < prayerOrder.length) {
+                countdownElement.textContent = `Begonnen. Endet in ${prayerTimes[prayerOrder[nextPrayerIndex]]}`;
+            } else {
+                countdownElement.textContent = "Nächstes Gebet morgen";
+            }
+        }
+    });
 }
 
 
