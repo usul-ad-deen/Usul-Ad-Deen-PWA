@@ -152,42 +152,11 @@ ladeIslamischesDatum();
             "Isha": zeitAnpassen(data.data.timings.Isha, 0)
         };
 
-        async function ladeGebetszeiten(stadt) {
-    try {
-        console.log(`📡 Lade Gebetszeiten für: ${stadt}`);
-        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
-        let data = await response.json();
-
-        if (!data || !data.data || !data.data.timings) {
-            console.error("❌ API-Fehler: Gebetszeiten konnten nicht geladen werden!");
-            return;
-        }
-
-        function zeitAnpassen(zeit, minuten) {
-            let [h, m] = zeit.split(":").map(Number);
-            let neueZeit = new Date();
-            neueZeit.setHours(h, m + minuten);
-            return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
-        }
-
-        let prayerTimes = {
-            "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
-            "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
-            "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
-            "Asr": zeitAnpassen(data.data.timings.Asr, 0),
-            "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 0),
-            "Isha": zeitAnpassen(data.data.timings.Isha, 0)
-        };
-            // 🛠 Sunnah-Gebete berechnen
-        prayerTimes["Duha"] = `${zeitAnpassen(data.data.timings.Sunrise, 15)} - ${zeitAnpassen(data.data.timings.Dhuhr, -15)}`;
-        prayerTimes["Nachtgebet"] = `${zeitAnpassen(data.data.timings.Isha, 0)} - ${berechneLetztesDrittel(data.data.timings.Fajr, data.data.timings.Maghrib)}`;
-        prayerTimes["Nachtgebet - Letztes Drittel"] = `${berechneLetztesDrittel(data.data.timings.Fajr, data.data.timings.Maghrib)} - ${zeitAnpassen(data.data.timings.Fajr, -5)}`;
-
-       
         // Mitternacht und letztes Drittel berechnen
         let letztesDrittel = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
 
-        // Nachtgebete setzen
+        // 🛠 Sunnah-Gebete berechnen
+        prayerTimes["Duha"] = `${zeitAnpassen(data.data.timings.Sunrise, 15)} - ${zeitAnpassen(data.data.timings.Dhuhr, -15)}`;
         prayerTimes["Nachtgebet"] = `${prayerTimes.Isha} - ${letztesDrittel}`;
         prayerTimes["Nachtgebet - Letztes Drittel"] = `${letztesDrittel} - ${prayerTimes.Fajr}`;
 
@@ -210,9 +179,7 @@ ladeIslamischesDatum();
 }
 
   
-
-    // 📌 Mitternacht & letztes Drittel berechnen
-   function berechneMitternachtUndDrittel(fajr, maghrib) {
+function berechneMitternachtUndDrittel(fajr, maghrib) {
     let [fajrH, fajrM] = fajr.split(":").map(Number);
     let [maghribH, maghribM] = maghrib.split(":").map(Number);
 
@@ -247,6 +214,7 @@ ladeIslamischesDatum();
 
     return letztesDrittelZeit; // Für die Nachtgebetsberechnung
 }
+
 
 
 function updateGebetszeitenCountdown(prayerTimes) {
