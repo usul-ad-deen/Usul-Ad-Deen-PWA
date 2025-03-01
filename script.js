@@ -125,7 +125,7 @@ ladeIslamischesDatum();
     setInterval(updateUhrzeit, 1000);
 
 
-   
+
     // 📌 Gebetszeiten abrufen
     async function ladeGebetszeiten(stadt) {
         try {
@@ -157,12 +157,10 @@ ladeIslamischesDatum();
             // 🔹 Mitternacht & letztes Drittel der Nacht berechnen
             let { mitternacht, letztesDrittel } = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
 
-            // 🔹 Nachtgebete setzen
-            prayerTimes["Nachtgebet"] = `${prayerTimes.Isha} - ${letztesDrittel}`;
-            prayerTimes["Nachtgebet - Letztes Drittel"] = `${letztesDrittel} - ${prayerTimes.Fajr}`;
-
-            // 🔹 Sunnah-Gebete berechnen
-            prayerTimes["Duha"] = `${zeitAnpassen(data.data.timings.Sunrise, 15)} - ${zeitAnpassen(data.data.timings.Dhuhr, -15)}`;
+            // 🔹 Sunnah-Gebete **nur mit Startzeit**
+            prayerTimes["Duha"] = zeitAnpassen(data.data.timings.Sunrise, 15);
+            prayerTimes["Nachtgebet"] = prayerTimes.Isha;
+            prayerTimes["Nachtgebet - Letztes Drittel"] = letztesDrittel;
 
             // 🔹 Werte in HTML setzen
             Object.keys(prayerTimes).forEach(prayer => {
@@ -223,7 +221,7 @@ ladeIslamischesDatum();
         let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
 
         let nextPrayer = null, nextPrayerTime = null;
-        let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Nachtgebet - Letztes Drittel"];
+        let prayerOrder = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
         for (let prayer of prayerOrder) {
             if (!prayerTimes[prayer]) continue;
@@ -238,6 +236,7 @@ ladeIslamischesDatum();
             }
         }
 
+        // 🔹 Falls das letzte Gebet des Tages vorbei ist -> Nächstes Gebet: Fajr (Morgen)
         if (!nextPrayer) {
             nextPrayer = "Fajr (Morgen)";
             nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]);
@@ -250,6 +249,7 @@ ladeIslamischesDatum();
         document.getElementById("prayer-countdown").textContent = `${nextHours} Std ${nextMinutes} Min`;
     }
 
+   
 
 
 
