@@ -208,7 +208,7 @@ function updateGebetszeitenCountdown(prayerTimes) {
     let nextPrayer = null, nextPrayerTime = null;
     let currentPrayer = null, currentPrayerEndTime = null;
 
-    let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Nachtgebet - Letztes Drittel"];
+    let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Letztes Drittel"];
 
     for (let i = 0; i < prayerOrder.length; i++) {
         let prayer = prayerOrder[i];
@@ -258,6 +258,36 @@ function updateGebetszeitenCountdown(prayerTimes) {
 }
 
 
+    // 🛠 Sunnah-Gebete anpassen
+    let sunnahOrder = {
+        "Duha": "Dhuhr",
+        "Nachtgebet": "Letztes Drittel",
+        "Letztes Drittel": "Fajr"
+    };
+
+    for (let sunnah in sunnahOrder) {
+        if (!prayerTimes[sunnah]) continue;
+
+        let start = prayerTimes[sunnah];
+        let end = prayerTimes[sunnahOrder[sunnah]];
+
+        let [startH, startM] = start.split(":").map(Number);
+        let [endH, endM] = end.split(":").map(Number);
+
+        let startMin = startH * 60 + startM;
+        let endMin = endH * 60 + endM;
+
+        if (currentTime < startMin) {
+            let countdown = startMin - currentTime;
+            document.getElementById(`${sunnah.toLowerCase()}-countdown`).textContent = `Beginnt in ${Math.floor(countdown / 60)} Std ${countdown % 60} Min`;
+        } else if (currentTime >= startMin && currentTime < endMin) {
+            let countdown = endMin - currentTime;
+            document.getElementById(`${sunnah.toLowerCase()}-countdown`).textContent = `Begonnen. Endet in ${Math.floor(countdown / 60)} Std ${countdown % 60} Min`;
+        } else {
+            document.getElementById(`${sunnah.toLowerCase()}-countdown`).textContent = "Nächstes Gebet morgen";
+        }
+    }
+}
    
 async function ladeFeiertagsCountdowns(stadt) {
     let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
