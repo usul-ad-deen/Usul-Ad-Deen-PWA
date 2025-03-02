@@ -165,6 +165,9 @@ async function ladeStadtAuswahl() {
                 return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
             }
 
+            let mitternacht = berechneMitternacht(data.data.timings.Maghrib, data.data.timings.Fajr);
+            let letztesDrittel = berechneLetztesDrittel(data.data.timings.Maghrib, data.data.timings.Fajr);
+
             let prayerTimes = {
                 "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
                 "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
@@ -173,8 +176,8 @@ async function ladeStadtAuswahl() {
                 "Asr": zeitAnpassen(data.data.timings.Asr, 0),
                 "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
                 "Isha": zeitAnpassen(data.data.timings.Isha, 0),
-                "Mitternacht": berechneMitternacht(data.data.timings.Maghrib, data.data.timings.Fajr),
-                "Letztes Drittel": berechneLetztesDrittel(data.data.timings.Maghrib, data.data.timings.Fajr)
+                "Mitternacht": mitternacht,
+                "Letztes Drittel": letztesDrittel
             };
 
             // 🔹 Werte in HTML setzen
@@ -240,7 +243,6 @@ async function ladeStadtAuswahl() {
             if (!countdownElement) continue;
 
             if (currentTime < prayerStartMinutes) {
-                // 🔹 Gebet NOCH NICHT begonnen → Countdown bis Start
                 let remainingMinutes = prayerStartMinutes - currentTime - 1;
                 let remainingSeconds = 60 - currentSeconds;
                 countdownElement.textContent = `Beginnt in: ${formatTime(remainingMinutes, remainingSeconds)}`;
@@ -249,45 +251,29 @@ async function ladeStadtAuswahl() {
                     nextPrayerTime = prayerStartMinutes;
                 }
             } else if (currentTime >= prayerStartMinutes && currentTime < prayerEndMinutes) {
-                // 🔹 Gebet AKTIV → Countdown bis Ende
                 let remainingMinutes = prayerEndMinutes - currentTime - 1;
                 let remainingSeconds = 60 - currentSeconds;
                 countdownElement.textContent = `Begonnen. Noch: ${formatTime(remainingMinutes, remainingSeconds)}`;
                 currentPrayer = prayer;
                 currentPrayerEndTime = prayerEndMinutes;
             } else {
-                // 🔹 Gebet ist VORBEI
                 countdownElement.textContent = "Bereits abgelaufen.";
             }
         }
 
-        // 🔹 Next Prayer Anzeige
         let nextHours = Math.floor((nextPrayerTime - currentTime - 1) / 60);
         let nextMinutes = (nextPrayerTime - currentTime - 1) % 60;
         let nextSeconds = 60 - currentSeconds;
 
         document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${prayerTimes[nextPrayer].slice(0, 5)})`;
         document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${formatTime(nextHours * 60 + nextMinutes, nextSeconds)}`;
-
-        // 🔹 Current Prayer Anzeige
-        if (currentPrayer) {
-            let currentHours = Math.floor((currentPrayerEndTime - currentTime - 1) / 60);
-            let currentMinutes = (currentPrayerEndTime - currentTime - 1) % 60;
-            let currentSeconds = 60 - currentSeconds;
-
-            document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${prayerTimes[currentPrayer].slice(0, 5)})`;
-            document.getElementById("current-prayer-countdown").textContent = `Endet in: ${formatTime(currentHours * 60 + currentMinutes, currentSeconds)}`;
-        }
     }
 
-    // 📌 Hilfsfunktion zur Umwandlung von Minuten & Sekunden in HH:MM:SS
     function formatTime(minutes, seconds) {
         let h = Math.floor(minutes / 60);
         let m = minutes % 60;
         return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     }
-
-
 
 
 // Countdown für die Feiertage setzen
