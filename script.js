@@ -28,11 +28,11 @@ document.addEventListener("DOMContentLoaded", async () =>{
     // 📌 Aktuelle Uhrzeit & Datum setzen (Berlin & Mekka)
     function updateUhrzeit() {
         let jetzt = new Date();
-        document.getElementById("uhrzeit").textContent = jetzt.toLocaleTimeString("de-DE", { hour12: false });
+        document.getElementById("uhrzeit").textContent = `Berlin: ${jetzt.toLocaleTimeString("de-DE", { hour12: false })}`;
         document.getElementById("datum").textContent = jetzt.toLocaleDateString("de-DE");
 
         let mekkaZeit = new Date(jetzt.getTime() + 2 * 60 * 60 * 1000);
-        document.getElementById("mekka-uhrzeit").textContent = mekkaZeit.toLocaleTimeString("de-DE", { hour12: false });
+        document.getElementById("mekka-uhrzeit").textContent = `Mekka: ${mekkaZeit.toLocaleTimeString("de-DE", { hour12: false })}`;
     }
     updateUhrzeit();
     setInterval(updateUhrzeit, 1000);
