@@ -181,7 +181,7 @@ async function ladeGebetszeiten(stadt) {
         prayerTimes["Duha-Ende"] = zeitAnpassen(data.data.timings.Dhuhr, -15);
         prayerTimes["Nachtgebet"] = prayerTimes.Isha;
         prayerTimes["Letztes Drittel"] = letztesDrittel;
-        prayerTimes["Fajr (Nächster Tag)"] = zeitAnpassen(data.data.timings.Fajr, 24 * 60); // ❗ Fajr um 24 Stunden nach vorne schieben
+       
 
         Object.keys(prayerTimes).forEach(prayer => {
             let element = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}`);
@@ -236,7 +236,7 @@ function updateGebetszeitenCountdown(prayerTimes) {
     let jetzt = new Date();
     let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
 
-    let prayerOrder = ["Fajr", "Shuruk", "Duha", "Duha-Ende", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Letztes Drittel", "Fajr (Nächster Tag)"];
+    let prayerOrder = ["Fajr", "Shuruk", "Duha", "Duha-Ende", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Letztes Drittel",];
 
     let nextPrayer = null, nextPrayerTime = null;
     let currentPrayer = null, currentPrayerEndTime = null;
