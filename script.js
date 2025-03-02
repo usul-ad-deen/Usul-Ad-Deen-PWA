@@ -94,32 +94,43 @@ async function ermittleStandort() {
                 try {
                     let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                     let data = await response.json();
-                    let stadt = data.address.city || "Berlin"; 
+                    let stadt = data.address.city || data.address.town || data.address.village || "Berlin";
 
+                    // 📌 **Hier kommt meine Änderung**
+                    if (!stadt || stadt === "Berlin") { 
+                        document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
+                        await ladeStadtAuswahl();
+                        aktiviereManuelleStadtauswahl();
+                        return; // **Beende die Funktion, damit nicht Berlin als Standort verwendet wird**
+                    }
+
+                    // Wenn die Stadt korrekt ermittelt wurde:
                     document.getElementById("stadt-name").textContent = `Standort: ${stadt}`;
                     await ladeGebetszeiten(stadt);
                     await ladeFeiertagsCountdowns();
+
                 } catch (error) {
                     console.error("Fehler bei Standortermittlung:", error);
-                  document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
+                    document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
                     await ladeStadtAuswahl();
                     aktiviereManuelleStadtauswahl();
                 }
             },
             async () => {
                 console.warn("Standort abgelehnt oder nicht verfügbar.");
-               document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
+                document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
                 await ladeStadtAuswahl();
                 aktiviereManuelleStadtauswahl();
             }
         );
     } else {
         console.warn("Geolocation nicht unterstützt.");
-     document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
+        document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
         await ladeStadtAuswahl();
         aktiviereManuelleStadtauswahl();
     }
 }
+
 function aktiviereManuelleStadtauswahl() {
     document.getElementById("stadt-auswahl").addEventListener("change", async function () {
         let gewählteStadt = this.value;
@@ -166,6 +177,10 @@ let letztesDrittel = berechneteZeiten.letztesDrittel;
 prayerTimes["Duha"] = zeitAnpassen(data.data.timings.Sunrise, 15);
 prayerTimes["Nachtgebet"] = prayerTimes.Isha;
 prayerTimes["Letztes Drittel"] = letztesDrittel;
+prayerTimes["Duha-Ende"] = prayerTimes["Dhuhr"];
+prayerTimes["Nachtgebet-Ende"] = prayerTimes["Letztes Drittel"];
+prayerTimes["Letztes Drittel-Ende"] = prayerTimes["Fajr"];
+
 
 
             // 🔹 Werte in HTML setzen
@@ -189,6 +204,9 @@ prayerTimes["Letztes Drittel"] = letztesDrittel;
             console.error("❌ Fehler beim Abrufen der Gebetszeiten:", error);
         }
     }
+    updateGebetszeitenCountdown(prayerTimes);
+setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000);
+
 
     // 📌 Mitternacht & letztes Drittel berechnen
     function berechneMitternachtUndDrittel(fajr, maghrib) {
