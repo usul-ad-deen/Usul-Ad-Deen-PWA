@@ -147,7 +147,6 @@ async function ladeStadtAuswahl() {
     }
 }
 
-    // 📌 Funktion zum Laden der Gebetszeiten
     async function ladeGebetszeiten(stadt) {
         try {
             let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
@@ -184,7 +183,7 @@ async function ladeStadtAuswahl() {
             Object.keys(prayerTimes).forEach(prayer => {
                 let element = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}`);
                 if (element) {
-                    element.textContent = prayerTimes[prayer];
+                    element.textContent = prayerTimes[prayer].slice(0, 5); // Uhrzeit ohne Sekunden
                 }
             });
 
@@ -195,7 +194,6 @@ async function ladeStadtAuswahl() {
         }
     }
 
-    // 📌 Mitternacht berechnen
     function berechneMitternacht(maghrib, fajr) {
         let [mH, mM] = maghrib.split(":").map(Number);
         let [fH, fM] = fajr.split(":").map(Number);
@@ -207,7 +205,6 @@ async function ladeStadtAuswahl() {
         return `${String(mitternachtH).padStart(2, '0')}:${String(mitternachtM).padStart(2, '0')}`;
     }
 
-    // 📌 Letztes Drittel berechnen
     function berechneLetztesDrittel(maghrib, fajr) {
         let [mH, mM] = maghrib.split(":").map(Number);
         let [fH, fM] = fajr.split(":").map(Number);
@@ -219,7 +216,6 @@ async function ladeStadtAuswahl() {
         return `${String(drittelH).padStart(2, '0')}:${String(drittelM).padStart(2, '0')}`;
     }
 
-    // 📌 Countdown für Gebete aktualisieren
     function updateGebetszeitenCountdown(prayerTimes) {
         let jetzt = new Date();
         let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
@@ -228,7 +224,6 @@ async function ladeStadtAuswahl() {
         let prayerOrder = ["Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht", "Letztes Drittel"];
         let nextPrayer = null, nextPrayerTime = null, currentPrayer = null, currentPrayerEndTime = null;
 
-        // 🔹 Countdown für jedes Gebet berechnen
         for (let i = 0; i < prayerOrder.length - 1; i++) {
             let prayer = prayerOrder[i];
             if (!prayerTimes[prayer]) continue;
@@ -267,6 +262,13 @@ async function ladeStadtAuswahl() {
 
         document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${prayerTimes[nextPrayer].slice(0, 5)})`;
         document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${formatTime(nextHours * 60 + nextMinutes, nextSeconds)}`;
+
+        if (currentPrayer) {
+            let remainingMinutes = currentPrayerEndTime - currentTime - 1;
+            let remainingSeconds = 60 - currentSeconds;
+            document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${prayerTimes[currentPrayer].slice(0, 5)})`;
+            document.getElementById("current-prayer-countdown").textContent = `Endet in: ${formatTime(remainingMinutes, remainingSeconds)}`;
+        }
     }
 
     function formatTime(minutes, seconds) {
@@ -275,7 +277,7 @@ async function ladeStadtAuswahl() {
         return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     }
 
-
+ 
 // Countdown für die Feiertage setzen
 async function ladeFeiertagsCountdowns(stadt) {
     let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
