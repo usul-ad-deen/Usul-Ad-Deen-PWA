@@ -147,6 +147,7 @@ async function ladeStadtAuswahl() {
     }
 }
 
+// 📌 Funktion zum Abrufen der Gebetszeiten
 async function ladeGebetszeiten(stadt) {
     try {
         let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
@@ -160,8 +161,8 @@ async function ladeGebetszeiten(stadt) {
         function zeitAnpassen(zeit, minuten) {
             let [h, m] = zeit.split(":").map(Number);
             let neueZeit = new Date();
-            neueZeit.setHours(h, m + minuten);
-            return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
+            neueZeit.setHours(h, m + minuten, 0); // Sekundengenau setzen
+            return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
         }
 
         let prayerTimes = {
@@ -192,13 +193,13 @@ async function ladeGebetszeiten(stadt) {
         document.getElementById("letztes-drittel").textContent = letztesDrittel;
 
         updateGebetszeitenCountdown(prayerTimes);
-        setInterval(() => updateGebetszeitenCountdown(prayerTimes), 60000); // Alle 60 Sekunden aktualisieren
+        setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000); // Jede Sekunde aktualisieren
     } catch (error) {
         console.error("❌ Fehler beim Abrufen der Gebetszeiten:", error);
     }
 }
 
-// 📌 Mitternacht & letztes Drittel berechnen
+// 📌 Berechnung von Mitternacht & letztem Drittel der Nacht
 function berechneMitternachtUndDrittel(fajr, maghrib) {
     let [fajrH, fajrM] = fajr.split(":").map(Number);
     let [maghribH, maghribM] = maghrib.split(":").map(Number);
@@ -209,17 +210,19 @@ function berechneMitternachtUndDrittel(fajr, maghrib) {
 
     let nachtDauer = fajrZeit - maghribZeit;
     let mitternachtMinuten = maghribZeit + nachtDauer / 2;
-    let mitternachtH = Math.floor(mitternachtMinuten / 60) % 24;
-    let mitternachtM = Math.floor(mitternachtMinuten % 60);
-
     let letztesDrittelMinuten = maghribZeit + 2 * (nachtDauer / 3);
-    let letztesDrittelH = Math.floor(letztesDrittelMinuten / 60) % 24;
-    let letztesDrittelM = Math.floor(letztesDrittelMinuten % 60);
 
     return {
-        mitternacht: `${String(mitternachtH).padStart(2, '0')}:${String(mitternachtM).padStart(2, '0')}`,
-        letztesDrittel: `${String(letztesDrittelH).padStart(2, '0')}:${String(letztesDrittelM).padStart(2, '0')}`
+        mitternacht: formatTime(mitternachtMinuten),
+        letztesDrittel: formatTime(letztesDrittelMinuten)
     };
+}
+
+// 📌 Zeitformatierung in HH:MM:SS
+function formatTime(minutes) {
+    let h = Math.floor(minutes / 60) % 24;
+    let m = Math.floor(minutes % 60);
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`;
 }
 
 // 📌 Countdown für Gebete
@@ -246,29 +249,36 @@ function updateGebetszeitenCountdown(prayerTimes) {
 
         if (prayerStartMinutes <= currentTime) {
             currentPrayer = prayer;
-            currentPrayerEndTime = prayerTimes[prayerOrder[i + 1]];
+            currentPrayerEndTime = prayerTimes[prayerOrder[i + 1]] || prayerTimes["Fajr"];
         }
     }
 
     if (!nextPrayer) {
         nextPrayer = "Fajr";
-        nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]);
+        nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]) + 24 * 60;
     }
 
-    let remainingNextMinutes = nextPrayerTime - currentTime;
-    let nextHours = Math.floor(remainingNextMinutes / 60);
-    let nextMinutes = remainingNextMinutes % 60;
-    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${prayerTimes[nextPrayer]})`;
-    document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${String(nextHours).padStart(2, '0')}:${String(nextMinutes).padStart(2, '0')}`;
+    // 🕒 Countdown berechnen
+    let remainingNextSeconds = (nextPrayerTime * 60) - (currentTime * 60 + jetzt.getSeconds());
+    let nextHours = Math.floor(remainingNextSeconds / 3600);
+    let nextMinutes = Math.floor((remainingNextSeconds % 3600) / 60);
+    let nextSeconds = remainingNextSeconds % 60;
 
     let [endH, endM] = currentPrayerEndTime ? currentPrayerEndTime.split(":").map(Number) : [0, 0];
     let endTimeMinutes = endH * 60 + endM;
-    let remainingCurrentMinutes = endTimeMinutes - currentTime;
-    let currentHours = Math.floor(remainingCurrentMinutes / 60);
-    let currentMinutes = remainingCurrentMinutes % 60;
+    let remainingCurrentSeconds = (endTimeMinutes * 60) - (currentTime * 60 + jetzt.getSeconds());
+    let currentHours = Math.floor(remainingCurrentSeconds / 3600);
+    let currentMinutes = Math.floor((remainingCurrentSeconds % 3600) / 60);
+    let currentSeconds = remainingCurrentSeconds % 60;
+
+    // 📌 Anzeige aktualisieren
+    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${prayerTimes[nextPrayer]})`;
+    document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${String(nextHours).padStart(2, '0')}:${String(nextMinutes).padStart(2, '0')}:${String(nextSeconds).padStart(2, '0')}`;
+
     document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${prayerTimes[currentPrayer]})`;
-    document.getElementById("current-prayer-countdown").textContent = `Endet in: ${String(currentHours).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}`;
+    document.getElementById("current-prayer-countdown").textContent = `Endet in: ${String(currentHours).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}:${String(currentSeconds).padStart(2, '0')}`;
 }
+
 // Countdown für die Feiertage setzen
 async function ladeFeiertagsCountdowns(stadt) {
     let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
