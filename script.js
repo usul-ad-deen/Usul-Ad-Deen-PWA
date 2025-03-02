@@ -214,49 +214,41 @@ function updateGebetszeitenCountdown(prayerTimes) {
         let prayer = prayerOrder[i];
         if (!prayerTimes[prayer]) continue;
 
-        let [startHours, startMinutes] = prayerTimes[prayer].split(":")[0].split(":").map(Number);
+        let [startHours, startMinutes] = prayerTimes[prayer].split(":").map(Number);
         let prayerStartMinutes = startHours * 60 + startMinutes;
 
-        if (prayerStartMinutes > currentTime) {
+        let [endHours, endMinutes] = prayerTimes[prayerOrder[i + 1]] ? prayerTimes[prayerOrder[i + 1]].split(":").map(Number) : [24, 0];
+        let prayerEndMinutes = endHours * 60 + endMinutes;
+
+        if (currentTime >= prayerStartMinutes && currentTime < prayerEndMinutes) {
+            currentPrayer = prayer;
+            currentPrayerEndTime = prayerEndMinutes;
+        }
+
+        if (prayerStartMinutes > currentTime && !nextPrayer) {
             nextPrayer = prayer;
             nextPrayerTime = prayerStartMinutes;
-            break;
         }
-        currentPrayer = prayer;
-        currentPrayerEndTime = prayerTimes[prayerOrder[i + 1]];
+    }
+
+    if (!nextPrayer) {
+        nextPrayer = "Fajr (Morgen)";
+        nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]);
     }
 
     let remainingNextMinutes = nextPrayerTime - currentTime;
     let nextHours = Math.floor(remainingNextMinutes / 60);
     let nextMinutes = remainingNextMinutes % 60;
+    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${prayerTimes[nextPrayer]})`;
+    document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${nextHours} Std ${nextMinutes} Min`;
 
-    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (Beginn: ${prayerTimes[nextPrayer]}; Beginnt in ${nextHours} Std ${nextMinutes} Min)`;
-    document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (Beginn: ${prayerTimes[currentPrayer]}; Endet in: ${currentPrayerEndTime})`;
-
-    // Update der Tabelle mit den Countdowns
-    prayerOrder.forEach((prayer) => {
-        let countdownElement = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}-countdown`);
-        if (!countdownElement) return;
-
-        let [prayerHours, prayerMinutes] = prayerTimes[prayer].split(":")[0].split(":").map(Number);
-        let prayerMinutesTotal = prayerHours * 60 + prayerMinutes;
-
-        if (prayerMinutesTotal > currentTime) {
-            let remainingMinutes = prayerMinutesTotal - currentTime;
-            let remainingHours = Math.floor(remainingMinutes / 60);
-            let remainingMins = remainingMinutes % 60;
-            countdownElement.textContent = `${remainingHours} Std ${remainingMins} Min`;
-        } else {
-            let nextPrayerIndex = prayerOrder.indexOf(prayer) + 1;
-            if (nextPrayerIndex < prayerOrder.length) {
-                countdownElement.textContent = `Begonnen. Endet in ${prayerTimes[prayerOrder[nextPrayerIndex]]}`;
-            } else {
-                countdownElement.textContent = "Nächstes Gebet morgen";
-            }
-        }
-    });
-}
-
+    if (currentPrayer) {
+        let remainingCurrentMinutes = currentPrayerEndTime - currentTime;
+        let currentHours = Math.floor(remainingCurrentMinutes / 60);
+        let currentMinutes = remainingCurrentMinutes % 60;
+        document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${prayerTimes[currentPrayer]})`;
+        document.getElementById("current-prayer-countdown").textContent = `Endet in: ${currentHours} Std ${currentMinutes} Min`;
+    }
 
     // 🛠 Sunnah-Gebete anpassen
     let sunnahOrder = {
@@ -277,16 +269,44 @@ function updateGebetszeitenCountdown(prayerTimes) {
         let startMin = startH * 60 + startM;
         let endMin = endH * 60 + endM;
 
+        let countdownText = document.getElementById(`${sunnah.toLowerCase()}-countdown`);
+
         if (currentTime < startMin) {
             let countdown = startMin - currentTime;
-            document.getElementById(`${sunnah.toLowerCase()}-countdown`).textContent = `Beginnt in ${Math.floor(countdown / 60)} Std ${countdown % 60} Min`;
+            countdownText.textContent = `Beginnt in ${Math.floor(countdown / 60)} Std ${countdown % 60} Min`;
         } else if (currentTime >= startMin && currentTime < endMin) {
             let countdown = endMin - currentTime;
-            document.getElementById(`${sunnah.toLowerCase()}-countdown`).textContent = `Begonnen. Endet in ${Math.floor(countdown / 60)} Std ${countdown % 60} Min`;
+            countdownText.textContent = `Begonnen. Endet in ${Math.floor(countdown / 60)} Std ${countdown % 60} Min`;
         } else {
-            document.getElementById(`${sunnah.toLowerCase()}-countdown`).textContent = "Nächstes Gebet morgen";
+            countdownText.textContent = "Nächstes Gebet morgen";
         }
     }
+
+    // 📌 Standard-Gebete überprüfen
+    for (let prayer of prayerOrder) {
+        if (!prayerTimes[prayer]) continue;
+
+        let [startH, startM] = prayerTimes[prayer].split(":").map(Number);
+        let startMin = startH * 60 + startM;
+
+        let [endH, endM] = prayerTimes[prayerOrder[prayerOrder.indexOf(prayer) + 1]] 
+            ? prayerTimes[prayerOrder[prayerOrder.indexOf(prayer) + 1]].split(":").map(Number) 
+            : [24, 0];
+        let endMin = endH * 60 + endM;
+
+        let countdownText = document.getElementById(`${prayer.toLowerCase()}-countdown`);
+
+        if (currentTime < startMin) {
+            let countdown = startMin - currentTime;
+            countdownText.textContent = `Beginnt in ${Math.floor(countdown / 60)} Std ${countdown % 60} Min`;
+        } else if (currentTime >= startMin && currentTime < endMin) {
+            let countdown = endMin - currentTime;
+            countdownText.textContent = `Begonnen. Endet in ${Math.floor(countdown / 60)} Std ${countdown % 60} Min`;
+        } else {
+            countdownText.textContent = "Nächstes Gebet morgen";
+        }
+    }
+}
 
    
 async function ladeFeiertagsCountdowns(stadt) {
