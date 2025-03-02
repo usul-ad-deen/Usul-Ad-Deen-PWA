@@ -95,9 +95,8 @@ ladeIslamischesDatum();
                     let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                     let data = await response.json();
                     let stadt = data.address.city || "Berlin";
-
-                    document.getElementById("stadt-name").textContent = stadt;
-                    await ladeGebetszeiten(stadt);
+document.getElementById("stadt-name").textContent = stadt;
+setTimeout(() => ladeGebetszeiten(stadt), 500); // 🔹 Verzögerung, damit die Stadt zuerst gesetzt wird
                     await ladeFeiertagsCountdowns();
                 } catch (error) {
                     console.error("Fehler bei Standortermittlung:", error);
@@ -130,22 +129,25 @@ ladeIslamischesDatum();
                 return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
             }
 
-            let prayerTimes = {
-                "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
-                "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
-                "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
-                "Asr": zeitAnpassen(data.data.timings.Asr, 0),
-                "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
-                "Isha": zeitAnpassen(data.data.timings.Isha, 0)
-            };
+           let prayerTimes = {
+    "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
+    "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
+    "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
+    "Asr": zeitAnpassen(data.data.timings.Asr, 0),
+    "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
+    "Isha": zeitAnpassen(data.data.timings.Isha, 0)
+};
 
-            // 🔹 Mitternacht & letztes Drittel der Nacht berechnen
-            let { mitternacht, letztesDrittel } = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
+// 🔹 Mitternacht & letztes Drittel berechnen
+let berechneteZeiten = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
+let mitternacht = berechneteZeiten.mitternacht;
+let letztesDrittel = berechneteZeiten.letztesDrittel;
 
-            // 🔹 Sunnah-Gebete **nur mit Startzeit**
-            prayerTimes["Duha"] = zeitAnpassen(data.data.timings.Sunrise, 15);
-            prayerTimes["Nachtgebet"] = prayerTimes.Isha;
-            prayerTimes["Nachtgebet - Letztes Drittel"] = letztesDrittel;
+// 🔹 Sunnah-Gebete
+prayerTimes["Duha"] = zeitAnpassen(data.data.timings.Sunrise, 15);
+prayerTimes["Nachtgebet"] = prayerTimes.Isha;
+prayerTimes["Letztes Drittel"] = letztesDrittel;
+
 
             // 🔹 Werte in HTML setzen
             Object.keys(prayerTimes).forEach(prayer => {
@@ -206,7 +208,26 @@ function updateGebetszeitenCountdown(prayerTimes) {
     let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
 
     let nextPrayer = null, nextPrayerTime = null;
-    let currentPrayer = null, currentPrayerEndTime = null;
+  let previousPrayer = null;
+for (let i = 0; i < prayerOrder.length; i++) {
+    let prayer = prayerOrder[i];
+    if (!prayerTimes[prayer]) continue;
+
+    let [startHours, startMinutes] = prayerTimes[prayer].split(":").map(Number);
+    let prayerStartMinutes = startHours * 60 + startMinutes;
+
+    if (prayerStartMinutes > currentTime) {
+        nextPrayer = prayer;
+        nextPrayerTime = prayerStartMinutes;
+        break;
+    }
+    previousPrayer = prayer; // Setzt das vorherige Gebet als aktuelles
+}
+
+// Falls kein aktuelles Gebet gesetzt wurde, das letzte nehmen
+currentPrayer = previousPrayer;
+currentPrayerEndTime = prayerTimes[nextPrayer]; // Endzeit ist der Beginn des nächsten Gebets
+
 
     let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Letztes Drittel"];
 
@@ -231,10 +252,12 @@ function updateGebetszeitenCountdown(prayerTimes) {
         }
     }
 
+    
     if (!nextPrayer) {
-        nextPrayer = "Fajr (Morgen)";
-        nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]);
-    }
+    nextPrayer = "Fajr";
+    nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]);
+}
+
 
     let remainingNextMinutes = nextPrayerTime - currentTime;
     let nextHours = Math.floor(remainingNextMinutes / 60);
