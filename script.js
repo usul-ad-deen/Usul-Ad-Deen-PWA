@@ -162,7 +162,7 @@ async function ladeGebetszeiten(stadt) {
             let [h, m] = zeit.split(":").map(Number);
             let neueZeit = new Date();
             neueZeit.setHours(h, m + minuten, 0); // Sekundengenau setzen
-            return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+            return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
         }
 
         let prayerTimes = {
@@ -213,16 +213,21 @@ function berechneMitternachtUndDrittel(fajr, maghrib) {
     let letztesDrittelMinuten = maghribZeit + 2 * (nachtDauer / 3);
 
     return {
-        mitternacht: formatTime(mitternachtMinuten),
-        letztesDrittel: formatTime(letztesDrittelMinuten)
+        mitternacht: formatTime(mitternachtMinuten, false),
+        letztesDrittel: formatTime(letztesDrittelMinuten, false)
     };
 }
 
-// 📌 Zeitformatierung in HH:MM:SS
-function formatTime(minutes) {
+// 📌 Zeitformatierung: `mitSekunden = true` für next/current Gebet
+function formatTime(minutes, mitSekunden = false) {
     let h = Math.floor(minutes / 60) % 24;
     let m = Math.floor(minutes % 60);
-    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`;
+    if (mitSekunden) {
+        let jetzt = new Date();
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(jetzt.getSeconds()).padStart(2, '0')}`;
+    } else {
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
 }
 
 // 📌 Countdown für Gebete
@@ -272,12 +277,13 @@ function updateGebetszeitenCountdown(prayerTimes) {
     let currentSeconds = remainingCurrentSeconds % 60;
 
     // 📌 Anzeige aktualisieren
-    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${prayerTimes[nextPrayer]})`;
+    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${formatTime(nextPrayerTime, true)})`;
     document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${String(nextHours).padStart(2, '0')}:${String(nextMinutes).padStart(2, '0')}:${String(nextSeconds).padStart(2, '0')}`;
 
-    document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${prayerTimes[currentPrayer]})`;
+    document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${formatTime(currentTime, true)})`;
     document.getElementById("current-prayer-countdown").textContent = `Endet in: ${String(currentHours).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}:${String(currentSeconds).padStart(2, '0')}`;
 }
+
 
 // Countdown für die Feiertage setzen
 async function ladeFeiertagsCountdowns(stadt) {
