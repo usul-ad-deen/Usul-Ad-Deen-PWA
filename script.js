@@ -84,7 +84,6 @@ async function ladeIslamischesDatum() {
 ladeIslamischesDatum(); 
 
 
-// 📌 Stadt ermitteln und setzen
     async function ermittleStandort() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -95,66 +94,49 @@ ladeIslamischesDatum();
                     try {
                         let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                         let data = await response.json();
-                        let stadt = data.address.city || data.address.town || data.address.village || "";
+                        let stadt = data.address.city || data.address.town || data.address.village || "Berlin";
 
-                        if (!stadt) { // Falls Stadt leer ist
+                        if (!stadt || stadt === "Berlin") { 
                             document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
                             await ladeStadtAuswahl();
+                            aktiviereManuelleStadtauswahl();
                             return;
                         }
 
-                        // Wenn die Stadt korrekt ermittelt wurde
                         document.getElementById("stadt-name").textContent = `Standort: ${stadt}`;
                         await ladeGebetszeiten(stadt);
                     } catch (error) {
                         console.error("Fehler bei Standortermittlung:", error);
                         document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
                         await ladeStadtAuswahl();
+                        aktiviereManuelleStadtauswahl();
                     }
                 },
                 async () => {
                     console.warn("Standort abgelehnt oder nicht verfügbar.");
                     document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
                     await ladeStadtAuswahl();
+                    aktiviereManuelleStadtauswahl();
                 }
             );
         } else {
             console.warn("Geolocation nicht unterstützt.");
             document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
             await ladeStadtAuswahl();
+            aktiviereManuelleStadtauswahl();
         }
     }
 
-    // 📌 Manuelle Stadtauswahl aktivieren
-    async function ladeStadtAuswahl() {
-        try {
-            let response = await fetch("stadt.json");
-            let städte = await response.json();
-            let dropdown = document.getElementById("stadt-auswahl");
-            dropdown.innerHTML = ""; // ❗ Verhindert doppelte Optionen!
-
-            städte.forEach(stadt => {
-                let option = document.createElement("option");
-                option.value = stadt.name;
-                option.textContent = stadt.name;
-                dropdown.appendChild(option);
-            });
-
-            dropdown.addEventListener("change", async function () {
-                let gewählteStadt = this.value;
-                document.getElementById("stadt-name").textContent = `Manuelle Auswahl: ${gewählteStadt}`;
-                await ladeGebetszeiten(gewählteStadt);
-            });
-        } catch (error) {
-            console.error("Fehler beim Laden der Städte:", error);
-        }
+    function aktiviereManuelleStadtauswahl() {
+        document.getElementById("stadt-auswahl").addEventListener("change", async function () {
+            let gewählteStadt = this.value;
+            document.getElementById("stadt-name").textContent = `Manuelle Auswahl: ${gewählteStadt}`;
+            await ladeGebetszeiten(gewählteStadt);
+        });
     }
 
-
-    // 📌 Gebetszeiten abrufen
     async function ladeGebetszeiten(stadt) {
         try {
-            console.log(`📡 Lade Gebetszeiten für: ${stadt}`);
             let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
             let data = await response.json();
 
@@ -170,53 +152,37 @@ ladeIslamischesDatum();
                 return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
             }
 
-           let prayerTimes = {
-    "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
-    "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
-    "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
-    "Asr": zeitAnpassen(data.data.timings.Asr, 0),
-    "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
-    "Isha": zeitAnpassen(data.data.timings.Isha, 0)
-};
+            let prayerTimes = {
+                "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
+                "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
+                "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
+                "Asr": zeitAnpassen(data.data.timings.Asr, 0),
+                "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
+                "Isha": zeitAnpassen(data.data.timings.Isha, 0)
+            };
 
-// 🔹 Mitternacht & letztes Drittel berechnen
-let berechneteZeiten = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
-let mitternacht = berechneteZeiten.mitternacht;
-let letztesDrittel = berechneteZeiten.letztesDrittel;
+            let { mitternacht, letztesDrittel } = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
 
-// 🔹 Sunnah-Gebete
-prayerTimes["Duha"] = zeitAnpassen(data.data.timings.Sunrise, 15);
-prayerTimes["Nachtgebet"] = prayerTimes.Isha;
-prayerTimes["Letztes Drittel"] = letztesDrittel;
-prayerTimes["Duha-Ende"] = prayerTimes["Dhuhr"];
-prayerTimes["Nachtgebet-Ende"] = prayerTimes["Letztes Drittel"];
-prayerTimes["Letztes Drittel-Ende"] = prayerTimes["Fajr"];
+            prayerTimes["Duha"] = zeitAnpassen(data.data.timings.Sunrise, 15);
+            prayerTimes["Nachtgebet"] = prayerTimes.Isha;
+            prayerTimes["Letztes Drittel"] = letztesDrittel;
 
-
-
-            // 🔹 Werte in HTML setzen
             Object.keys(prayerTimes).forEach(prayer => {
                 let element = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}`);
                 if (element) {
                     element.textContent = prayerTimes[prayer];
-                } else {
-                    console.warn(`⚠️ Warnung: Kein HTML-Element für ${prayer} gefunden!`);
                 }
             });
 
-            // 🔹 Islamische Mitternacht & letztes Drittel setzen
             document.getElementById("mitternacht").textContent = mitternacht;
             document.getElementById("letztes-drittel").textContent = letztesDrittel;
 
-            // 🔹 Gebetszeiten-Countdown starten
             updateGebetszeitenCountdown(prayerTimes);
             setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000);
         } catch (error) {
             console.error("❌ Fehler beim Abrufen der Gebetszeiten:", error);
         }
     }
-    updateGebetszeitenCountdown(prayerTimes);
-setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000);
 
 
     // 📌 Mitternacht & letztes Drittel berechnen
