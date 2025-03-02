@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () =>{
     console.log("🚀 Skript wird geladen...");
 
     // 📌 Menü-Steuerung
@@ -287,7 +287,7 @@ function updateGebetszeitenCountdown(prayerTimes) {
             document.getElementById(`${sunnah.toLowerCase()}-countdown`).textContent = "Nächstes Gebet morgen";
         }
     }
-}
+
    
 async function ladeFeiertagsCountdowns(stadt) {
     let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
