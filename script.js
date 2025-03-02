@@ -84,7 +84,7 @@ async function ladeIslamischesDatum() {
 ladeIslamischesDatum(); 
 
 
-  async function ermittleStandort() {
+async function ermittleStandort() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
@@ -94,29 +94,40 @@ ladeIslamischesDatum();
                 try {
                     let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                     let data = await response.json();
-                    let stadt = data.address.city || "Berlin";
+                    let stadt = data.address.city || "Berlin"; 
 
-                    document.getElementById("stadt-name").textContent = stadt;
+                    document.getElementById("stadt-name").textContent = `Standort: ${stadt}`;
                     await ladeGebetszeiten(stadt);
                     await ladeFeiertagsCountdowns();
                 } catch (error) {
                     console.error("Fehler bei Standortermittlung:", error);
-                    document.getElementById("stadt-name").textContent = "Standort nicht verfügbar";
-                    await ladeStadtAuswahl(); // 📌 Falls der Standort fehlschlägt, dann erst manuelle Auswahl laden!
+                  document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
+                    await ladeStadtAuswahl();
+                    aktiviereManuelleStadtauswahl();
                 }
             },
             async () => {
                 console.warn("Standort abgelehnt oder nicht verfügbar.");
-                document.getElementById("stadt-name").textContent = "Standort nicht verfügbar";
-                await ladeStadtAuswahl(); // 📌 Falls abgelehnt, dann erst manuelle Auswahl laden!
+               document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
+                await ladeStadtAuswahl();
+                aktiviereManuelleStadtauswahl();
             }
         );
     } else {
         console.warn("Geolocation nicht unterstützt.");
-        document.getElementById("stadt-name").textContent = "Standort nicht verfügbar";
-        await ladeStadtAuswahl(); // 📌 Falls Geolocation nicht unterstützt, dann erst manuelle Auswahl laden!
-        }
+     document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
+        await ladeStadtAuswahl();
+        aktiviereManuelleStadtauswahl();
     }
+}
+function aktiviereManuelleStadtauswahl() {
+    document.getElementById("stadt-auswahl").addEventListener("change", async function () {
+        let gewählteStadt = this.value;
+        document.getElementById("stadt-name").textContent = `Manuelle Auswahl: ${gewählteStadt}`;
+        await ladeGebetszeiten(gewählteStadt);
+    });
+}
+
 
     // 📌 Gebetszeiten abrufen
     async function ladeGebetszeiten(stadt) {
@@ -234,7 +245,8 @@ for (let i = 0; i < prayerOrder.length; i++) {
 
 // Falls kein aktuelles Gebet gesetzt wurde, das letzte nehmen
 currentPrayer = previousPrayer;
-currentPrayerEndTime = prayerTimes[nextPrayer]; // Endzeit ist der Beginn des nächsten Gebets
+currentPrayerEndTime = nextPrayer ? prayerTimes[nextPrayer] : "Nächstes Gebet morgen";
+
 
 
     let prayerOrder = ["Fajr", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Letztes Drittel"];
@@ -289,7 +301,7 @@ currentPrayerEndTime = prayerTimes[nextPrayer]; // Endzeit ist der Beginn des n�
     };
 
     for (let sunnah in sunnahOrder) {
-        if (!prayerTimes[sunnah]) continue;
+        if (!prayerTimes[sunnah] || !document.getElementById(`${sunnah.toLowerCase()}-countdown`)) continue;
 
         let start = prayerTimes[sunnah];
         let end = prayerTimes[sunnahOrder[sunnah]];
@@ -437,7 +449,9 @@ ladeFeiertagsCountdowns("Berlin");
         try {
             let response = await fetch("stadt.json");
             let städte = await response.json();
-            let dropdown = document.getElementById("stadt-auswahl");
+          let dropdown = document.getElementById("stadt-auswahl");
+dropdown.innerHTML = ""; // ❗ Verhindert doppelte Optionen!
+
 
             städte.forEach(stadt => {
                 let option = document.createElement("option");
@@ -455,10 +469,14 @@ ladeFeiertagsCountdowns("Berlin");
             console.error("Fehler beim Laden der Städte:", error);
         }
     }
+ 
+
+
 
     // 📌 ALLE Funktionen starten
     ermittleStandort();
     await ladeHadith();
     await ladeDua();
-    await ladeStadtAuswahl();
+    
+
 });
