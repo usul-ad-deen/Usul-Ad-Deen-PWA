@@ -161,7 +161,7 @@ async function ladeGebetszeiten(stadt) {
         function zeitAnpassen(zeit, minuten) {
             let [h, m] = zeit.split(":").map(Number);
             let neueZeit = new Date();
-            neueZeit.setHours(h, m + minuten, 0); // Sekundengenau setzen
+            neueZeit.setHours(h, m + minuten, 0);
             return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
         }
 
@@ -185,7 +185,7 @@ async function ladeGebetszeiten(stadt) {
         Object.keys(prayerTimes).forEach(prayer => {
             let element = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}`);
             if (element) {
-                element.textContent = prayerTimes[prayer];
+                element.textContent = prayerTimes[prayer]; // ❗ Nur HH:MM, keine Sekunden!
             }
         });
 
@@ -193,7 +193,7 @@ async function ladeGebetszeiten(stadt) {
         document.getElementById("letztes-drittel").textContent = letztesDrittel;
 
         updateGebetszeitenCountdown(prayerTimes);
-        setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000); // Jede Sekunde aktualisieren
+        setInterval(() => updateGebetszeitenCountdown(prayerTimes), 1000);
     } catch (error) {
         console.error("❌ Fehler beim Abrufen der Gebetszeiten:", error);
     }
@@ -213,12 +213,12 @@ function berechneMitternachtUndDrittel(fajr, maghrib) {
     let letztesDrittelMinuten = maghribZeit + 2 * (nachtDauer / 3);
 
     return {
-        mitternacht: formatTime(mitternachtMinuten, false),
-        letztesDrittel: formatTime(letztesDrittelMinuten, false)
+        mitternacht: formatTime(mitternachtMinuten),
+        letztesDrittel: formatTime(letztesDrittelMinuten)
     };
 }
 
-// 📌 Zeitformatierung: `mitSekunden = true` für next/current Gebet
+// 📌 Zeitformatierung (Sekunden nur für next-prayer & current-prayer)
 function formatTime(minutes, mitSekunden = false) {
     let h = Math.floor(minutes / 60) % 24;
     let m = Math.floor(minutes % 60);
