@@ -176,11 +176,12 @@ async function ladeGebetszeiten(stadt) {
 
         let { mitternacht, letztesDrittel } = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
 
-        // Sunnah-Gebete
+        // Sunnah-Gebete + Fajr für den nächsten Tag
         prayerTimes["Duha"] = zeitAnpassen(data.data.timings.Sunrise, 15);
         prayerTimes["Duha-Ende"] = zeitAnpassen(data.data.timings.Dhuhr, -15);
         prayerTimes["Nachtgebet"] = prayerTimes.Isha;
         prayerTimes["Letztes Drittel"] = letztesDrittel;
+        prayerTimes["Fajr (Nächster Tag)"] = zeitAnpassen(data.data.timings.Fajr, 24 * 60); // ❗ Fajr um 24 Stunden nach vorne schieben
 
         Object.keys(prayerTimes).forEach(prayer => {
             let element = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}`);
@@ -218,7 +219,7 @@ function berechneMitternachtUndDrittel(fajr, maghrib) {
     };
 }
 
-// 📌 Zeitformatierung (Sekunden nur für next-prayer & current-prayer)
+// 📌 Zeitformatierung
 function formatTime(minutes, mitSekunden = false) {
     let h = Math.floor(minutes / 60) % 24;
     let m = Math.floor(minutes % 60);
@@ -235,7 +236,7 @@ function updateGebetszeitenCountdown(prayerTimes) {
     let jetzt = new Date();
     let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
 
-    let prayerOrder = ["Fajr", "Shuruk", "Duha", "Duha-Ende", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Letztes Drittel"];
+    let prayerOrder = ["Fajr", "Shuruk", "Duha", "Duha-Ende", "Dhuhr", "Asr", "Maghrib", "Isha", "Nachtgebet", "Letztes Drittel", "Fajr (Nächster Tag)"];
 
     let nextPrayer = null, nextPrayerTime = null;
     let currentPrayer = null, currentPrayerEndTime = null;
@@ -254,13 +255,8 @@ function updateGebetszeitenCountdown(prayerTimes) {
 
         if (prayerStartMinutes <= currentTime) {
             currentPrayer = prayer;
-            currentPrayerEndTime = prayerTimes[prayerOrder[i + 1]] || prayerTimes["Fajr"];
+            currentPrayerEndTime = prayerTimes[prayerOrder[i + 1]] || prayerTimes["Fajr (Nächster Tag)"];
         }
-    }
-
-    if (!nextPrayer) {
-        nextPrayer = "Fajr";
-        nextPrayerTime = parseInt(prayerTimes["Fajr"].split(":")[0]) * 60 + parseInt(prayerTimes["Fajr"].split(":")[1]) + 24 * 60;
     }
 
     // 🕒 Countdown berechnen
@@ -277,12 +273,13 @@ function updateGebetszeitenCountdown(prayerTimes) {
     let currentSeconds = remainingCurrentSeconds % 60;
 
     // 📌 Anzeige aktualisieren
-    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${formatTime(nextPrayerTime, true)})`;
+    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${formatTime(nextPrayerTime)})`; // ❗ Ohne Sekunden!
     document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${String(nextHours).padStart(2, '0')}:${String(nextMinutes).padStart(2, '0')}:${String(nextSeconds).padStart(2, '0')}`;
 
-    document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${formatTime(currentTime, true)})`;
+    document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${formatTime(currentTime)})`; // ❗ Ohne Sekunden!
     document.getElementById("current-prayer-countdown").textContent = `Endet in: ${String(currentHours).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}:${String(currentSeconds).padStart(2, '0')}`;
 }
+
 
 
 // Countdown für die Feiertage setzen
