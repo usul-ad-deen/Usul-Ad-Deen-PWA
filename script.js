@@ -84,60 +84,71 @@ async function ladeIslamischesDatum() {
 ladeIslamischesDatum(); 
 
 
-async function ermittleStandort() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                let lat = position.coords.latitude;
-                let lon = position.coords.longitude;
+// 📌 Stadt ermitteln und setzen
+    async function ermittleStandort() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    let lat = position.coords.latitude;
+                    let lon = position.coords.longitude;
 
-                try {
-                    let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-                    let data = await response.json();
-                    let stadt = data.address.city || data.address.town || data.address.village || "Berlin";
+                    try {
+                        let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                        let data = await response.json();
+                        let stadt = data.address.city || data.address.town || data.address.village || "";
 
-                    // 📌 **Hier kommt meine Änderung**
-                    if (!stadt || stadt === "Berlin") { 
+                        if (!stadt) { // Falls Stadt leer ist
+                            document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
+                            await ladeStadtAuswahl();
+                            return;
+                        }
+
+                        // Wenn die Stadt korrekt ermittelt wurde
+                        document.getElementById("stadt-name").textContent = `Standort: ${stadt}`;
+                        await ladeGebetszeiten(stadt);
+                    } catch (error) {
+                        console.error("Fehler bei Standortermittlung:", error);
                         document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
                         await ladeStadtAuswahl();
-                        aktiviereManuelleStadtauswahl();
-                        return; // **Beende die Funktion, damit nicht Berlin als Standort verwendet wird**
                     }
-
-                    // Wenn die Stadt korrekt ermittelt wurde:
-                    document.getElementById("stadt-name").textContent = `Standort: ${stadt}`;
-                    await ladeGebetszeiten(stadt);
-                    await ladeFeiertagsCountdowns();
-
-                } catch (error) {
-                    console.error("Fehler bei Standortermittlung:", error);
+                },
+                async () => {
+                    console.warn("Standort abgelehnt oder nicht verfügbar.");
                     document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
                     await ladeStadtAuswahl();
-                    aktiviereManuelleStadtauswahl();
                 }
-            },
-            async () => {
-                console.warn("Standort abgelehnt oder nicht verfügbar.");
-                document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
-                await ladeStadtAuswahl();
-                aktiviereManuelleStadtauswahl();
-            }
-        );
-    } else {
-        console.warn("Geolocation nicht unterstützt.");
-        document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
-        await ladeStadtAuswahl();
-        aktiviereManuelleStadtauswahl();
+            );
+        } else {
+            console.warn("Geolocation nicht unterstützt.");
+            document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen.";
+            await ladeStadtAuswahl();
+        }
     }
-}
 
-function aktiviereManuelleStadtauswahl() {
-    document.getElementById("stadt-auswahl").addEventListener("change", async function () {
-        let gewählteStadt = this.value;
-        document.getElementById("stadt-name").textContent = `Manuelle Auswahl: ${gewählteStadt}`;
-        await ladeGebetszeiten(gewählteStadt);
-    });
-}
+    // 📌 Manuelle Stadtauswahl aktivieren
+    async function ladeStadtAuswahl() {
+        try {
+            let response = await fetch("stadt.json");
+            let städte = await response.json();
+            let dropdown = document.getElementById("stadt-auswahl");
+            dropdown.innerHTML = ""; // ❗ Verhindert doppelte Optionen!
+
+            städte.forEach(stadt => {
+                let option = document.createElement("option");
+                option.value = stadt.name;
+                option.textContent = stadt.name;
+                dropdown.appendChild(option);
+            });
+
+            dropdown.addEventListener("change", async function () {
+                let gewählteStadt = this.value;
+                document.getElementById("stadt-name").textContent = `Manuelle Auswahl: ${gewählteStadt}`;
+                await ladeGebetszeiten(gewählteStadt);
+            });
+        } catch (error) {
+            console.error("Fehler beim Laden der Städte:", error);
+        }
+    }
 
 
     // 📌 Gebetszeiten abrufen
