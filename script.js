@@ -225,7 +225,7 @@ function formatTime(minutes, mitSekunden = false) {
     let h = Math.floor(minutes / 60) % 24;
     let m = Math.floor(minutes % 60);
     let jetzt = new Date();
-    let s = jetzt.getSeconds();
+    let s = Math.floor(jetzt.getSeconds() -60)
     return mitSekunden
         ? `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
         : `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
