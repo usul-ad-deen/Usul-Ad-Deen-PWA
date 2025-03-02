@@ -84,10 +84,10 @@ async function ladeIslamischesDatum() {
 ladeIslamischesDatum(); 
 
 
-    // 📌 Standort ermitteln & Stadt setzen
-    async function ermittleStandort() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (position) => {
+  async function ermittleStandort() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
                 let lat = position.coords.latitude;
                 let lon = position.coords.longitude;
 
@@ -95,18 +95,26 @@ ladeIslamischesDatum();
                     let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                     let data = await response.json();
                     let stadt = data.address.city || "Berlin";
-document.getElementById("stadt-name").textContent = stadt;
-setTimeout(() => ladeGebetszeiten(stadt), 500); // 🔹 Verzögerung, damit die Stadt zuerst gesetzt wird
+
+                    document.getElementById("stadt-name").textContent = stadt;
+                    await ladeGebetszeiten(stadt);
                     await ladeFeiertagsCountdowns();
                 } catch (error) {
                     console.error("Fehler bei Standortermittlung:", error);
-                    await ladeGebetszeiten("Berlin");
-                     await ladeFeiertagsCountdowns();
+                    document.getElementById("stadt-name").textContent = "Standort nicht verfügbar";
+                    await ladeStadtAuswahl(); // 📌 Falls der Standort fehlschlägt, dann erst manuelle Auswahl laden!
                 }
-            });
-        } else {
-            await ladeGebetszeiten("Berlin");
-            await ladeFeiertagsCountdowns();
+            },
+            async () => {
+                console.warn("Standort abgelehnt oder nicht verfügbar.");
+                document.getElementById("stadt-name").textContent = "Standort nicht verfügbar";
+                await ladeStadtAuswahl(); // 📌 Falls abgelehnt, dann erst manuelle Auswahl laden!
+            }
+        );
+    } else {
+        console.warn("Geolocation nicht unterstützt.");
+        document.getElementById("stadt-name").textContent = "Standort nicht verfügbar";
+        await ladeStadtAuswahl(); // 📌 Falls Geolocation nicht unterstützt, dann erst manuelle Auswahl laden!
         }
     }
 
