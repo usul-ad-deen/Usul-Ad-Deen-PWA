@@ -269,11 +269,7 @@ function updateGebetszeitenCountdown(prayerTimes) {
     document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${prayerTimes[currentPrayer]})`;
     document.getElementById("current-prayer-countdown").textContent = `Endet in: ${String(currentHours).padStart(2, '0')}:${String(currentMinutes).padStart(2, '0')}`;
 }
-
-
-
-
-
+// Countdown für die Feiertage setzen
 async function ladeFeiertagsCountdowns(stadt) {
     let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
     let data = await response.json();
@@ -336,6 +332,7 @@ ladeFeiertagsCountdowns("Berlin");
 
 
     // 📌 Hadith & Dua laden
+    // ermittelt den Hadith des Tages
     async function ladeHadith() {
         try {
             let response = await fetch("hadith.json");
@@ -351,6 +348,7 @@ ladeFeiertagsCountdowns("Berlin");
         }
     }
 
+    // ermittelt die Dua des Tages
     async function ladeDua() {
         try {
             let response = await fetch("dua.json");
@@ -365,9 +363,6 @@ ladeFeiertagsCountdowns("Berlin");
             console.error("Fehler beim Laden der Dua:", error);
         }
     }
-
-  
-
 
     // 📌 ALLE Funktionen starten
     ermittleStandort();
