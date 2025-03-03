@@ -223,8 +223,8 @@ async function ladeStadtAuswahl() {
     return `${String(drittelH).padStart(2, '0')}:${String(drittelM).padStart(2, '0')}`;
 }
 
-// 📌 Gebetsreihenfolge (inkl. Letztes Drittel und Mitternacht)
-const prayerOrder = ["Letztes Drittel", "Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht"];
+// 📌 Gebetsreihenfolge (inkl. Mitternacht-Ende für korrekte Berechnung)
+const prayerOrder = ["Letztes Drittel", "Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht", "Mitternacht-Ende"];
 
 function updateGebetszeitenCountdown(prayerTimes) {
     let jetzt = new Date();
@@ -251,11 +251,9 @@ function updateGebetszeitenCountdown(prayerTimes) {
         let countdownElement = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}-countdown`);
         if (!countdownElement) continue;
 
-        // **Spezialregel: Falls zwischen Mitternacht und Letztem Drittel → Nachtgebet anzeigen**
-        if (prayer === "Letztes Drittel" && currentTime < prayerStartMinutes) {
-            document.getElementById("current-prayer").textContent = `Aktuelles Gebet: Nachtgebet`;
-            document.getElementById("current-prayer-countdown").textContent = "Warten auf Letztes Drittel...";
-            countdownElement.textContent = "Nachtgebet läuft.";
+        // **Falls nach Mitternacht, "Mitternacht-Ende" mit einbeziehen**
+        if (prayer === "Mitternacht" && currentTime >= prayerStartMinutes) {
+            countdownElement.textContent = "Mitternacht läuft.";
             continue;
         }
 
@@ -292,12 +290,17 @@ function updateGebetszeitenCountdown(prayerTimes) {
         document.getElementById("current-prayer-countdown").textContent = `Endet in: ${formatTime(remainingMinutes, remainingSeconds, true)}`;
     }
 }
+function formatTime(minutes, seconds, showSeconds) {
+    let h = Math.floor(minutes / 60);
+    let m = minutes % 60;
+    let s = seconds;
 
-     function formatTime(minutes, seconds) {
-        let h = Math.floor(minutes / 60);
-        let m = minutes % 60;
-        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    if (showSeconds) {
+        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    } else {
+        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
     }
+}
 
 // Countdown für die Feiertage setzen
 async function ladeFeiertagsCountdowns(stadt) {
