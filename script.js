@@ -221,7 +221,7 @@ async function ladeStadtAuswahl() {
         let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
         let currentSeconds = jetzt.getSeconds();
 
-        let prayerOrder = ["Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht", "Letztes Drittel"];
+        let prayerOrder = [ "Letztes Drittel", "Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht"];
         let nextPrayer = null, nextPrayerTime = null, currentPrayer = null, currentPrayerEndTime = null;
 
         for (let i = 0; i < prayerOrder.length - 1; i++) {
