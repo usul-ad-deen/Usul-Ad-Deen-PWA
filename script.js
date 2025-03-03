@@ -223,12 +223,14 @@ async function ladeStadtAuswahl() {
     return `${String(drittelH).padStart(2, '0')}:${String(drittelM).padStart(2, '0')}`;
 }
 
-  function updateGebetszeitenCountdown(prayerTimes) {
+// 📌 Gebetsreihenfolge (inkl. Letztes Drittel und Mitternacht)
+const prayerOrder = ["Letztes Drittel", "Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht"];
+
+function updateGebetszeitenCountdown(prayerTimes) {
     let jetzt = new Date();
     let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
     let currentSeconds = jetzt.getSeconds();
 
-    let prayerOrder = ["Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht", "Letztes Drittel"];
     let nextPrayer = null, nextPrayerTime = null, currentPrayer = null, currentPrayerEndTime = null;
 
     for (let i = 0; i < prayerOrder.length - 1; i++) {
@@ -241,18 +243,26 @@ async function ladeStadtAuswahl() {
         let [endH, endM] = prayerTimes[prayerOrder[i + 1]].split(":").map(Number);
         let prayerEndMinutes = endH * 60 + endM;
 
-        // 🛠 Falls das nächste Gebet nach Mitternacht liegt, korrekt berechnen
+        // Falls das nächste Gebet nach Mitternacht liegt, korrekt berechnen
         if (prayerEndMinutes < prayerStartMinutes) {
             prayerEndMinutes += 24 * 60;
         }
 
-        let countdownElement = document.getElementById(`${prayer.toLowerCase()}-countdown`);
+        let countdownElement = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}-countdown`);
         if (!countdownElement) continue;
+
+        // **Spezialregel: Falls zwischen Mitternacht und Letztem Drittel → Nachtgebet anzeigen**
+        if (prayer === "Letztes Drittel" && currentTime < prayerStartMinutes) {
+            document.getElementById("current-prayer").textContent = `Aktuelles Gebet: Nachtgebet`;
+            document.getElementById("current-prayer-countdown").textContent = "Warten auf Letztes Drittel...";
+            countdownElement.textContent = "Nachtgebet läuft.";
+            continue;
+        }
 
         if (currentTime < prayerStartMinutes) {
             let remainingMinutes = prayerStartMinutes - currentTime - 1;
             let remainingSeconds = 60 - currentSeconds;
-            countdownElement.textContent = `Beginnt in: ${formatTime(remainingMinutes, remainingSeconds)}`;
+            countdownElement.textContent = `Beginnt in: ${formatTime(remainingMinutes, remainingSeconds, false)}`;
             if (!nextPrayer) {
                 nextPrayer = prayer;
                 nextPrayerTime = prayerStartMinutes;
@@ -260,7 +270,7 @@ async function ladeStadtAuswahl() {
         } else if (currentTime >= prayerStartMinutes && currentTime < prayerEndMinutes) {
             let remainingMinutes = prayerEndMinutes - currentTime - 1;
             let remainingSeconds = 60 - currentSeconds;
-            countdownElement.textContent = `Begonnen. Noch: ${formatTime(remainingMinutes, remainingSeconds)}`;
+            countdownElement.textContent = `Begonnen. Noch: ${formatTime(remainingMinutes, remainingSeconds, false)}`;
             currentPrayer = prayer;
             currentPrayerEndTime = prayerEndMinutes;
         } else {
@@ -273,15 +283,16 @@ async function ladeStadtAuswahl() {
     let nextSeconds = 60 - currentSeconds;
 
     document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${prayerTimes[nextPrayer].slice(0, 5)})`;
-    document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${formatTime(nextHours * 60 + nextMinutes, nextSeconds)}`;
+    document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${formatTime(nextHours * 60 + nextMinutes, nextSeconds, true)}`;
 
     if (currentPrayer) {
         let remainingMinutes = currentPrayerEndTime - currentTime - 1;
         let remainingSeconds = 60 - currentSeconds;
         document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${prayerTimes[currentPrayer].slice(0, 5)})`;
-        document.getElementById("current-prayer-countdown").textContent = `Endet in: ${formatTime(remainingMinutes, remainingSeconds)}`;
+        document.getElementById("current-prayer-countdown").textContent = `Endet in: ${formatTime(remainingMinutes, remainingSeconds, true)}`;
     }
 }
+
      function formatTime(minutes, seconds) {
         let h = Math.floor(minutes / 60);
         let m = minutes % 60;
