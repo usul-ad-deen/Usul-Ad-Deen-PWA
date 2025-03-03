@@ -282,6 +282,11 @@ async function ladeStadtAuswahl() {
         document.getElementById("current-prayer-countdown").textContent = `Endet in: ${formatTime(remainingMinutes, remainingSeconds)}`;
     }
 }
+     function formatTime(minutes, seconds) {
+        let h = Math.floor(minutes / 60);
+        let m = minutes % 60;
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
 
 // Countdown für die Feiertage setzen
 async function ladeFeiertagsCountdowns(stadt) {
