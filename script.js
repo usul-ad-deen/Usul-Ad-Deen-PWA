@@ -234,7 +234,7 @@ async function ladeStadtAuswahl() {
             prayerTimes["Letztes Drittel"] = letztesDrittel;
             prayerTimes["Mitternacht"] = mitternacht;
             prayerTimes["Mitternacht-Ende"] = zeitAnpassen(mitternacht, 1);
-             prayerTimes["Duha-Ende"] = zeitAnpassen(Dhuhr, -10);
+            prayerTimes["Duha-Ende"] = zeitAnpassen(Dhuhr, -10);
 
             // 🔹 Setze Gebetszeiten in die Tabelle
             Object.keys(prayerTimes).forEach(prayer => {
