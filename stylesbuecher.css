@@ -1,38 +1,180 @@
+    /* Hintergrundbild soll mitscrollen */
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    background: url('icons/hintergrund.png') center top no-repeat;
+    background-size: cover;
+    background-attachment: fixed; /* ðŸ”¹ FIX: Hintergrundbild scrollt mit */
+    color: #fff;
+  
 }
 
-header {
-    background-color: #004e00;
+/*  Usul-Ad-Deen Titel oben groÃŸ */
+.app-title {
+    text-align: left;
+    font-size: 36px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+/*  MenÃ¼-Button & Liste */
+.menu {
+    position: relative;
+}
+
+.menu-button {
+    background: black;
     color: white;
-    padding: 15px;
-}
-
-.logo {
-    width: 50px;
-    height: 50px;
-}
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-nav ul li {
-    display: inline;
-    margin: 0 10px;
-}
-
-
-footer {
-    background-color: #004e00;
-    color: white;
+    font-size: 24px;
     padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.menu-list {
+    display: none;
+    list-style: none;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 100;
+}
+
+.menu-list.show {
+    display: block;
+}
+
+.menu-list li {
+    padding: 10px;
+    border-bottom: 1px solid white;
+}
+
+.menu-list a {
+    text-decoration: none;
+    color: white;
+}
+
+.stadt-dropdown {
+    display: block;
+    justify-content: center;
+    margin-top: 10px; /* Abstand nach oben */
+}
+
+
+/* 📌 Dropdown-Menü mittig */
+#stadt-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+#stadt-auswahl {
+    display: block;
+    margin: 0 auto;
+    width: 60%;
+    max-width: 300px;
+    padding: 8px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Header & Zeit-Anzeige */
+.top-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* âœ… Sorgt fÃ¼r zentrierte Elemente */
+    justify-content: center;
+    text-align: center; /* âœ… Fix: Zentriert den Text */
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    width: 100%;
+}
+
+.app-icon {
+   height: 70px;
+    width: 70px;
+margin-left: 10px;
+    vertical-align: middle;
+}
+
+.startseite-text {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.header-info {
+    text-align: center;
+    width: 80%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+/* Tabellen & Boxen Layout */
+.container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 15px;
+    gap: 20px;
+}
+
+.nextprayer-bold {
+     font-weight: bold;
+}
+
+/*  Box-Design */
+.box {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    width: 45%;
+    min-width: 300px;
+}
+
+/* Tabellen */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #fff;
+    text-align: center;
+}
+
+th {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Dark Mode */
+.dark-mode {
+    background: #222;
+    color: #ddd;
+}
+
+.dark-mode .box {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+
+
+/* ðŸ“Œ Footer */
+footer {
+    position: relative;
     bottom: 0;
     width: 100%;
-
+    background: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    padding: 10px;
 }
+
+
