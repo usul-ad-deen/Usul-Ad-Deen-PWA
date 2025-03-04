@@ -60,7 +60,26 @@ body {
     color: white;
 }
 
-/* Nur das Dropdown mittig ausrichten */
+/* 📌 Container für die Boxen */
+.box-container {
+    display: flex;
+    justify-content: space-between; /* Stellt die Boxen nebeneinander */
+    flex-wrap: wrap; /* Falls der Bildschirm zu klein ist, rutschen sie darunter */
+    gap: 20px; /* Abstand zwischen den Boxen */
+}
+
+/* 📌 Jede Box gleich groß machen */
+.box {
+    flex: 1;
+    min-width: 300px; /* Mindestbreite, damit es auf kleinen Bildschirmen nicht zu eng wird */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* 📌 Dropdown-Menü mittig */
 #stadt-container {
     text-align: center;
     margin-top: 10px;
@@ -69,7 +88,7 @@ body {
 #stadt-auswahl {
     display: block;
     margin: 0 auto;
-    width: 60%; /* Breite anpassen */
+    width: 60%;
     max-width: 300px;
     padding: 8px;
     font-size: 16px;
@@ -124,15 +143,7 @@ margin-left: 10px;
      font-weight: bold;
 }
 
-/* 📌 Box-Design */
-.box {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    width: 45%;
-    min-width: 300px;
-}
+
 
 /* 📌 Tabellen */
 table {
