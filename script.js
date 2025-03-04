@@ -147,9 +147,6 @@ async function ladeStadtAuswahl() {
     }
 }
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    console.log("🚀 Skript wird geladen...");
-
     // 📌 Reihenfolge der Gebete
     const prayerOrder = ["Letztes Drittel", "Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht", "Mitternacht-Ende"];
 
