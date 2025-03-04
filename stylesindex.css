@@ -60,6 +60,22 @@ body {
     color: white;
 }
 
+#stadt-container {
+    display: flex;
+    justify-content: center; /* Zentriert horizontal */
+    align-items: center; /* Zentriert vertikal (falls nötig) */
+    text-align: center; /* Zentriert den Text */
+    margin-top: 10px; /* Optional: Abstand nach oben */
+}
+
+#stadt-auswahl {
+    width: 50%; /* Optional: Breite anpassen */
+    max-width: 300px; /* Verhindert zu breite Darstellung */
+    padding: 8px;
+    font-size: 16px;
+    text-align: center; /* Zentriert den Text im Dropdown */
+}
+
 /* 📌 Header & Zeit-Anzeige */
 .top-info {
     display: flex;
