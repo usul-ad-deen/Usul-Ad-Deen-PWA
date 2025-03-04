@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const buchListe = document.getElementById("buch-liste");
     const buchIframe = document.getElementById("buch-iframe");
 
-    async function ladeBücher() {
+     async function ladeBücher() {
         try {
             let response = await fetch("bücher.json");
             if (!response.ok) throw new Error("Fehler beim Abrufen der Bücherliste");
@@ -30,8 +30,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.zeigeBuch = function(datei) {
         if (datei.endsWith(".pdf")) {
             buchIframe.src = datei;
+            buchIframe.style.display = "block"; // Falls versteckt, anzeigen
         } else {
             alert("Dieses Format kann nur heruntergeladen werden.");
+            buchIframe.src = ""; // Falls EPUB, iframe leeren
         }
     };
 
