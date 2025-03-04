@@ -226,8 +226,8 @@ async function ladeStadtAuswahl() {
                 "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
                 "Asr": zeitAnpassen(data.data.timings.Asr, 0),
                 "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
-                "Isha": zeitAnpassen(data.data.timings.Isha, 0)
-                "Duha-Ende" = zeitAnpassen(data.data.timings.Dhuhr, -10);
+                "Isha": zeitAnpassen(data.data.timings.Isha, 0),
+                "Duha-Ende": = zeitAnpassen(data.data.timings.Dhuhr, -10)
             };
 
             let { mitternacht, letztesDrittel } = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
