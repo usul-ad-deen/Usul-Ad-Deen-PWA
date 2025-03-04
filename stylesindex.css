@@ -62,19 +62,24 @@ body {
 
 #stadt-container {
     display: flex;
+    flex-direction: column; /* Stellt sicher, dass der Text und das Dropdown untereinander stehen */
     justify-content: center; /* Zentriert horizontal */
-    align-items: center; /* Zentriert vertikal (falls nötig) */
+    align-items: center; /* Zentriert vertikal */
     text-align: center; /* Zentriert den Text */
-    margin: 0 auto;
+    width: 100%; /* Stellt sicher, dass der Container über die gesamte Breite geht */
+    margin-top: 10px; /* Abstand nach oben */
 }
 
 #stadt-auswahl {
-    width: 50%; /* Optional: Breite anpassen */
+    width: 60%; /* Größere Breite für bessere Lesbarkeit */
     max-width: 300px; /* Verhindert zu breite Darstellung */
     padding: 8px;
     font-size: 16px;
     text-align: center; /* Zentriert den Text im Dropdown */
+    display: block; /* Verhindert Layout-Probleme */
 }
+
+
 
 /* 📌 Header & Zeit-Anzeige */
 .top-info {
