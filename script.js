@@ -195,7 +195,7 @@ async function ladeStadtAuswahl() {
     let aktuelleStadt = null;
 
     // 📌 Reihenfolge der Gebete
-    const prayerOrder = ["Letztes Drittel", "Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht", "Mitternacht-Ende"];
+    const prayerOrder = ["Letztes Drittel", "Fajr", "Shuruk", "Duha", "Duha-Ende" "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht", "Mitternacht-Ende"];
 
     // 📌 Lade Gebetszeiten
     async function ladeGebetszeiten(stadt) {
@@ -234,6 +234,7 @@ async function ladeStadtAuswahl() {
             prayerTimes["Letztes Drittel"] = letztesDrittel;
             prayerTimes["Mitternacht"] = mitternacht;
             prayerTimes["Mitternacht-Ende"] = zeitAnpassen(mitternacht, 1);
+             prayerTimes["Duha-Ende"] = zeitAnpassen(Dhuhr, -10);
 
             // 🔹 Setze Gebetszeiten in die Tabelle
             Object.keys(prayerTimes).forEach(prayer => {
