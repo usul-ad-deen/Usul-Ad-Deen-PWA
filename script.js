@@ -147,6 +147,13 @@ async function ladeStadtAuswahl() {
     }
 }
 
+  document.addEventListener("DOMContentLoaded", async () => {
+    console.log("🚀 Skript wird geladen...");
+
+    // 📌 Reihenfolge der Gebete
+    const prayerOrder = ["Letztes Drittel", "Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht", "Mitternacht-Ende"];
+
+    // 📌 Lade Gebetszeiten
     async function ladeGebetszeiten(stadt) {
         try {
             let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
@@ -164,9 +171,6 @@ async function ladeStadtAuswahl() {
                 return neueZeit.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", hour12: false });
             }
 
-            let mitternacht = berechneMitternacht(data.data.timings.Maghrib, data.data.timings.Fajr);
-            let letztesDrittel = berechneLetztesDrittel(data.data.timings.Maghrib, data.data.timings.Fajr);
-
             let prayerTimes = {
                 "Fajr": zeitAnpassen(data.data.timings.Fajr, 0),
                 "Shuruk": zeitAnpassen(data.data.timings.Sunrise, 0),
@@ -174,16 +178,20 @@ async function ladeStadtAuswahl() {
                 "Dhuhr": zeitAnpassen(data.data.timings.Dhuhr, 0),
                 "Asr": zeitAnpassen(data.data.timings.Asr, 0),
                 "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
-                "Isha": zeitAnpassen(data.data.timings.Isha, 0),
-                "Mitternacht": mitternacht,
-                "Letztes Drittel": letztesDrittel
+                "Isha": zeitAnpassen(data.data.timings.Isha, 0)
             };
 
-            // 🔹 Werte in HTML setzen
+            let { mitternacht, letztesDrittel } = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
+
+            prayerTimes["Letztes Drittel"] = letztesDrittel;
+            prayerTimes["Mitternacht"] = mitternacht;
+            prayerTimes["Mitternacht-Ende"] = zeitAnpassen(mitternacht, 1);
+
+            // 🔹 Setze Gebetszeiten in die Tabelle
             Object.keys(prayerTimes).forEach(prayer => {
                 let element = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}`);
                 if (element) {
-                    element.textContent = prayerTimes[prayer].slice(0, 5); // Uhrzeit ohne Sekunden
+                    element.textContent = prayerTimes[prayer].slice(0, 5);
                 }
             });
 
@@ -194,122 +202,106 @@ async function ladeStadtAuswahl() {
         }
     }
 
-    function berechneMitternacht(maghrib, fajr) {
-        let [mH, mM] = maghrib.split(":").map(Number);
-        let [fH, fM] = fajr.split(":").map(Number);
-        let maghribMinuten = mH * 60 + mM;
-        let fajrMinuten = fH * 60 + fM;
-        let mitternachtMinuten = maghribMinuten + ((fajrMinuten + 24 * 60 - maghribMinuten) / 2);
+    // 📌 Berechnung von Mitternacht & letztem Drittel
+    function berechneMitternachtUndDrittel(fajr, maghrib) {
+        let [fajrH, fajrM] = fajr.split(":").map(Number);
+        let [maghribH, maghribM] = maghrib.split(":").map(Number);
+
+        let maghribZeit = maghribH * 60 + maghribM;
+        let fajrZeit = fajrH * 60 + fajrM;
+
+        if (fajrZeit < maghribZeit) {
+            fajrZeit += 24 * 60;
+        }
+
+        let nachtDauer = fajrZeit - maghribZeit;
+
+        let mitternachtMinuten = maghribZeit + (nachtDauer / 2);
         let mitternachtH = Math.floor(mitternachtMinuten / 60) % 24;
         let mitternachtM = Math.floor(mitternachtMinuten % 60);
-        return `${String(mitternachtH).padStart(2, '0')}:${String(mitternachtM).padStart(2, '0')}`;
+
+        let letztesDrittelMinuten = maghribZeit + (2 * (nachtDauer / 3));
+        let letztesDrittelH = Math.floor(letztesDrittelMinuten / 60) % 24;
+        let letztesDrittelM = Math.floor(letztesDrittelMinuten % 60);
+
+        return {
+            mitternacht: `${String(mitternachtH).padStart(2, '0')}:${String(mitternachtM).padStart(2, '0')}`,
+            letztesDrittel: `${String(letztesDrittelH).padStart(2, '0')}:${String(letztesDrittelM).padStart(2, '0')}`
+        };
     }
 
-   function berechneLetztesDrittel(maghrib, fajr) {
-    let [mH, mM] = maghrib.split(":").map(Number);
-    let [fH, fM] = fajr.split(":").map(Number);
+    // 📌 Gebetszeiten-Countdown
+    function updateGebetszeitenCountdown(prayerTimes) {
+        let jetzt = new Date();
+        let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
+        let currentSeconds = jetzt.getSeconds();
 
-    let maghribMinuten = mH * 60 + mM;
-    let fajrMinuten = fH * 60 + fM;
+        let nextPrayer = null, nextPrayerTime = null, currentPrayer = null, currentPrayerEndTime = null;
 
-    if (fajrMinuten < maghribMinuten) {
-        fajrMinuten += 24 * 60; // Falls Fajr nach Mitternacht liegt, zum nächsten Tag zählen
-    }
+        for (let i = 0; i < prayerOrder.length - 1; i++) {
+            let prayer = prayerOrder[i];
+            if (!prayerTimes[prayer]) continue;
 
-    let drittelMinuten = maghribMinuten + (2 * ((fajrMinuten - maghribMinuten) / 3));
-    let drittelH = Math.floor(drittelMinuten / 60) % 24;
-    let drittelM = Math.floor(drittelMinuten % 60);
+            let [startH, startM] = prayerTimes[prayer].split(":").map(Number);
+            let prayerStartMinutes = startH * 60 + startM;
 
-    return `${String(drittelH).padStart(2, '0')}:${String(drittelM).padStart(2, '0')}`;
-}
+            let [endH, endM] = prayerTimes[prayerOrder[i + 1]].split(":").map(Number);
+            let prayerEndMinutes = endH * 60 + endM;
 
-// 📌 Reihenfolge der Gebete inklusive Mitternacht-Ende für korrekte Berechnung
-const prayerOrder = ["Letztes Drittel", "Fajr", "Shuruk", "Duha", "Dhuhr", "Asr", "Maghrib", "Isha", "Mitternacht", "Mitternacht-Ende"];
-
-function updateGebetszeitenCountdown(prayerTimes) {
-    let jetzt = new Date();
-    let currentTime = jetzt.getHours() * 60 + jetzt.getMinutes();
-    let currentSeconds = jetzt.getSeconds();
-
-    let nextPrayer = null, nextPrayerTime = null, currentPrayer = null, currentPrayerEndTime = null;
-
-    // 🔹 Durchlaufe alle Gebete in der Reihenfolge
-    for (let i = 0; i < prayerOrder.length - 1; i++) {
-        let prayer = prayerOrder[i];
-        if (!prayerTimes[prayer]) continue;
-
-        let [startH, startM] = prayerTimes[prayer].split(":").map(Number);
-        let prayerStartMinutes = startH * 60 + startM;
-
-        let [endH, endM] = prayerTimes[prayerOrder[i + 1]].split(":").map(Number);
-        let prayerEndMinutes = endH * 60 + endM;
-
-        // Falls das nächste Gebet nach Mitternacht liegt, korrekte Berechnung
-        if (prayerEndMinutes < prayerStartMinutes) {
-            prayerEndMinutes += 24 * 60;
-        }
-
-        let countdownElement = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}-countdown`);
-        if (!countdownElement) continue;
-
-        // 🔹 Falls Mitternacht aktiv ist, "Mitternacht läuft" anzeigen
-        if (prayer === "Mitternacht" && currentTime >= prayerStartMinutes && currentTime < prayerEndMinutes) {
-            countdownElement.textContent = "Mitternacht läuft.";
-            continue;
-        }
-
-        // 🔹 Wenn das Gebet erst später beginnt
-        if (currentTime < prayerStartMinutes) {
-            let remainingMinutes = prayerStartMinutes - currentTime - 1;
-            let remainingSeconds = 60 - currentSeconds;
-            countdownElement.textContent = `Beginnt in: ${formatTime(remainingMinutes, remainingSeconds, false)}`;
-
-            if (!nextPrayer) {
-                nextPrayer = prayer;
-                nextPrayerTime = prayerStartMinutes;
+            if (prayerEndMinutes < prayerStartMinutes) {
+                prayerEndMinutes += 24 * 60;
             }
-        } 
-        // 🔹 Falls das Gebet gerade aktiv ist
-        else if (currentTime >= prayerStartMinutes && currentTime < prayerEndMinutes) {
-            let remainingMinutes = prayerEndMinutes - currentTime - 1;
+
+            let countdownElement = document.getElementById(`${prayer.toLowerCase().replace(/ /g, "-")}-countdown`);
+            if (!countdownElement) continue;
+
+            if (currentTime < prayerStartMinutes) {
+                let remainingMinutes = prayerStartMinutes - currentTime - 1;
+                let remainingSeconds = 60 - currentSeconds;
+                countdownElement.textContent = `Beginnt in: ${formatTime(remainingMinutes, remainingSeconds, false)}`;
+
+                if (!nextPrayer) {
+                    nextPrayer = prayer;
+                    nextPrayerTime = prayerStartMinutes;
+                }
+            }
+            else if (currentTime >= prayerStartMinutes && currentTime < prayerEndMinutes) {
+                let remainingMinutes = prayerEndMinutes - currentTime - 1;
+                let remainingSeconds = 60 - currentSeconds;
+                countdownElement.textContent = `Begonnen. Noch: ${formatTime(remainingMinutes, remainingSeconds, false)}`;
+                currentPrayer = prayer;
+                currentPrayerEndTime = prayerEndMinutes;
+            }
+            else {
+                countdownElement.textContent = "Bereits abgelaufen.";
+            }
+        }
+
+        let nextHours = Math.floor((nextPrayerTime - currentTime - 1) / 60);
+        let nextMinutes = (nextPrayerTime - currentTime - 1) % 60;
+        let nextSeconds = 60 - currentSeconds;
+
+        document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${prayerTimes[nextPrayer].slice(0, 5)})`;
+        document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${formatTime(nextHours * 60 + nextMinutes, nextSeconds, true)}`;
+
+        if (currentPrayer) {
+            let remainingMinutes = currentPrayerEndTime - currentTime - 1;
             let remainingSeconds = 60 - currentSeconds;
-            countdownElement.textContent = `Begonnen. Noch: ${formatTime(remainingMinutes, remainingSeconds, false)}`;
-            currentPrayer = prayer;
-            currentPrayerEndTime = prayerEndMinutes;
-        } 
-        // 🔹 Falls das Gebet bereits abgelaufen ist
-        else {
-            countdownElement.textContent = "Bereits abgelaufen.";
+            document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${prayerTimes[currentPrayer].slice(0, 5)})`;
+            document.getElementById("current-prayer-countdown").textContent = `Endet in: ${formatTime(remainingMinutes, remainingSeconds, true)}`;
         }
     }
 
-    // 🔹 Nächstes Gebet Countdown
-    let nextHours = Math.floor((nextPrayerTime - currentTime - 1) / 60);
-    let nextMinutes = (nextPrayerTime - currentTime - 1) % 60;
-    let nextSeconds = 60 - currentSeconds;
+    function formatTime(minutes, seconds, showSeconds) {
+        let h = Math.floor(minutes / 60);
+        let m = minutes % 60;
+        let s = seconds;
 
-    document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nextPrayer} (${prayerTimes[nextPrayer].slice(0, 5)})`;
-    document.getElementById("next-prayer-countdown").textContent = `Beginnt in: ${formatTime(nextHours * 60 + nextMinutes, nextSeconds, true)}`;
-
-    // 🔹 Aktuelles Gebet Countdown
-    if (currentPrayer) {
-        let remainingMinutes = currentPrayerEndTime - currentTime - 1;
-        let remainingSeconds = 60 - currentSeconds;
-        document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${currentPrayer} (${prayerTimes[currentPrayer].slice(0, 5)})`;
-        document.getElementById("current-prayer-countdown").textContent = `Endet in: ${formatTime(remainingMinutes, remainingSeconds, true)}`;
+        return showSeconds
+            ? `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`
+            : `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
     }
-}
-function formatTime(minutes, seconds, showSeconds) {
-    let h = Math.floor(minutes / 60);
-    let m = minutes % 60;
-    let s = seconds;
 
-    if (showSeconds) {
-        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-    } else {
-        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-    }
-}
 
 
 // Countdown für die Feiertage setzen
