@@ -103,24 +103,33 @@ async function ermittleStandort() {
 
                     aktuelleStadt = stadt; // Speichert die aktuelle Stadt
                     document.getElementById("stadt-name").innerHTML = `📍 Ihr Standort: ${stadt} <br> Oder Stadt auswählen:`;
+                    document.getElementById("stadt-container").style.display = "block"; // Zeigt Dropdown an
                     await ladeGebetszeiten(stadt);
                     await ladeStadtAuswahl();
+
                 } catch (error) {
                     console.error("Fehler bei Standortermittlung:", error);
                     document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen:";
+                    document.getElementById("stadt-container").style.display = "block"; // Zeigt Dropdown an
                     await ladeStadtAuswahl();
+
                 }
             },
             async () => {
                 console.warn("Standort abgelehnt oder nicht verfügbar.");
+               
                 document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen:";
-                await ladeStadtAuswahl();
+document.getElementById("stadt-container").style.display = "block"; // Zeigt Dropdown an
+await ladeStadtAuswahl();
+
             }
         );
     } else {
         console.warn("Geolocation nicht unterstützt.");
-        document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen:";
-        await ladeStadtAuswahl();
+       document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen:";
+document.getElementById("stadt-container").style.display = "block"; // Zeigt Dropdown an
+await ladeStadtAuswahl();
+
     }
 }
 
@@ -179,6 +188,9 @@ async function ladeStadtAuswahl() {
         console.error("Fehler beim Laden der Städte:", error);
     }
 }
+   
+    
+    
     let countdownInterval = null;
     let aktuelleStadt = null;
 
