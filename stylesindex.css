@@ -77,19 +77,23 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
-.stadt-dropdown {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px; /* Abstand nach oben */
+
+
+/* 📌 Dropdown-Menü mittig */
+#stadt-container {
+    text-align: center;
+    margin-top: 10px;
 }
 
 #stadt-auswahl {
-    padding: 5px;
+    display: block;
+    margin: 0 auto;
+    width: 60%;
+    max-width: 300px;
+    padding: 8px;
     font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    text-align: center;
 }
-
 
 /* 📌 Header & Zeit-Anzeige */
 .top-info {
