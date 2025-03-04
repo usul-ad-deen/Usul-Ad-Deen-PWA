@@ -227,6 +227,7 @@ async function ladeStadtAuswahl() {
                 "Asr": zeitAnpassen(data.data.timings.Asr, 0),
                 "Maghrib": zeitAnpassen(data.data.timings.Maghrib, 1),
                 "Isha": zeitAnpassen(data.data.timings.Isha, 0)
+                "Duha-Ende" = zeitAnpassen(data.data.timings.Dhuhr, -10);
             };
 
             let { mitternacht, letztesDrittel } = berechneMitternachtUndDrittel(prayerTimes.Fajr, prayerTimes.Maghrib);
@@ -234,7 +235,7 @@ async function ladeStadtAuswahl() {
             prayerTimes["Letztes Drittel"] = letztesDrittel;
             prayerTimes["Mitternacht"] = mitternacht;
             prayerTimes["Mitternacht-Ende"] = zeitAnpassen(mitternacht, 1);
-            prayerTimes["Duha-Ende"] = zeitAnpassen(Dhuhr, -10);
+            
 
             // 🔹 Setze Gebetszeiten in die Tabelle
             Object.keys(prayerTimes).forEach(prayer => {
