@@ -65,7 +65,7 @@ body {
     justify-content: center; /* Zentriert horizontal */
     align-items: center; /* Zentriert vertikal (falls nötig) */
     text-align: center; /* Zentriert den Text */
-    margin-top: 10px; /* Optional: Abstand nach oben */
+    margin: 0 auto;
 }
 
 #stadt-auswahl {
