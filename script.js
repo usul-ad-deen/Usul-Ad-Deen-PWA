@@ -130,9 +130,17 @@ async function ladeStadtAuswahl() {
         let städte = await response.json();
         let dropdown = document.getElementById("stadt-auswahl");
 
+        // ❗ Falls das Dropdown nicht existiert, erstelle es
         if (!dropdown) {
-            console.error("❌ Fehler: Dropdown-Element nicht gefunden!");
-            return;
+            console.error("❌ Fehler: Dropdown-Element nicht gefunden! Erstelle es jetzt.");
+            let container = document.getElementById("stadt-container"); // Stelle sicher, dass es ein Container-Element gibt
+            if (!container) {
+                console.error("❌ Fehler: Kein Container für die Stadtauswahl gefunden!");
+                return;
+            }
+            dropdown = document.createElement("select");
+            dropdown.id = "stadt-auswahl";
+            container.appendChild(dropdown); // Füge es ins DOM ein
         }
 
         dropdown.innerHTML = ""; // ❗ Verhindert doppelte Optionen!
@@ -171,8 +179,6 @@ async function ladeStadtAuswahl() {
         console.error("Fehler beim Laden der Städte:", error);
     }
 }
-
-
     let countdownInterval = null;
     let aktuelleStadt = null;
 
