@@ -124,21 +124,37 @@ async function ermittleStandort() {
     }
 }
 
-// 📌 Funktion zur manuellen Stadtwahl
 async function ladeStadtAuswahl() {
     try {
         let response = await fetch("stadt.json");
         let städte = await response.json();
         let dropdown = document.getElementById("stadt-auswahl");
 
+        if (!dropdown) {
+            console.error("❌ Fehler: Dropdown-Element nicht gefunden!");
+            return;
+        }
+
         dropdown.innerHTML = ""; // ❗ Verhindert doppelte Optionen!
 
+        // Standardoption hinzufügen
+        let defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "-- Stadt auswählen --";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        dropdown.appendChild(defaultOption);
+
+        // Städte hinzufügen
         städte.forEach(stadt => {
             let option = document.createElement("option");
             option.value = stadt.name;
             option.textContent = stadt.name;
             dropdown.appendChild(option);
         });
+
+        // ❗ Zeige das Dropdown an
+        dropdown.style.display = "block";
 
         dropdown.addEventListener("change", async function () {
             let gewählteStadt = this.value;
