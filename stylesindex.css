@@ -59,6 +59,13 @@ body {
     color: white;
 }
 
+.stadt-dropdown {
+    display: block;
+    justify-content: center;
+    margin-top: 10px; /* Abstand nach oben */
+}
+
+
 /* 📌 Dropdown-Menü mittig */
 #stadt-container {
     text-align: center;
