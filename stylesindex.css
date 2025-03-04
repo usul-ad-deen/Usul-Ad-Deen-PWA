@@ -1,16 +1,16 @@
-/* Hintergrundbild soll mitscrollen */
+    /* Hintergrundbild soll mitscrollen */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background: url('icons/hintergrund.png') center top no-repeat;
     background-size: cover;
-    background-attachment: fixed; /* 🔹 FIX: Hintergrundbild scrollt mit */
+    background-attachment: fixed; /* ðŸ”¹ FIX: Hintergrundbild scrollt mit */
     color: #fff;
   
 }
 
-/* 📌 Usul-Ad-Deen Titel oben groß */
+/*  Usul-Ad-Deen Titel oben groÃŸ */
 .app-title {
     text-align: left;
     font-size: 36px;
@@ -19,7 +19,7 @@ body {
     margin-left: 10px;
 }
 
-/* 📌 Menü-Button & Liste */
+/*  MenÃ¼-Button & Liste */
 .menu {
     position: relative;
 }
@@ -59,26 +59,6 @@ body {
     color: white;
 }
 
-/* 📌 Container für die Boxen */
-.box-container {
-    display: flex;
-    justify-content: space-between; /* Stellt die Boxen nebeneinander */
-    flex-wrap: wrap; /* Falls der Bildschirm zu klein ist, rutschen sie darunter */
-    gap: 20px; /* Abstand zwischen den Boxen */
-}
-
-/* 📌 Jede Box gleich groß machen */
-.box {
-    flex: 1;
-    min-width: 300px; /* Mindestbreite, damit es auf kleinen Bildschirmen nicht zu eng wird */
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-
 /* 📌 Dropdown-Menü mittig */
 #stadt-container {
     text-align: center;
@@ -95,13 +75,13 @@ body {
     text-align: center;
 }
 
-/* 📌 Header & Zeit-Anzeige */
+/* Header & Zeit-Anzeige */
 .top-info {
     display: flex;
     flex-direction: column;
-    align-items: center; /* ✅ Sorgt für zentrierte Elemente */
+    align-items: center; /* âœ… Sorgt fÃ¼r zentrierte Elemente */
     justify-content: center;
-    text-align: center; /* ✅ Fix: Zentriert den Text */
+    text-align: center; /* âœ… Fix: Zentriert den Text */
     padding: 15px;
     background: rgba(0, 0, 0, 0.7);
     width: 100%;
@@ -129,7 +109,7 @@ margin-left: 10px;
     border-radius: 8px;
 }
 
-/* 📌 Tabellen & Boxen Layout */
+/* Tabellen & Boxen Layout */
 .container {
     display: flex;
     justify-content: space-around;
@@ -142,9 +122,17 @@ margin-left: 10px;
      font-weight: bold;
 }
 
+/*  Box-Design */
+.box {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    width: 45%;
+    min-width: 300px;
+}
 
-
-/* 📌 Tabellen */
+/* Tabellen */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -160,7 +148,7 @@ th {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* 📌 Dark Mode */
+/* Dark Mode */
 .dark-mode {
     background: #222;
     color: #ddd;
@@ -170,18 +158,18 @@ th {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* 📌 Platz für Hadith & Dua Box */
+/* Platz für Hadith & Dua Box */
 .hadith-dua-container {
-    margin-bottom: 50px; /* Abstand zur Fußzeile */
+    margin-bottom: 50px; /* Abstand zur FuÃŸzeile */
 }
 
-/* 📌 Asr-Hinweis in Rot */
+/* ðŸ“Œ Asr-Hinweis in Rot */
 .asr-hinweis a {
     color: red;
     font-weight: bold;
 }
 
-/* 📌 Footer */
+/* ðŸ“Œ Footer */
 footer {
     position: relative;
     bottom: 0;
