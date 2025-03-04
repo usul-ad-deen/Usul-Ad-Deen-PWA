@@ -60,24 +60,34 @@ body {
     color: white;
 }
 
-/* 📌 Container für die Boxen */
-.box-container {
+/* Sorgt dafür, dass die Gebetszeiten- und Feiertage-Boxen nebeneinander bleiben */
+.container {
     display: flex;
-    justify-content: space-between; /* Stellt die Boxen nebeneinander */
-    flex-wrap: wrap; /* Falls der Bildschirm zu klein ist, rutschen sie darunter */
+    flex-wrap: wrap; /* Falls Platz nicht reicht, rutscht die zweite Box in die nächste Zeile */
+    justify-content: space-between; /* Hält sie nebeneinander mit Abstand */
+    align-items: flex-start; /* Richtet beide Boxen oben aus */
     gap: 20px; /* Abstand zwischen den Boxen */
 }
 
-/* 📌 Jede Box gleich groß machen */
+/* Stellt sicher, dass beide Boxen die gleiche Größe haben */
 .box {
-    flex: 1;
-    min-width: 300px; /* Mindestbreite, damit es auf kleinen Bildschirmen nicht zu eng wird */
+    flex: 1; /* Beide Boxen teilen sich gleichmäßig den Platz */
+    min-width: 300px;
+    max-width: 48%; /* Verhindert zu große Boxen */
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
+
+/* Falls es ein Problem mit der Breite gibt, könnte dies helfen */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Boxen untereinander auf kleinen Bildschirmen */
+    }
+}
+
 
 /* 📌 Dropdown-Menü mittig */
 #stadt-container {
