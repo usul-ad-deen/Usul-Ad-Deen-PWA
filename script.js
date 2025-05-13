@@ -401,10 +401,16 @@ async function berechneFeiertagsCountdown(datumString, elementId, maghribZeitHeu
     let diffMs = feiertag - jetzt;
 
     if (diffMs <= 0) {
+    let vergangen = jetzt - feiertag;
+    if (vergangen > 0) {
+        document.getElementById(elementId).textContent = "Bereits abgelaufen.";
+    } else {
         document.getElementById(elementId).textContent = "Heute!";
-        return;
     }
+    return;
+}
 
+  
     let tage = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     let stunden = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
