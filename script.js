@@ -459,9 +459,8 @@ ladeFeiertagsCountdowns("Berlin");
         }
     }
 
-
     // 📌 ALLE Funktionen starten
-   await ermittleStandort();
+    ermittleStandort();
     await ladeHadith();
     await ladeDua();
     
