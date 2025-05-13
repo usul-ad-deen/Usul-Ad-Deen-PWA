@@ -181,20 +181,52 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // 📌 Lade Gebetszeiten
-    async function ladeGebetszeiten(stadt) {
-        try {
-            let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
-            let data = await response.json();
-            let timings = data.data.timings;
+ async function ladeGebetszeiten(stadt) {
+    try {
+        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
+        let data = await response.json();
+        let timings = data.data.timings;
 
-            document.getElementById("next-prayer").textContent = `Fajr: ${timings.Fajr}`;
-            document.getElementById("current-prayer").textContent = `Maghrib: ${timings.Maghrib}`;
-            document.getElementById("next-prayer-countdown").textContent = "";
-            document.getElementById("current-prayer-countdown").textContent = "";
-        } catch (error) {
-            console.error("Fehler beim Laden der Gebetszeiten:", error);
+        const jetzt = new Date();
+        const zeitJetzt = jetzt.getHours() * 60 + jetzt.getMinutes();
+
+        const gebete = [
+            { name: "Fajr", zeit: timings.Fajr },
+            { name: "Dhuhr", zeit: timings.Dhuhr },
+            { name: "Asr", zeit: timings.Asr },
+            { name: "Maghrib", zeit: timings.Maghrib },
+            { name: "Isha", zeit: timings.Isha }
+        ];
+
+        let nächstesGebet = null;
+        let aktuellesGebet = null;
+
+        for (let i = 0; i < gebete.length; i++) {
+            const [h, m] = gebete[i].zeit.split(":").map(Number);
+            const gebetsZeit = h * 60 + m;
+
+            if (zeitJetzt < gebetsZeit) {
+                nächstesGebet = gebete[i];
+                aktuellesGebet = gebete[i - 1] || gebete[gebete.length - 1];
+                break;
+            }
         }
+
+        if (!nächstesGebet) {
+            nächstesGebet = gebete[0]; // nächster Tag
+            aktuellesGebet = gebete[gebete.length - 1];
+        }
+
+        document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nächstesGebet.name} (${nächstesGebet.zeit})`;
+        document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${aktuellesGebet.name} (${aktuellesGebet.zeit})`;
+        document.getElementById("next-prayer-countdown").textContent = "";
+        document.getElementById("current-prayer-countdown").textContent = "";
+
+    } catch (error) {
+        console.error("Fehler beim Laden der Gebetszeiten:", error);
     }
+}
+
 
     // 📌 Start
     await ladeIslamischesDatum();
