@@ -10,7 +10,7 @@ if (!buchPfad) {
     spread: "none"
   });
 
-  // Fortschritt speichern (optional)
+  // Fortschritt speichern
   const gespeichertePosition = localStorage.getItem(`epub-pos-${buchPfad}`);
   if (gespeichertePosition) {
     buch.rendition.display(gespeichertePosition);
@@ -22,7 +22,7 @@ if (!buchPfad) {
     localStorage.setItem(`epub-pos-${buchPfad}`, location.start.cfi);
   });
 
-  // Navigation
+  // Steuerung
   window.buchVor = () => buch.rendition.next();
   window.buchZurück = () => buch.rendition.prev();
 }
