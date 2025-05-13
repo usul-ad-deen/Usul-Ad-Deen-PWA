@@ -373,6 +373,51 @@ async function ladeStadtAuswahl() {
             : `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
     }
 
+const buchSuche = document.getElementById("buch-suche");
+const buchGrid = document.getElementById("buecher-grid");
+let buchDaten = [];
+
+async function ladeBücher() {
+    try {
+        let response = await fetch("bücher.json");
+        if (!response.ok) throw new Error("Fehler beim Abrufen der Bücherliste");
+        buchDaten = await response.json();
+        zeigeBücher(buchDaten);
+    } catch (error) {
+        console.error("Fehler beim Laden der Bücher:", error);
+        buchGrid.innerHTML = "<p>❌ Bücher konnten nicht geladen werden.</p>";
+    }
+}
+
+function zeigeBücher(liste) {
+    buchGrid.innerHTML = "";
+    liste.forEach(buch => {
+        const tile = document.createElement("div");
+        tile.className = "buch-tile";
+        tile.innerHTML = `
+            <img src="${buch.cover || 'icons/book-placeholder.png'}" alt="${buch.titel}">
+            <h3>${buch.titel}</h3>
+            <p><strong>Autor:</strong> ${buch.autor || 'Unbekannt'}</p>
+            <p><strong>Sprache:</strong> ${buch.sprache || 'Deutsch'} | <strong>Format:</strong> ${buch.format || 'PDF/EPUB'}</p>
+            <p>${buch.beschreibung || ''}</p>
+            <div class="buch-buttons">
+                ${buch.pdf ? `<a href="${buch.pdf}" target="_blank">📖 PDF öffnen</a>` : ""}
+                ${buch.epub ? `<a href="${buch.epub}" download>⬇️ EPUB</a>` : ""}
+                ${buch.appstore ? `<a href="${buch.appstore}" target="_blank">📱 App Store</a>` : ""}
+                ${buch.playstore ? `<a href="${buch.playstore}" target="_blank">📱 Play Store</a>` : ""}
+            </div>
+        `;
+        buchGrid.appendChild(tile);
+    });
+}
+
+buchSuche.addEventListener("input", () => {
+    const query = buchSuche.value.toLowerCase();
+    const gefiltert = buchDaten.filter(b =>
+        b.titel.toLowerCase().includes(query) ||
+        (b.autor && b.autor.toLowerCase().includes(query))
+    );
+    zeigeBuecher(gefiltert);
 
 
     ermittleStandort();
