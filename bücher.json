@@ -1,30 +1,34 @@
 [
-    {
-        "titel": "Al-Kitab ad-Deen. Die Grundlagen des islamischen Glaubens. Band 1: Einführung in die Glaubenslehre. Usul al-Aqidah",
-        "pdf": "buecher/al-Kitab-band1.pdf",
-        "epub": "buecher/al-kitab-ad-deen-2.epub",
-        "appstore": "http://books.apple.com/us/book/id6477355589",
-        "playstore": "https://books.google.de/books/about?id=gY7xEAAAQBAJ&redir_esc=y"
-    },
-    {
-        "titel": "Al-Kitab ad-Deen. Die Grundlagen des islamischen Glaubens. Band 2: Einführung in den Tauhid und den Iman",
-       "pdf": "buecher/al-kitab-ad-deen-2.pdf",
-        "epub": "buecher/al-kitab-ad-deen-2.epub",
-        "appstore": "http://books.apple.com/us/book/id6479219849",
-        "playstore": "https://play.google.com/store/books/details?id=ljT6EAAAQBAJ"
-    },
-    {
-        "titel": "Al-Kitab ad-Deen. Die besonderen Tage im islamischen Glauben. Band 1: Die Vorzüglichkeiten der ersten Zehn Tage von Dhu'l Hijjah",
-        "pdf": "buecher/al-kitab-ad-deen-2.pdf",
-        "epub": "buecher/al-kitab-ad-deen-2.epub",
-        "appstore": "http://books.apple.com/us/book/id6504044532",
-        "playstore": "https://play.google.com/store/books/details?id=GPQMEQAAQBAJ"
-    },
   {
-        "titel": "Al-Kitab ad-Deen. Eine Warnung und frohe Kunde. Sonderausgabe: Und das Jenseits ist wahrlich besser für dich als das Diesseits",
-      "pdf": "buecher/al-kitab-ad-deen-2.pdf",
-        "epub": "buecher/al-kitab-ad-deen-2.epub",
-        "appstore": "https://books.apple.com/de/book/kitab-ad-deen-eine-warnung-und-frohe-kunde/id6544782456",
-        "playstore": "https://play.google.com/store/books/details?id=OSEUEQAAQBAJ"
-    }
+    "titel": "Al-Kitab ad-Deen. Die Grundlagen des islamischen Glaubens. Band 1: Einführung in die Glaubenslehre. Usul al-Aqidah",
+    "pdf": "buecher/al-Kitab-band1.pdf",
+    "epub": "buecher/al-kitab-ad-deen-2.epub",
+    "readerLink": "epub-reader.html?buch=buecher/al-kitab-ad-deen-2.epub",
+    "appstore": "http://books.apple.com/us/book/id6477355589",
+    "playstore": "https://books.google.de/books/about?id=gY7xEAAAQBAJ&redir_esc=y"
+  },
+  {
+    "titel": "Al-Kitab ad-Deen. Die Grundlagen des islamischen Glaubens. Band 2: Einführung in den Tauhid und den Iman",
+    "pdf": "buecher/al-kitab-ad-deen-2.pdf",
+    "epub": "buecher/al-kitab-ad-deen-2.epub",
+    "readerLink": "epub-reader.html?buch=buecher/al-kitab-ad-deen-2.epub",
+    "appstore": "http://books.apple.com/us/book/id6479219849",
+    "playstore": "https://play.google.com/store/books/details?id=ljT6EAAAQBAJ"
+  },
+  {
+    "titel": "Al-Kitab ad-Deen. Die besonderen Tage im islamischen Glauben. Band 1: Die Vorzüglichkeiten der ersten Zehn Tage von Dhu'l Hijjah",
+    "pdf": "buecher/al-kitab-ad-deen-2.pdf",
+    "epub": "buecher/al-kitab-ad-deen-2.epub",
+    "readerLink": "epub-reader.html?buch=buecher/al-kitab-ad-deen-2.epub",
+    "appstore": "http://books.apple.com/us/book/id6504044532",
+    "playstore": "https://play.google.com/store/books/details?id=GPQMEQAAQBAJ"
+  },
+  {
+    "titel": "Al-Kitab ad-Deen. Eine Warnung und frohe Kunde. Sonderausgabe: Und das Jenseits ist wahrlich besser für dich als das Diesseits",
+    "pdf": "buecher/al-kitab-ad-deen-2.pdf",
+    "epub": "buecher/al-kitab-ad-deen-2.epub",
+    "readerLink": "epub-reader.html?buch=buecher/al-kitab-ad-deen-2.epub",
+    "appstore": "https://books.apple.com/de/book/kitab-ad-deen-eine-warnung-und-frohe-kunde/id6544782456",
+    "playstore": "https://play.google.com/store/books/details?id=OSEUEQAAQBAJ"
+  }
 ]
