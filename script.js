@@ -459,7 +459,7 @@ ladeFeiertagsCountdowns("Berlin");
         }
     }
 
-setupPrayerNotifications(prayerTimes); // nachdem API die Zeiten geladen hat
+
     // 📌 ALLE Funktionen starten
     ermittleStandort();
     await ladeHadith();
