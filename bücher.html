@@ -1,90 +1,84 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bücher | Usul ad-Deen</title>
-    <link rel="stylesheet" href="stylesbuecher.css">
-    <script defer src="bücher.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bücher | Usul ad-Deen</title>
+  <link rel="stylesheet" href="stylesbuecher.css"/>
+  <script defer src="bücher.js"></script>
 </head>
 <body>
 
- <h1 class="app-title">Usul ad-Deen</h1>
-         <a href="index.html">
-        <img src="icons/icon-192x192.png" alt="App Icon" class="app-icon"></a>
-    <!-- 📌 Header-Bereich mit Uhrzeit, Datum & Gebetsinfo -->
-    <div class="top-info">
-        <h2 class="startseite-text">Bücher</h2>
-        <div class="header-info">
-            <p><span id="datum">Lädt...</span> | <span id="uhrzeit">Berlin: 00:00</span></p>
-            <p><span id="islamisches-datum">Lädt...</span> | <span id="mekka-uhrzeit">Mekka: 00:00</span></p>
-           <p><span id="next-prayer" class="nextprayer-bold">Lädt...</span> <span id="next-prayer-time"></span><span id="next-prayer-countdown" class="nextprayer-bold"></span></p> 
-            <p><span id="current-prayer" class="nextprayer-bold">Lädt...</span> <span id="current-prayer-time"></span> <span id="current-prayer-countdown" class="nextprayer-bold"></span></p>
-            <p id="stadt-name"></p>
-        <div id="stadt-container">
-            <div class="stadt-dropdown">
-                <select id="stadt-auswahl"></select>
+  <!-- App-Titel + Icon -->
+  <header class="top-info">
+    <div class="top-header">
+      <a href="index.html"><img src="icons/icon-192x192.png" class="app-icon" alt="App Icon"></a>
+      <h1 class="app-title">Usul ad-Deen</h1>
     </div>
+
+    <!-- Uhrzeit, Stadt & Datum -->
+    <div class="header-info">
+      <p><span id="datum">Lädt...</span> | <span id="uhrzeit">Berlin: 00:00</span></p>
+      <p><span id="islamisches-datum">Lädt...</span> | <span id="mekka-uhrzeit">Mekka: 00:00</span></p>
+      <p><span id="next-prayer" class="nextprayer-bold">Lädt...</span> <span id="next-prayer-countdown" class="nextprayer-bold"></span></p>
+      <p><span id="current-prayer" class="nextprayer-bold">Lädt...</span> <span id="current-prayer-countdown" class="nextprayer-bold"></span></p>
+      <p id="stadt-name">Standort wird geladen...</p>
+      <div id="stadt-container">
+        <select id="stadt-auswahl"></select>
+      </div>
     </div>
-            </div>
-        </div>
+  </header>
 
-           
-     <!-- 📌 Navigationsmenü -->
-    <nav class="menu">
-        <button class="menu-button">☰</button>
-        <ul class="menu-list">
-            <li><a href="index.html">Startseite</a></li>
-            <li><a href="beiträge.html">Beiträge</a></li>
-            <li><a href="bücher.html">Bücher</a></li>
-            <li><a href="hadith.html">Hadithsammlung</a></li>
-            <li><a href="dua.html">Bittgebete</a></li>
-            <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
-            <li><a href="kalender.html">Islamischer Kalender</a></li>
-            <li><a href="login.html">Login/Registrierung</a></li>
-            <li><a href="über-uns.html">Über uns</a></li>
-            <li><a href="kontakt.html">Kontakt</a></li>
-            <li><a href="impressum.html">Impressum & Datenschutz</a></li>
-            <li><a href="app-teilen.html">App teilen</a></li>
-            <li><a href="#" id="dark-mode-toggle">Dark Mode</a></li>
-        </ul>
-    </nav>
+  <!-- Navigation -->
+  <nav class="menu">
+    <button class="menu-button">☰</button>
+    <ul class="menu-list">
+      <li><a href="index.html">Startseite</a></li>
+      <li><a href="beiträge.html">Beiträge</a></li>
+      <li><a href="bücher.html" class="active">Bücher</a></li>
+      <li><a href="hadith.html">Hadithsammlung</a></li>
+      <li><a href="dua.html">Bittgebete</a></li>
+      <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
+      <li><a href="kalender.html">Islamischer Kalender</a></li>
+      <li><a href="login.html">Login/Registrierung</a></li>
+      <li><a href="über-uns.html">Über uns</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+      <li><a href="impressum.html">Impressum & Datenschutz</a></li>
+      <li><a href="app-teilen.html">App teilen</a></li>
+      <li><a href="#" id="dark-mode-toggle">Dark Mode</a></li>
+    </ul>
+  </nav>
 
- 
-         <main>
-  <div class="container">
-    <div class="box" style="width: 100%;">
-    <label for="buch-filter"><strong>📂 Kategorie auswählen:</strong></label>
-<select id="buch-filter" class="buch-suchfeld">
-  <option value="">-- Alle Bücher --</option>
-  <option value="Grundlagen">Grundlagen</option>
-  <option value="Gebet">Gebet</option>
-  <option value="Aqidah">Aqidah (Glaubensgrundlagen)</option>
-  <option value="Fiqh">Fiqh (Rechtswissenschaft)</option>
-  <option value="Hadithwissenschaft">Hadithwissenschaft</option>
-  <option value="Benehmen">Benehmen und Charakter</option>
-  <option value="Besondere Tage">Besondere Tage</option>
-  <option value="Anfänger">Anfänger</option>
-  <option value="Fortgeschrittene">Fortgeschrittene</option>
-  <option value="Deutsch">Deutsch</option>
-  <option value="Arabisch">Arabisch</option>
-  <option value="Englisch">Englisch</option>
-</select>
+  <!-- Titelbereich -->
+  <section class="content-section">
+    <h2 class="startseite-text">📚 Bücher</h2>
 
-      <div id="buecher-grid" class="buch-grid"></div>
+    <!-- Filter Dropdown -->
+    <select id="buch-filter" class="buch-suchfeld">
+      <option value="">📚 Alle Kategorien</option>
+      <option value="Grundlagen">Grundlagen</option>
+      <option value="Gebet">Gebet</option>
+      <option value="Aqidah">Aqidah (Glaubensgrundlagen)</option>
+      <option value="Fiqh">Fiqh (Rechtswissenschaft)</option>
+      <option value="Hadithwissenschaft">Hadithwissenschaft</option>
+      <option value="Benehmen">Benehmen und Charakter</option>
+      <option value="Besondere Tage">Besondere Tage</option>
+      <option value="Anfänger">Anfänger</option>
+      <option value="Fortgeschrittene">Fortgeschrittene</option>
+      <option value="Deutsch">Deutsch</option>
+      <option value="Arabisch">Arabisch</option>
+      <option value="Englisch">Englisch</option>
+    </select>
+
+    <!-- Grid-Ansicht -->
+    <div id="buecher-grid" class="buch-grid">
+      <!-- Buch-Kacheln werden dynamisch geladen -->
     </div>
-  </div>
-</main>
+  </section>
 
-
-                 
-        
-
-    <footer>
-        <p>&copy; 2025 Usul ad-Deen</p>
-    </footer>
-
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Usul ad-Deen</p>
+  </footer>
 </body>
 </html>
-
-  
