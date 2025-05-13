@@ -5,7 +5,7 @@
     "epub": "buecher/aKaD_Band1_2.Aufl.epub",
     "cover": "buecher/covers/band1.png",
      "autor": "Abdul Rahman ibn Walid ibn Abdul Rahman ibn Khalil",
-    "readerLink": "epub-reader.html?buch=buecher/al-kitab-ad-deen-2.epub",
+    "readerLink": "epub-reader.html?buch=buecher/aKaD_Band1_2.Aufl.epub",
     "appstore": "http://books.apple.com/us/book/id6477355589",
     "playstore": "https://books.google.de/books/about?id=gY7xEAAAQBAJ&redir_esc=y",
     "kategorien": ["Aqidah", "Grundlagen", "Anfänger", "Deutsch", "Gebet"]
@@ -16,7 +16,7 @@
     "epub": "buecher/aKaD_Band2_2.Aufl.epub",
     "cover": "buecher/covers/band2.png",
          "autor": "Abdul Rahman ibn Walid ibn Abdul Rahman ibn Khalil",
-    "readerLink": "epub-reader.html?buch=buecher/al-kitab-ad-deen-2.epub",
+    "readerLink": "epub-reader.html?buch=buecher/aKaD_Band2_2.Aufl.epub",
     "appstore": "http://books.apple.com/us/book/id6479219849",
     "playstore": "https://play.google.com/store/books/details?id=ljT6EAAAQBAJ",
     "kategorien": ["Aqidah", "Grundlagen", "Anfänger", "Deutsch"]
@@ -27,7 +27,7 @@
     "epub": "buecher/aKaD_SA_Dhul-Hijjah_2.aufl.epub",
     "cover": "buecher/covers/zehnTage.png",
          "autor": "Abdul Rahman ibn Walid ibn Abdul Rahman ibn Khalil",
-    "readerLink": "epub-reader.html?buch=buecher/al-kitab-ad-deen-2.epub",
+    "readerLink": "epub-reader.html?buch=buecher/aKaD_Band2_2.Aufl.epub",
     "appstore": "http://books.apple.com/us/book/id6504044532",
     "playstore": "https://play.google.com/store/books/details?id=GPQMEQAAQBAJ",
     "kategorien": ["Besondere Tage", "Grundlagen", "Anfänger", "Fortgeschrittene", "Deutsch"]
@@ -38,7 +38,7 @@
     "epub": "buecher/aKaD_SA_Warnung_FroheBotschaft_1.korrg.aufl.epub",
     "cover": "buecher/covers/froheKunde.png",
          "autor": "Abdul Rahman ibn Walid ibn Abdul Rahman ibn Khalil",
-    "readerLink": "epub-reader.html?buch=buecher/al-kitab-ad-deen-2.epub",
+    "readerLink": "epub-reader.html?buch=buecher/aKaD_Band2_2.Aufl.epub",
     "appstore": "https://books.apple.com/de/book/kitab-ad-deen-eine-warnung-und-frohe-kunde/id6544782456",
     "playstore": "https://play.google.com/store/books/details?id=OSEUEQAAQBAJ",
     "kategorien": ["Benehmen", "Grundlagen", "Anfänger", "Fortgeschrittene", "Deutsch"]
