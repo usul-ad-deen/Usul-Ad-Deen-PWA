@@ -54,7 +54,23 @@
          <main>
   <div class="container">
     <div class="box" style="width: 100%;">
-      <input type="text" id="buch-suche" placeholder="🔍 Nach Titel oder Autor suchen..." class="buch-suchfeld">
+    <label for="buch-filter"><strong>📂 Kategorie auswählen:</strong></label>
+<select id="buch-filter" class="buch-suchfeld">
+  <option value="">-- Alle Bücher --</option>
+  <option value="Grundlagen">Grundlagen</option>
+  <option value="Gebet">Gebet</option>
+  <option value="Aqidah">Aqidah (Glaubensgrundlagen)</option>
+  <option value="Fiqh">Fiqh (Rechtswissenschaft)</option>
+  <option value="Hadithwissenschaft">Hadithwissenschaft</option>
+  <option value="Benehmen">Benehmen und Charakter</option>
+  <option value="Besondere Tage">Besondere Tage</option>
+  <option value="Anfänger">Anfänger</option>
+  <option value="Fortgeschrittene">Fortgeschrittene</option>
+  <option value="Deutsch">Deutsch</option>
+  <option value="Arabisch">Arabisch</option>
+  <option value="Englisch">Englisch</option>
+</select>
+
       <div id="buecher-grid" class="buch-grid"></div>
     </div>
   </div>
