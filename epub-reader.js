@@ -1,8 +1,12 @@
-let buchPfad = new URLSearchParams(window.location.search).get("buch");
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const buchPfad = params.get("file");
 
-if (!buchPfad) {
-  alert("❌ Keine EPUB-Datei angegeben.");
-} else {
+  if (!buchPfad) {
+    alert("❌ Keine EPUB-Datei angegeben.");
+    return;
+  }
+
   const buch = ePub(buchPfad);
   const rend = buch.renderTo("viewer", {
     width: "100%",
@@ -10,19 +14,20 @@ if (!buchPfad) {
     spread: "none"
   });
 
-  // Fortschritt speichern
+  // 📌 Fortschritt wiederherstellen
   const gespeichertePosition = localStorage.getItem(`epub-pos-${buchPfad}`);
   if (gespeichertePosition) {
-    buch.rendition.display(gespeichertePosition);
+    rend.display(gespeichertePosition);
   } else {
-    buch.rendition.display();
+    rend.display();
   }
 
-  buch.rendition.on("relocated", (location) => {
+  // 📌 Fortschritt speichern bei Seitenwechsel
+  rend.on("relocated", (location) => {
     localStorage.setItem(`epub-pos-${buchPfad}`, location.start.cfi);
   });
 
-  // Steuerung
-  window.buchVor = () => buch.rendition.next();
-  window.buchZurück = () => buch.rendition.prev();
-}
+  // 📌 Navigation über Buttons
+  window.buchVor = () => rend.next();
+  window.buchZurück = () => rend.prev();
+});
