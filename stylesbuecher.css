@@ -177,4 +177,48 @@ footer {
     padding: 10px;
 }
 
+.buch-suchfeld {
+  width: 90%;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 12px;
+  font-size: 1rem;
+  display: block;
+  border-radius: 8px;
+  border: none;
+}
+
+.buch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.buch-tile {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 16px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  color: white;
+  text-align: center;
+}
+
+.buch-tile img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.buch-buttons a {
+  display: inline-block;
+  margin: 5px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #005fa3;
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
 
