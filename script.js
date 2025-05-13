@@ -364,72 +364,84 @@ async function ladeStadtAuswahl() {
 
 
 
-// Countdown für die Feiertage setzen
+// 📌 Countdown für die Feiertage setzen
 async function ladeFeiertagsCountdowns(stadt) {
-    let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
-    let data = await response.json();
-    let maghribZeitHeute = data.data.timings.Maghrib;
+    try {
+        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
+        let data = await response.json();
+        let maghribZeitHeute = data.data.timings.Maghrib;
 
-    // 📌 Feiertage mit ihren realen Daten
-    let feiertage = {
-        "ramadan-countdown": "2025-03-01",
-        "fitr-countdown": "2025-03-30",
-        "hajj-countdown": "2025-06-04",
-        "arafah-countdown": "2025-06-05",
-        "adha-countdown": "2025-06-06",
-        "neujahr-countdown": "2025-06-26",
-        "ashura-countdown": "2025-07-05",
-        "isra-countdown": "2026-01-16"
-    };
+        // 📌 Feiertage mit ihren realen Daten
+        let feiertage = {
+            "ramadan-countdown": "2025-03-01",
+            "fitr-countdown": "2025-03-30",
+            "hajj-countdown": "2025-06-04",
+            "arafah-countdown": "2025-06-05",
+            "adha-countdown": "2025-06-06",
+            "neujahr-countdown": "2025-06-26",
+            "ashura-countdown": "2025-07-05",
+            "isra-countdown": "2026-01-16"
+        };
 
-    // 📌 Für jeden Feiertag den Countdown berechnen
-    for (let id in feiertage) {
-        berechneFeiertagsCountdown(feiertage[id], id, maghribZeitHeute, stadt);
+        // 📌 Für jeden Feiertag den Countdown berechnen
+        for (let id in feiertage) {
+            berechneFeiertagsCountdown(feiertage[id], id, maghribZeitHeute, stadt);
+        }
+    } catch (error) {
+        console.error("❌ Fehler beim Laden der heutigen Maghrib-Zeit:", error);
     }
 }
 
 // 📌 Berechnet den Countdown ab Maghrib des Vortages des Feiertages
 async function berechneFeiertagsCountdown(datumString, elementId, maghribZeitHeute, stadt) {
-    let feiertag = new Date(datumString);
-    feiertag.setDate(feiertag.getDate() - 1); // ❗ Feiertag -1 Tag nehmen
-    let maghribZeitVortag = await holeMaghribZeit(feiertag, stadt); // Maghrib-Zeit des Vortages holen
+    try {
+        let feiertag = new Date(datumString);
+        feiertag.setDate(feiertag.getDate() - 1); // Feiertag beginnt ab Maghrib des Vortags
 
-    let [maghribStunde, maghribMinute] = maghribZeitVortag.split(":").map(Number);
-    feiertag.setHours(maghribStunde, maghribMinute, 0); // Maghrib als Startzeit setzen
+        // Maghrib-Zeit holen
+        let maghribZeitVortag = await holeMaghribZeit(feiertag, stadt);
+        let [maghribStunde, maghribMinute] = maghribZeitVortag.split(":").map(Number);
+        feiertag.setHours(maghribStunde, maghribMinute, 0, 0);
 
-    let jetzt = new Date();
-    let diffMs = feiertag - jetzt;
+        let jetzt = new Date();
+        let diffMs = feiertag - jetzt;
 
-    if (diffMs <= 0) {
-    let vergangen = jetzt - feiertag;
-    if (vergangen > 0) {
-        document.getElementById(elementId).textContent = "Bereits abgelaufen.";
-    } else {
-        document.getElementById(elementId).textContent = "Heute!";
+        if (diffMs > 0) {
+            // ⏳ Feiertag kommt noch
+            let tage = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            let stunden = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById(elementId).textContent = `${tage} Tage, ${stunden} Stunden`;
+        } else if (Math.abs(diffMs) <= 24 * 60 * 60 * 1000) {
+            // 📍 Heute (nach Maghrib bis nächster Maghrib)
+            document.getElementById(elementId).textContent = "Heute!";
+        } else {
+            // ❌ Feiertag ist abgelaufen
+            document.getElementById(elementId).textContent = "Bereits abgelaufen.";
+        }
+    } catch (error) {
+        console.error(`❌ Fehler beim Berechnen des Countdowns für ${elementId}:`, error);
     }
-    return;
-}
-
-  
-    let tage = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    let stunden = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-    document.getElementById(elementId).textContent = `${tage} Tage, ${stunden} Stunden`;
 }
 
 // 📌 Holt die Maghrib-Zeit des Vortages für eine Stadt
 async function holeMaghribZeit(datum, stadt) {
-    let tag = datum.getDate();
-    let monat = datum.getMonth() + 1;
-    let jahr = datum.getFullYear();
-    
-    let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3&date=${tag}-${monat}-${jahr}`);
-    let data = await response.json();
-    return data.data.timings.Maghrib;
+    try {
+        let tag = datum.getDate();
+        let monat = datum.getMonth() + 1;
+        let jahr = datum.getFullYear();
+        
+        let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3&date=${tag}-${monat}-${jahr}`);
+        let data = await response.json();
+        return data.data.timings.Maghrib;
+    } catch (error) {
+        console.error("❌ Fehler beim Abrufen der Maghrib-Zeit:", error);
+        return "18:00"; // Fallback-Zeit
+    }
 }
 
-// 📌 Initialisiert den Feiertags-Countdown
+// 📌 Initialisierung des Countdowns (z. B. bei Seitenstart mit Berlin)
 ladeFeiertagsCountdowns("Berlin");
+
 
 
     // 📌 Hadith & Dua laden
