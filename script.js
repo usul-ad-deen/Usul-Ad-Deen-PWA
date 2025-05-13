@@ -458,72 +458,7 @@ ladeFeiertagsCountdowns("Berlin");
             console.error("Fehler beim Laden der Dua:", error);
         }
     }
-// --- Benachrichtigungserlaubnis anfragen ---
-function askNotificationPermission() {
-  if ('Notification' in window) {
-    Notification.requestPermission().then(permission => {
-      if (permission === 'granted') {
-        console.log('Benachrichtigungen erlaubt');
-      } else {
-        console.log('Benachrichtigungen abgelehnt');
-      }
-    });
-  }
-}
 
-// --- Funktion, die die Notification anzeigt ---
-function showPrayerNotification(prayerName) {
-  if (Notification.permission === 'granted') {
-    new Notification(`Zeit für ${prayerName}!`, {
-      body: 'Bitte denke an dein Gebet.',
-      icon: '/icons/gebet-icon.png'
-    });
-  }
-}
-
-// --- Funktion, um Benachrichtigungen zu planen ---
-function schedulePrayerNotification(prayerName, timeString) {
-  const now = new Date();
-  const prayerTime = new Date();
-
-  const [hours, minutes] = timeString.split(':');
-  prayerTime.setHours(hours);
-  prayerTime.setMinutes(minutes);
-  prayerTime.setSeconds(0);
-
-  let timeout = prayerTime.getTime() - now.getTime();
-
-  if (timeout < 0) {
-    console.log(`${prayerName} ist schon vorbei.`);
-    return;
-  }
-
-  setTimeout(() => {
-    showPrayerNotification(prayerName);
-  }, timeout);
-}
-
-// --- Diese Funktion aufrufen, wenn API-Daten da sind ---
-function setupPrayerNotifications(prayerTimes) {
-  Object.keys(prayerTimes).forEach(prayer => {
-    schedulePrayerNotification(prayer, prayerTimes[prayer]);
-  });
-}
-
-// --- Beispiel: Wenn deine API-Antwort da ist ---
-/*
-Angenommen nach dem API-Call hast du:
-let prayerTimes = {
-  fajr: "04:15",
-  dhuhr: "13:10",
-  asr: "17:00",
-  maghrib: "20:30",
-  isha: "22:00"
-};
-Dann einfach:
-*/
-
-askNotificationPermission(); // zuerst fragen
 setupPrayerNotifications(prayerTimes); // nachdem API die Zeiten geladen hat
     // 📌 ALLE Funktionen starten
     ermittleStandort();
