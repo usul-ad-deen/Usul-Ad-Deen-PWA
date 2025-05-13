@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const buchSuche = document.getElementById("buch-suche");
     const buchGrid = document.getElementById("buecher-grid");
+    const kategorieFilter = document.getElementById("buch-filter");
     let buchDaten = [];
 
+    // 📌 Bücher laden und initial anzeigen
     async function ladeBücher() {
         try {
             let response = await fetch("bücher.json");
@@ -15,8 +16,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // 📌 Zeigt Bücher in Kachel-Ansicht
     function zeigeBücher(liste) {
         buchGrid.innerHTML = "";
+
         liste.forEach(buch => {
             const tile = document.createElement("div");
             tile.className = "buch-tile";
@@ -24,12 +27,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <img src="${buch.cover || 'icons/book-placeholder.png'}" alt="${buch.titel}">
                 <h3>${buch.titel}</h3>
                 <p><strong>Autor:</strong> ${buch.autor || 'Unbekannt'}</p>
-                <p><strong>Sprache:</strong> ${buch.sprache || 'Deutsch'} | <strong>Format:</strong> ${buch.format || 'PDF/EPUB'}</p>
-                <p>${buch.beschreibung || ''}</p>
+                <p><strong>Sprache:</strong> ${buch.kategorien?.includes("Deutsch") ? "Deutsch" : (buch.kategorien?.includes("Arabisch") ? "Arabisch" : "Englisch")}</p>
+                <p><strong>Kategorien:</strong> ${buch.kategorien?.join(", ")}</p>
                 <div class="buch-buttons">
                     ${buch.pdf ? `<a href="${buch.pdf}" target="_blank">📖 PDF öffnen</a>` : ""}
-                    ${buch.epub ? `<a href="${buch.epub}" download>⬇️ EPUB</a>` : ""}
-                    ${buch.readerLink ? `<a href="${buch.readerLink}" target="_blank">📖 EPUB lesen</a>` : ""}
+                    ${buch.epub ? `<a href="${buch.readerLink}" target="_blank">📖 EPUB lesen</a>` : ""}
                     ${buch.appstore ? `<a href="${buch.appstore}" target="_blank">📱 App Store</a>` : ""}
                     ${buch.playstore ? `<a href="${buch.playstore}" target="_blank">📱 Play Store</a>` : ""}
                 </div>
@@ -38,16 +40,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    buchSuche.addEventListener("input", () => {
-        const query = buchSuche.value.toLowerCase();
-        const gefiltert = buchDaten.filter(b =>
-            b.titel.toLowerCase().includes(query) ||
-            (b.autor && b.autor.toLowerCase().includes(query))
-        );
-        zeigeBücher(gefiltert);
+    // 📌 Kategorie-Filter bei Änderung
+    kategorieFilter.addEventListener("change", () => {
+        const gewählteKategorie = kategorieFilter.value;
+
+        if (gewählteKategorie === "") {
+            zeigeBücher(buchDaten);
+        } else {
+            const gefiltert = buchDaten.filter(buch =>
+                buch.kategorien && buch.kategorien.includes(gewählteKategorie)
+            );
+            zeigeBücher(gefiltert);
+        }
     });
 
-    // Uhrzeit & Datum
+    // 📌 Uhrzeit & Datum (Berlin & Mekka)
     function updateUhrzeit() {
         let jetzt = new Date();
         document.getElementById("uhrzeit").textContent = `Berlin: ${jetzt.toLocaleTimeString("de-DE", { hour12: false })}`;
@@ -59,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateUhrzeit();
     setInterval(updateUhrzeit, 1000);
 
-    // Islamisches Datum
+    // 📌 Islamisches Datum
     async function ladeIslamischesDatum() {
         try {
             let heute = new Date();
@@ -84,27 +91,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                 };
 
                 let islamischerMonatDeutsch = monateDeutsch[islamischerMonat] || islamischerMonat;
-
-                let jetzt = new Date();
-                let stunden = jetzt.getHours();
-                if (stunden >= 18) {
+                if (new Date().getHours() >= 18) {
                     islamischerTag = parseInt(islamischerTag) + 1;
                 }
 
                 document.getElementById("islamisches-datum").textContent =
                     `${islamischerTag}. ${islamischerMonatDeutsch} ${islamischesJahr}`;
             } else {
-                console.error("Fehler beim Laden des islamischen Datums: API antwortet nicht korrekt.");
+                console.error("Fehler beim Laden des islamischen Datums.");
             }
         } catch (error) {
             console.error("Fehler beim Abrufen des islamischen Datums:", error);
         }
     }
 
-    // Standortermittlung & Gebetszeiten
-    let countdownInterval = null;
-    let aktuelleStadt = null;
-
+    // 📌 Standortermittlung
     async function ermittleStandort() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -118,7 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         let stadt = data.address.city || data.address.town || data.address.village || null;
 
                         if (!stadt) {
-                            document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen:";
+                            document.getElementById("stadt-name").innerHTML = "❌ Standort nicht ermittelt. Stadt manuell auswählen:";
                             await ladeStadtAuswahl();
                             return;
                         }
@@ -130,40 +131,29 @@ document.addEventListener("DOMContentLoaded", async () => {
                         await ladeStadtAuswahl();
 
                     } catch (error) {
-                        console.error("Fehler bei Standortermittlung:", error);
-                        document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen:";
+                        console.error("Standortfehler:", error);
+                        document.getElementById("stadt-name").innerHTML = "❌ Standort nicht ermittelt. Stadt manuell auswählen:";
                         document.getElementById("stadt-container").style.display = "block";
                         await ladeStadtAuswahl();
                     }
                 },
                 async () => {
-                    console.warn("Standort abgelehnt oder nicht verfügbar.");
-                    document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen:";
+                    document.getElementById("stadt-name").innerHTML = "❌ Standort nicht ermittelt. Stadt manuell auswählen:";
                     document.getElementById("stadt-container").style.display = "block";
                     await ladeStadtAuswahl();
                 }
             );
-        } else {
-            console.warn("Geolocation nicht unterstützt.");
-            document.getElementById("stadt-name").innerHTML = "❌ Standort konnte nicht ermittelt werden.<br> Bitte Stadt manuell auswählen:";
-            document.getElementById("stadt-container").style.display = "block";
-            await ladeStadtAuswahl();
         }
     }
 
+    // 📌 Lade Stadt Dropdown
     async function ladeStadtAuswahl() {
         try {
             let response = await fetch("stadt.json");
             let städte = await response.json();
             let dropdown = document.getElementById("stadt-auswahl");
 
-            if (!dropdown) {
-                let container = document.getElementById("stadt-container");
-                if (!container) return;
-                dropdown = document.createElement("select");
-                dropdown.id = "stadt-auswahl";
-                container.appendChild(dropdown);
-            }
+            if (!dropdown) return;
 
             dropdown.innerHTML = "";
             let defaultOption = document.createElement("option");
@@ -180,48 +170,34 @@ document.addEventListener("DOMContentLoaded", async () => {
                 dropdown.appendChild(option);
             });
 
-            dropdown.style.display = "block";
-
             dropdown.addEventListener("change", async function () {
-                let gewählteStadt = this.value;
-                aktuelleStadt = gewählteStadt;
-                document.getElementById("stadt-name").innerHTML = `📍 Manuelle Auswahl: ${gewählteStadt}`;
-                if (countdownInterval) clearInterval(countdownInterval);
-                await ladeGebetszeiten(gewählteStadt);
+                aktuelleStadt = this.value;
+                document.getElementById("stadt-name").innerHTML = `📍 Manuelle Auswahl: ${this.value}`;
+                await ladeGebetszeiten(this.value);
             });
         } catch (error) {
             console.error("Fehler beim Laden der Städte:", error);
         }
     }
 
+    // 📌 Lade Gebetszeiten
     async function ladeGebetszeiten(stadt) {
         try {
-            if (countdownInterval) clearInterval(countdownInterval);
-
             let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
             let data = await response.json();
-            if (!data || !data.data || !data.data.timings) return;
+            let timings = data.data.timings;
 
-            let prayerTimes = {
-                "Fajr": data.data.timings.Fajr,
-                "Shuruk": data.data.timings.Sunrise,
-                "Duha": data.data.timings.Sunrise,
-                "Dhuhr": data.data.timings.Dhuhr,
-                "Asr": data.data.timings.Asr,
-                "Maghrib": data.data.timings.Maghrib,
-                "Isha": data.data.timings.Isha
-            };
-
-            document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${Object.keys(prayerTimes)[0]}`;
+            document.getElementById("next-prayer").textContent = `Fajr: ${timings.Fajr}`;
+            document.getElementById("current-prayer").textContent = `Maghrib: ${timings.Maghrib}`;
             document.getElementById("next-prayer-countdown").textContent = "";
+            document.getElementById("current-prayer-countdown").textContent = "";
         } catch (error) {
-            console.error("❌ Fehler beim Abrufen der Gebetszeiten:", error);
+            console.error("Fehler beim Laden der Gebetszeiten:", error);
         }
     }
 
-    // Start
-    updateUhrzeit();
-    ladeIslamischesDatum();
-    ermittleStandort();
+    // 📌 Start
+    await ladeIslamischesDatum();
     await ladeBücher();
+    await ermittleStandort();
 });
