@@ -1,48 +1,71 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const iframe = document.getElementById("viewer");
-  const params = new URLSearchParams(window.location.search);
-  const pdfPfad = params.get("file");
+let pdfDoc = null;
+let aktuelleSeite = 1;
+let totalSeiten = 0;
 
-  if (!pdfPfad) {
-    document.body.innerHTML = "<p style='text-align:center; margin-top:2em;'>❌ Keine PDF-Datei angegeben.</p>";
-    return;
-  }
+const canvas = document.getElementById("pdf-canvas");
+const ctx = canvas.getContext("2d");
 
-  // Fortschritt laden
-  const gespeicherterScroll = localStorage.getItem(`pdf-scroll-${pdfPfad}`);
-  iframe.src = pdfPfad;
+// 📌 URL-Parameter lesen
+const url = new URLSearchParams(window.location.search).get("file");
 
-  iframe.addEventListener("load", () => {
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+if (!url) {
+  alert("❌ Keine PDF-Datei angegeben.");
+  throw new Error("PDF-Pfad fehlt");
+}
 
-    // Versuche alle paar Sekunden den Fortschritt zu speichern
-    const interval = setInterval(() => {
-      try {
-        const html = iframe.contentWindow.document.documentElement;
-        const body = iframe.contentWindow.document.body;
-        const scrolled = html.scrollTop || body.scrollTop;
-        const total = (html.scrollHeight || body.scrollHeight) - html.clientHeight;
+// 📌 Gespeicherten Fortschritt laden
+const gespeicherteSeite = parseInt(localStorage.getItem(`pdf-seite-${url}`));
+if (!isNaN(gespeicherteSeite)) {
+  aktuelleSeite = gespeicherteSeite;
+}
 
-        if (total > 0) {
-          const ratio = Math.round((scrolled / total) * 100);
-          localStorage.setItem(`pdf-scroll-${pdfPfad}`, scrolled);
-          document.getElementById("progress").textContent = `Fortschritt: ${ratio}%`;
-        }
-      } catch (e) {
-        console.warn("⚠️ Fortschrittsüberwachung nicht möglich:", e);
-      }
-    }, 1500);
-
-    // Scroll zurücksetzen, falls Fortschritt existiert
-    if (gespeicherterScroll) {
-      setTimeout(() => {
-        try {
-          iframe.contentWindow.scrollTo(0, parseInt(gespeicherterScroll));
-        } catch (e) {
-          console.warn("⚠️ Fehler beim Zurückscrollen:", e);
-        }
-      }, 800); // warten bis PDF aufgebaut ist
-    }
-  });
+// 📌 PDF laden
+pdfjsLib.getDocument(url).promise.then(pdf => {
+  pdfDoc = pdf;
+  totalSeiten = pdf.numPages;
+  renderSeite(aktuelleSeite);
+}).catch(err => {
+  console.error("PDF konnte nicht geladen werden:", err);
+  alert("Fehler beim Laden des PDF-Dokuments.");
 });
 
+// 📌 Seite rendern
+function renderSeite(nr) {
+  pdfDoc.getPage(nr).then(page => {
+    const viewport = page.getViewport({ scale: 1.5 });
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    const renderContext = {
+      canvasContext: ctx,
+      viewport: viewport
+    };
+
+    page.render(renderContext).promise.then(() => {
+      aktuelleSeite = nr;
+      localStorage.setItem(`pdf-seite-${url}`, nr);
+      updateFortschritt();
+    });
+  }).catch(err => {
+    console.error("Fehler beim Rendern der Seite:", err);
+  });
+}
+
+// 📌 Fortschritt berechnen und anzeigen
+function updateFortschritt() {
+  const prozent = Math.floor((aktuelleSeite / totalSeiten) * 100);
+  document.getElementById("fortschritt").textContent = `Fortschritt: ${prozent}%`;
+}
+
+// 📌 Navigation
+window.weiter = () => {
+  if (aktuelleSeite < totalSeiten) {
+    renderSeite(aktuelleSeite + 1);
+  }
+};
+
+window.zurueck = () => {
+  if (aktuelleSeite > 1) {
+    renderSeite(aktuelleSeite - 1);
+  }
+};
