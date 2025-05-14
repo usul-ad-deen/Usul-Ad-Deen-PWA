@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const buchPfad = params.get("file");
 
   if (!buchPfad) {
-    alert("❌ Keine EPUB-Datei angegeben.");
+    alert("❌ Keine PDF-Datei angegeben.");
     return;
   }
 
-  // 📌 ePub laden
+  // 📌 pdf laden
   const buch = ePub(buchPfad);
 
   const rendition = buch.renderTo("viewer", {
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // 📌 Fortschritt wiederherstellen
-  const gespeichertePosition = localStorage.getItem(`epub-pos-${buchPfad}`);
+  const gespeichertePosition = localStorage.getItem(`pdf-pos-${buchPfad}`);
   if (gespeichertePosition) {
     rendition.display(gespeichertePosition);
   } else {
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 📌 Fortschritt speichern bei Navigation
   rendition.on("relocated", (location) => {
-    localStorage.setItem(`epub-pos-${buchPfad}`, location.start.cfi);
+    localStorage.setItem(`pdf-pos-${buchPfad}`, location.start.cfi);
   });
 
   // 📌 Steuerung über Buttons
