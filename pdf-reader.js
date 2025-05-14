@@ -5,15 +5,17 @@ let totalSeiten = 0;
 const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
 
-// 📌 URL-Parameter lesen
-const url = new URLSearchParams(window.location.search).get("file");
+// 📌 PDF.js Worker aktivieren
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.worker.min.js';
 
+// 📌 PDF-Pfad aus URL lesen
+const url = new URLSearchParams(window.location.search).get("file");
 if (!url) {
   alert("❌ Keine PDF-Datei angegeben.");
   throw new Error("PDF-Pfad fehlt");
 }
 
-// 📌 Gespeicherten Fortschritt laden
+// 📌 Fortschritt aus localStorage laden
 const gespeicherteSeite = parseInt(localStorage.getItem(`pdf-seite-${url}`));
 if (!isNaN(gespeicherteSeite)) {
   aktuelleSeite = gespeicherteSeite;
@@ -32,9 +34,13 @@ pdfjsLib.getDocument(url).promise.then(pdf => {
 // 📌 Seite rendern
 function renderSeite(nr) {
   pdfDoc.getPage(nr).then(page => {
-    const viewport = page.getViewport({ scale: 1.5 });
-    canvas.height = viewport.height;
+    const scale = window.devicePixelRatio || 1;
+    const viewport = page.getViewport({ scale: 1.5 * scale });
+
     canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    canvas.style.width = `${viewport.width / scale}px`;
+    canvas.style.height = `${viewport.height / scale}px`;
 
     const renderContext = {
       canvasContext: ctx,
@@ -51,7 +57,7 @@ function renderSeite(nr) {
   });
 }
 
-// 📌 Fortschritt berechnen und anzeigen
+// 📌 Fortschritt berechnen
 function updateFortschritt() {
   const prozent = Math.floor((aktuelleSeite / totalSeiten) * 100);
   document.getElementById("fortschritt").textContent = `Fortschritt: ${prozent}%`;
