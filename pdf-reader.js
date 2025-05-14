@@ -1,54 +1,85 @@
+// 📌 Imports
 import { auth, db } from "./firebase-init.js";
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import {
+  doc,
+  setDoc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 let pdfDoc = null;
 let aktuelleSeite = 1;
 let totalSeiten = 0;
-let scale = 1.5;
-let user = null;
-let file = new URLSearchParams(window.location.search).get("file");
+let zoomStufe = 1.5;
 
 const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
 
-const greeting = document.getElementById("greeting");
-const fortschritt = document.getElementById("fortschritt");
-const bookmarksList = document.getElementById("bookmarks-list");
+const url = new URLSearchParams(window.location.search).get("file");
+const dateiname = url?.split("/").pop(); // Nur Dateiname für Lesezeichen-ID
 
-if (!file) {
+if (!url) {
   alert("❌ Keine PDF-Datei angegeben.");
   throw new Error("PDF-Pfad fehlt");
 }
 
-// Firebase Auth prüfen
-auth.onAuthStateChanged(async (currentUser) => {
-  user = currentUser;
+// 📌 Lesezeichen aus Firestore laden
+async function ladeLesezeichenCloud(dateiname) {
+  const user = auth.currentUser;
+  if (!user) return 1;
 
-  if (user) {
-    greeting.textContent = `📖 Assalamu alaykum wa rahmatullah wa barakatuh, ${user.displayName || user.email}`;
-    await ladeCloudLesezeichen();
+  const uid = user.uid;
+  const docId = `${uid}_${dateiname}`;
+  const docRef = doc(db, "bookmarks", docId);
+
+  const snap = await getDoc(docRef);
+  if (snap.exists()) {
+    return snap.data().seite || 1;
   } else {
-    greeting.textContent = "📖 PDF-Reader (Gast)";
+    return 1;
   }
-});
+}
 
-// Fortschritt aus localStorage laden
-const gespeicherteSeite = parseInt(localStorage.getItem(`pdf-seite-${file}`));
-if (!isNaN(gespeicherteSeite)) aktuelleSeite = gespeicherteSeite;
+// 📌 Lesezeichen in Firestore speichern
+async function speichereLesezeichenCloud(dateiname, seite) {
+  const user = auth.currentUser;
+  if (!user) return;
 
-// PDF laden
-pdfjsLib.getDocument(file).promise.then(pdf => {
+  const uid = user.uid;
+  const docId = `${uid}_${dateiname}`;
+  const docRef = doc(db, "bookmarks", docId);
+
+  await setDoc(docRef, {
+    uid,
+    dateiname,
+    seite,
+    updated: Date.now()
+  });
+}
+
+// 📌 PDF laden
+pdfjsLib.getDocument(url).promise.then(async pdf => {
   pdfDoc = pdf;
   totalSeiten = pdf.numPages;
+
+  // 🔄 Seite aus Firebase oder LocalStorage laden
+  const gespeicherteSeite = parseInt(localStorage.getItem(`pdf-seite-${url}`));
+  if (!isNaN(gespeicherteSeite)) {
+    aktuelleSeite = gespeicherteSeite;
+  }
+
+  const cloudSeite = await ladeLesezeichenCloud(dateiname);
+  if (cloudSeite > aktuelleSeite) aktuelleSeite = cloudSeite;
+
   renderSeite(aktuelleSeite);
 }).catch(err => {
-  console.error("PDF konnte nicht geladen werden:", err);
-  alert("Fehler beim Laden des PDF-Dokuments.");
+  console.error("Fehler beim PDF-Laden:", err);
+  alert("❌ PDF konnte nicht geladen werden.");
 });
 
+// 📌 Seite rendern
 function renderSeite(nr) {
   pdfDoc.getPage(nr).then(page => {
-    const viewport = page.getViewport({ scale });
+    const viewport = page.getViewport({ scale: zoomStufe });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
 
@@ -59,17 +90,22 @@ function renderSeite(nr) {
 
     page.render(renderContext).promise.then(() => {
       aktuelleSeite = nr;
-      localStorage.setItem(`pdf-seite-${file}`, nr);
       updateFortschritt();
+
+      // Speicher in localStorage & Firebase
+      localStorage.setItem(`pdf-seite-${url}`, nr);
+      speichereLesezeichenCloud(dateiname, nr);
     });
   });
 }
 
+// 📌 Fortschritt anzeigen
 function updateFortschritt() {
   const prozent = Math.floor((aktuelleSeite / totalSeiten) * 100);
-  fortschritt.textContent = `📘 Fortschritt: Seite ${aktuelleSeite} von ${totalSeiten} (${prozent}%)`;
+  document.getElementById("fortschritt").textContent = `Fortschritt: ${prozent}% (${aktuelleSeite}/${totalSeiten})`;
 }
 
+// 📌 Navigation
 window.weiter = () => {
   if (aktuelleSeite < totalSeiten) renderSeite(aktuelleSeite + 1);
 };
@@ -79,57 +115,15 @@ window.zurueck = () => {
 };
 
 window.zoomIn = () => {
-  scale += 0.2;
+  zoomStufe += 0.25;
   renderSeite(aktuelleSeite);
 };
 
 window.zoomOut = () => {
-  if (scale > 0.6) {
-    scale -= 0.2;
-    renderSeite(aktuelleSeite);
-  }
-};
-
-window.toggleDarkMode = () => {
-  document.body.classList.toggle("dark");
+  zoomStufe = Math.max(0.5, zoomStufe - 0.25);
+  renderSeite(aktuelleSeite);
 };
 
 window.zurueckZurListe = () => {
   window.location.href = "bücher.html";
 };
-
-window.setLesezeichen = async () => {
-  const bookmark = aktuelleSeite;
-  localStorage.setItem(`bookmark-${file}`, bookmark);
-  alert(`🔖 Lesezeichen auf Seite ${bookmark} gesetzt.`);
-
-  if (user) {
-    const ref = doc(db, "bookmarks", `${user.uid}_${file}`);
-    await setDoc(ref, { seite: bookmark, dateiname: file }, { merge: true });
-    ladeCloudLesezeichen();
-  }
-};
-
-async function ladeCloudLesezeichen() {
-  bookmarksList.innerHTML = "";
-  const bookmark = localStorage.getItem(`bookmark-${file}`);
-
-  if (bookmark) {
-    const li = document.createElement("li");
-    li.textContent = `Lokales Lesezeichen: Seite ${bookmark}`;
-    li.onclick = () => renderSeite(parseInt(bookmark));
-    bookmarksList.appendChild(li);
-  }
-
-  if (user) {
-    const ref = doc(db, "bookmarks", `${user.uid}_${file}`);
-    const snap = await getDoc(ref);
-    if (snap.exists()) {
-      const seite = snap.data().seite;
-      const li = document.createElement("li");
-      li.textContent = `Cloud-Lesezeichen: Seite ${seite}`;
-      li.onclick = () => renderSeite(parseInt(seite));
-      bookmarksList.appendChild(li);
-    }
-  }
-}
