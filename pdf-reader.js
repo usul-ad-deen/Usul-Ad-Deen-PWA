@@ -1,77 +1,76 @@
 let pdfDoc = null;
 let aktuelleSeite = 1;
 let totalSeiten = 0;
-
+let zoomFaktor = 1.5;
 const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
-
-// 📌 PDF.js Worker aktivieren
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.worker.min.js';
-
-// 📌 PDF-Pfad aus URL lesen
 const url = new URLSearchParams(window.location.search).get("file");
+
 if (!url) {
   alert("❌ Keine PDF-Datei angegeben.");
   throw new Error("PDF-Pfad fehlt");
 }
 
-// 📌 Fortschritt aus localStorage laden
+// Fortschritt & Lesezeichen
 const gespeicherteSeite = parseInt(localStorage.getItem(`pdf-seite-${url}`));
+const lesezeichen = parseInt(localStorage.getItem(`pdf-lesezeichen-${url}`));
 if (!isNaN(gespeicherteSeite)) {
   aktuelleSeite = gespeicherteSeite;
 }
 
-// 📌 PDF laden
 pdfjsLib.getDocument(url).promise.then(pdf => {
   pdfDoc = pdf;
   totalSeiten = pdf.numPages;
   renderSeite(aktuelleSeite);
 }).catch(err => {
   console.error("PDF konnte nicht geladen werden:", err);
-  alert("Fehler beim Laden des PDF-Dokuments.");
+  alert("Fehler beim Laden des PDFs.");
 });
 
-// 📌 Seite rendern
 function renderSeite(nr) {
   pdfDoc.getPage(nr).then(page => {
-    const scale = window.devicePixelRatio || 1;
-    const viewport = page.getViewport({ scale: 1.5 * scale });
-
-    canvas.width = viewport.width;
+    const viewport = page.getViewport({ scale: zoomFaktor });
     canvas.height = viewport.height;
-    canvas.style.width = `${viewport.width / scale}px`;
-    canvas.style.height = `${viewport.height / scale}px`;
+    canvas.width = viewport.width;
 
-    const renderContext = {
-      canvasContext: ctx,
-      viewport: viewport
-    };
-
-    page.render(renderContext).promise.then(() => {
+    page.render({ canvasContext: ctx, viewport }).promise.then(() => {
       aktuelleSeite = nr;
       localStorage.setItem(`pdf-seite-${url}`, nr);
       updateFortschritt();
     });
-  }).catch(err => {
-    console.error("Fehler beim Rendern der Seite:", err);
-  });
+  }).catch(err => console.error("Fehler beim Rendern:", err));
 }
 
-// 📌 Fortschritt berechnen
 function updateFortschritt() {
   const prozent = Math.floor((aktuelleSeite / totalSeiten) * 100);
   document.getElementById("fortschritt").textContent = `Fortschritt: ${prozent}%`;
 }
 
-// 📌 Navigation
 window.weiter = () => {
-  if (aktuelleSeite < totalSeiten) {
-    renderSeite(aktuelleSeite + 1);
-  }
+  if (aktuelleSeite < totalSeiten) renderSeite(aktuelleSeite + 1);
 };
 
 window.zurueck = () => {
-  if (aktuelleSeite > 1) {
-    renderSeite(aktuelleSeite - 1);
+  if (aktuelleSeite > 1) renderSeite(aktuelleSeite - 1);
+};
+
+window.zoomIn = () => {
+  zoomFaktor += 0.2;
+  renderSeite(aktuelleSeite);
+};
+
+window.zoomOut = () => {
+  if (zoomFaktor > 0.6) {
+    zoomFaktor -= 0.2;
+    renderSeite(aktuelleSeite);
   }
+};
+
+window.setzeLesezeichen = () => {
+  localStorage.setItem(`pdf-lesezeichen-${url}`, aktuelleSeite);
+  alert(`🔖 Lesezeichen gesetzt auf Seite ${aktuelleSeite}`);
+};
+
+window.zurueckZurÜbersicht = () => {
+  window.location.href = "bücher.html";
 };
