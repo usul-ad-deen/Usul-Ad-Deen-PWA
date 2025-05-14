@@ -17,28 +17,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // 📌 Zeigt Bücher in Kachel-Ansicht
-    function zeigeBücher(liste) {
-        buchGrid.innerHTML = "";
+   function zeigeBücher(liste) {
+  buchGrid.innerHTML = "";
 
-        liste.forEach(buch => {
-            const tile = document.createElement("div");
-            tile.className = "buch-tile";
-            tile.innerHTML = `
-                <img src="${buch.cover || 'icons/book-placeholder.png'}" alt="${buch.titel}">
-                <h3>${buch.titel}</h3>
-                <p><strong>Autor:</strong> ${buch.autor || 'Unbekannt'}</p>
-                <p><strong>Sprache:</strong> ${buch.kategorien?.includes("Deutsch") ? "Deutsch" : (buch.kategorien?.includes("Arabisch") ? "Arabisch" : "Englisch")}</p>
-                <p><strong>Kategorien:</strong> ${buch.kategorien?.join(", ")}</p>
-                <div class="buch-buttons">
-                    ${buch.pdf ? `<a href="${buch.pdf}" target="_blank">📖 PDF öffnen</a>` : ""}
-                    ${buch.epub ? `<a href="${buch.readerLink}" target="_blank">📖 EPUB lesen</a>` : ""}
-                    ${buch.appstore ? `<a href="${buch.appstore}" target="_blank">📱 App Store</a>` : ""}
-                    ${buch.playstore ? `<a href="${buch.playstore}" target="_blank">📱 Play Store</a>` : ""}
-                </div>
-            `;
-            buchGrid.appendChild(tile);
-        });
-    }
+  liste.forEach(buch => {
+    const tile = document.createElement("div");
+    tile.className = "buch-tile";
+    tile.innerHTML = `
+      <img src="${buch.cover || 'icons/book-placeholder.png'}" alt="${buch.titel}">
+      <h3>${buch.titel}</h3>
+      <p><strong>Autor:</strong> ${buch.autor || 'Unbekannt'}</p>
+      <p><strong>Sprache:</strong> ${buch.kategorien?.includes("Deutsch") ? "Deutsch" : (buch.kategorien?.includes("Arabisch") ? "Arabisch" : "Englisch")}</p>
+      <p><strong>Kategorien:</strong> ${buch.kategorien?.join(", ")}</p>
+      <div class="buch-buttons">
+        ${buch.pdf ? `<a href="${buch.pdf}" download>⬇️ PDF</a>` : ""}
+        ${buch.epub ? `<a href="${buch.epub}" download>⬇️ EPUB</a>` : ""}
+        ${buch.readerLink ? `<a href="${buch.readerLink}" target="_blank">📖 Direkt lesen</a>` : ""}
+        ${buch.appstore ? `<a href="${buch.appstore}" target="_blank">📱 App Store</a>` : ""}
+        ${buch.playstore ? `<a href="${buch.playstore}" target="_blank">📱 Play Store</a>` : ""}
+      </div>
+    `;
+    buchGrid.appendChild(tile);
+  });
+}
 
     // 📌 Kategorie-Filter bei Änderung
     kategorieFilter.addEventListener("change", () => {
