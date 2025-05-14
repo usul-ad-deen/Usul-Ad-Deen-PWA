@@ -4,60 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PDF Reader | Usul ad-Deen</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background: #f8f8f8;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
-    #controls {
-      background: #333;
-      color: white;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    #controls button {
-      background: #444;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      margin-right: 5px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    #progress {
-      font-size: 0.9em;
-    }
-    #viewer-container {
-      flex: 1;
-      overflow: hidden;
-    }
-    #viewer {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-  </style>
+  <link rel="stylesheet" href="pdf-reader.css" />
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
+  <script defer src="pdf-reader.js"></script>
 </head>
 <body>
 
-<div id="controls">
-  <div>
-    <button onclick="window.history.back()">⬅️ Zurück</button>
-    <button onclick="window.close()">✖️ Schließen</button>
+  <div id="controls">
+    <button onclick="zurueck()">⬅️ Zurück</button>
+    <span id="fortschritt">Fortschritt: 0%</span>
+    <button onclick="weiter()">➡️ Weiter</button>
   </div>
-  <div id="progress">Fortschritt: 0%</div>
-</div>
 
-<div id="viewer-container">
-  <iframe id="viewer" allow="fullscreen"></iframe>
-</div>
+  <canvas id="pdf-canvas"></canvas>
 
-<script src="pdf-reader.js"></script>
 </body>
 </html>
