@@ -8,106 +8,56 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background: #f9f9f9;
+      background: #f8f8f8;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
-
-    header {
+    #controls {
+      background: #333;
+      color: white;
+      padding: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 16px;
-      background: #1a1a1a;
+    }
+    #controls button {
+      background: #444;
       color: white;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    #controls {
-      display: flex;
-      gap: 8px;
-    }
-
-    button {
-      background: #ffffff;
-      border: 1px solid #ccc;
-      padding: 6px 10px;
-      border-radius: 4px;
+      border: none;
+      padding: 8px 12px;
+      margin-right: 5px;
       cursor: pointer;
+      border-radius: 4px;
     }
-
-    button:hover {
-      background: #f0f0f0;
+    #progress {
+      font-size: 0.9em;
     }
-
+    #viewer-container {
+      flex: 1;
+      overflow: hidden;
+    }
     #viewer {
       width: 100%;
-      height: calc(100vh - 50px); /* passt sich der Höhe abzüglich Header an */
+      height: 100%;
       border: none;
-      display: block;
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 16px;
-      }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>📖 PDF Reader</h1>
-  <div id="controls">
+<div id="controls">
+  <div>
     <button onclick="window.history.back()">⬅️ Zurück</button>
     <button onclick="window.close()">✖️ Schließen</button>
   </div>
-</header>
+  <div id="progress">Fortschritt: 0%</div>
+</div>
 
-<iframe id="viewer" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+<div id="viewer-container">
+  <iframe id="viewer" allow="fullscreen"></iframe>
+</div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const params = new URLSearchParams(window.location.search);
-    const pdfPfad = params.get("file");
-
-    if (!pdfPfad) {
-      document.body.innerHTML = "<p style='text-align:center; margin-top:2em;'>❌ Keine PDF-Datei angegeben.</p>";
-      return;
-    }
-
-    const iframe = document.getElementById("viewer");
-
-    // 🔖 Fortschritt aus LocalStorage laden
-    const scrollKey = `scrollPos-${pdfPfad}`;
-    const gespeicherterScroll = localStorage.getItem(scrollKey);
-
-    iframe.src = pdfPfad;
-
-    // 📌 Fortschritt speichern (nur beim selben Ursprung möglich!)
-    iframe.addEventListener("load", () => {
-      try {
-        const doc = iframe.contentWindow.document;
-        if (!doc || !doc.body) return;
-
-        if (gespeicherterScroll) {
-          doc.documentElement.scrollTop = gespeicherterScroll;
-          doc.body.scrollTop = gespeicherterScroll;
-        }
-
-        // 💾 Speichern bei Scroll
-        iframe.contentWindow.addEventListener("scroll", () => {
-          const pos = doc.documentElement.scrollTop || doc.body.scrollTop;
-          localStorage.setItem(scrollKey, pos);
-        });
-      } catch (e) {
-        console.warn("📄 Kein Zugriff auf PDF-Dokument für Lesezeichen (Cross-Origin Restriction).", e);
-      }
-    });
-  });
-</script>
-
+<script src="pdf-reader.js"></script>
 </body>
 </html>
