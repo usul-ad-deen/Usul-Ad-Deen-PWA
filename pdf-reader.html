@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PDF Reader | Usul ad-Deen</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f0f0f0;
+    }
+    #viewer {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+    }
+    #controls {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 100;
+    }
+    button {
+      padding: 8px 12px;
+      margin: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="controls">
+  <button onclick="window.history.back()">⬅️ Zurück</button>
+  <button onclick="window.close()">✖️ Schließen</button>
+</div>
+
+<iframe id="viewer"></iframe>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const pdfPfad = params.get("file");
+
+    if (!pdfPfad) {
+      document.body.innerHTML = "<p style='text-align:center; margin-top:2em;'>❌ Keine PDF-Datei angegeben.</p>";
+    } else {
+      const iframe = document.getElementById("viewer");
+      iframe.src = pdfPfad;
+    }
+  });
+</script>
+
+</body>
+</html>
