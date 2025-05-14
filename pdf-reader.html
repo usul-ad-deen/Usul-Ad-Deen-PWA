@@ -5,18 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PDF Reader | Usul ad-Deen</title>
   <link rel="stylesheet" href="pdf-reader.css" />
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <script defer src="pdf-reader.js"></script>
 </head>
 <body>
 
-  <div id="controls">
-    <button onclick="zurueck()">⬅️ Zurück</button>
-    <span id="fortschritt">Fortschritt: 0%</span>
-    <button onclick="weiter()">➡️ Weiter</button>
-  </div>
+<div id="controls">
+  <button onclick="zurueck()">⬅️ Seite zurück</button>
+  <button onclick="weiter()">➡️ Weiter</button>
+  <button onclick="zoomIn()">🔍+</button>
+  <button onclick="zoomOut()">🔍−</button>
+  <button onclick="setzeLesezeichen()">🔖 Lesezeichen</button>
+  <button onclick="zurueckZurÜbersicht()">📚 Zurück zur Bücherauswahl</button>
+</div>
 
-  <canvas id="pdf-canvas"></canvas>
+<div id="fortschritt">Fortschritt: 0%</div>
+<canvas id="pdf-canvas"></canvas>
 
 </body>
 </html>
