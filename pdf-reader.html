@@ -5,22 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PDF Reader | Usul ad-Deen</title>
   <link rel="stylesheet" href="pdf-reader.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-  <script defer src="pdf-reader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script type="module" defer src="pdf-reader.js"></script>
 </head>
 <body>
 
 <div id="controls">
-  <button onclick="zurueck()">⬅️ Seite zurück</button>
-  <button onclick="weiter()">➡️ Weiter</button>
-  <button onclick="zoomIn()">🔍+</button>
-  <button onclick="zoomOut()">🔍−</button>
-  <button onclick="setzeLesezeichen()">🔖 Lesezeichen</button>
-  <button onclick="zurueckZurÜbersicht()">📚 Zurück zur Bücherauswahl</button>
+  <div id="greeting">📖 PDF-Reader</div>
+  <div class="buttons">
+    <button onclick="zurueckZurListe()">🔙 Zurück zur Bücherseite</button>
+    <button onclick="zurueck()">⬅️</button>
+    <button onclick="weiter()">➡️</button>
+    <button onclick="zoomOut()">➖</button>
+    <button onclick="zoomIn()">➕</button>
+    <button onclick="setLesezeichen()">🔖 Lesezeichen setzen</button>
+    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
+  </div>
 </div>
 
-<div id="fortschritt">Fortschritt: 0%</div>
+<div id="fortschritt">📘 Fortschritt: Wird geladen...</div>
+
 <canvas id="pdf-canvas"></canvas>
+
+<ul id="bookmarks-list"></ul>
 
 </body>
 </html>
