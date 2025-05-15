@@ -110,7 +110,8 @@ async function zeigeFirebaseGeleseneBuecher() {
       b.pdf === e.datei || (b.readerLink && e.datei && b.readerLink.includes(e.datei))
     );
     const titel = buch?.titel || decodeURIComponent(e.datei).split("/").pop();
-    const urlParam = e.datei;
+  const urlParam = encodeURIComponent(e.datei); // z. B. → buecher/akad1.pdf → buecher%2Fakad1.pdf
+
 
 
 
