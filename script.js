@@ -476,25 +476,30 @@ ladeFeiertagsCountdowns("Berlin");
             console.error("Fehler beim Laden der Dua:", error);
         }
     }
-     const zuletzt = localStorage.getItem("zuletzt-gelesen");
-  const btn = document.getElementById("zuletzt-gelesen-button");
-  if (zuletzt && btn) {
-    btn.style.display = "block";
-  } else if (btn) {
-    btn.style.display = "none";
-  }
+
+
+
+     // 📌 Fortsetzen-Button sichtbar machen
+    function zeigeFortsetzenButton() {
+        const letzteDatei = localStorage.getItem("zuletzt-gelesen");
+        if (letzteDatei) {
+            document.getElementById("fortsetzen-container")?.classList.remove("hidden");
+        }
+    }
+
+    // 📌 Button-Aktion
     window.fortsetzenLetztesBuch = () => {
-  const letzteDatei = localStorage.getItem("zuletzt-gelesen");
-  if (letzteDatei) {
-    window.location.href = `pdf-reader.html?file=${encodeURIComponent(letzteDatei)}`;
-  } else {
-    alert("⚠️ Kein zuletzt gelesenes Buch gespeichert.");
-  }
-};
-
-
+        const letzteDatei = localStorage.getItem("zuletzt-gelesen");
+        if (letzteDatei) {
+            window.location.href = `pdf-reader.html?file=${encodeURIComponent(letzteDatei)}`;
+        } else {
+            alert("⚠️ Kein zuletzt gelesenes Buch gefunden.");
+        }
+    };
+    
+  
     // 📌 ALLE Funktionen starten
-    zeigeFortsetzenButton()
+    zeigeFortsetzenButton();
     ermittleStandort();
     await ladeHadith();
     await ladeDua();
