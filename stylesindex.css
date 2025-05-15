@@ -17,6 +17,16 @@ body {
   top: 10px;
   right: 10px;
 }
+#login-link {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#login-link:hover {
+  text-decoration: underline;
+}
+
 
 .user-info span {
   font-weight: bold;
