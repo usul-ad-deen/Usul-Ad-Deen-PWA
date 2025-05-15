@@ -30,10 +30,51 @@ body {
 canvas {
   display: block;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   margin: 10px auto;
   max-width: 100%;
+  transform-origin: top left;
 }
 
+#lesezeichen-liste {
+  position: fixed;
+  right: 0;
+  top: 60px;
+  background: #fff;
+  border-left: 1px solid #ddd;
+  padding: 12px;
+  max-width: 200px;
+  height: calc(100% - 60px);
+  overflow-y: auto;
+  box-shadow: -2px 0 6px rgba(0,0,0,0.1);
+  z-index: 20;
+}
 
+#lesezeichen-liste h3 {
+  margin-top: 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+#lesezeichen-eintraege {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#lesezeichen-eintraege li {
+  margin: 8px 0;
+  cursor: pointer;
+  padding: 6px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  text-align: center;
+}
+
+#lesezeichen-eintraege li:hover {
+  background: #e0e0e0;
+}
+
+.hidden {
+  display: none;
+}
