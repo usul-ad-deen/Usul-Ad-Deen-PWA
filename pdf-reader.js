@@ -17,15 +17,43 @@ if (!isNaN(gespeicherteSeite)) {
   aktuelleSeite = gespeicherteSeite;
 }
 
-pdfjsLib.getDocument(url).promise.then(pdf => {
+// ⬇️ Hauptstart
+pdfjsLib.getDocument(url).promise.then(async pdf => {
   pdfDoc = pdf;
   totalSeiten = pdf.numPages;
   renderSeite(aktuelleSeite);
-  speichereGelesenesBuch(); // 💾 Buch speichern
+  await speichereGelesenesBuch(); // ⬅️ async beachten!
 }).catch(err => {
   console.error("PDF konnte nicht geladen werden:", err);
   alert("Fehler beim Laden des PDF-Dokuments.");
 });
+
+// 📘 Buch & Titel speichern
+async function speichereGelesenesBuch() {
+  let liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
+
+  let titel = url;
+  try {
+    const res = await fetch("bücher.json");
+    const daten = await res.json();
+    const buch = daten.find(b => b.readerLink && decodeURIComponent(b.readerLink).includes(url));
+    if (buch) titel = buch.titel;
+  } catch (e) {
+    console.warn("Titel konnte nicht geladen werden:", e);
+  }
+
+  const eintrag = {
+    datei: url,
+    titel: titel,
+    seite: aktuelleSeite,
+    zeit: new Date().toISOString()
+  };
+
+  liste = liste.filter(e => e.datei !== url);
+  liste.unshift(eintrag);
+  localStorage.setItem("gelesene-buecher", JSON.stringify(liste));
+  localStorage.setItem("zuletzt-gelesen", url);
+}
 
 function renderSeite(nr) {
   pdfDoc.getPage(nr).then(page => {
@@ -82,13 +110,14 @@ window.toggleDarkMode = () => {
   document.body.classList.toggle("dark");
   localStorage.setItem("dark-mode", document.body.classList.contains("dark"));
 };
+
 document.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("dark-mode") === "true") {
     document.body.classList.add("dark");
   }
 });
 
-// 📌 Lesezeichen
+// 📌 Lesezeichen-Funktion
 window.setzeLesezeichen = () => {
   let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
   if (!bookmarks.includes(aktuelleSeite)) {
@@ -126,6 +155,7 @@ window.geheZuLesezeichen = (seite) => {
   renderSeite(seite);
   bookmarkListe.classList.add("hidden");
 };
+
 window.loescheLesezeichen = (seite) => {
   let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
   bookmarks = bookmarks.filter(s => s !== seite);
@@ -133,23 +163,7 @@ window.loescheLesezeichen = (seite) => {
   zeigeLesezeichen();
 };
 
-// 📌 Buch merken
-function speichereGelesenesBuch() {
-  let liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
-  const eintrag = {
-    datei: url,
-    seite: aktuelleSeite,
-    zeit: new Date().toISOString()
-  };
-
-  liste = liste.filter(e => e.datei !== url);
-  liste.unshift(eintrag); // oben einfügen
-
-  localStorage.setItem("gelesene-buecher", JSON.stringify(liste));
-  localStorage.setItem("zuletzt-gelesen", url);
-}
-
-// 📌 Button für zuletzt gelesen
+// 📌 Button-Funktion für "zuletzt gelesen"
 window.fortsetzenLetztesBuch = () => {
   const letzteDatei = localStorage.getItem("zuletzt-gelesen");
   if (letzteDatei) {
