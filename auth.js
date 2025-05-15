@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById("register-form");
     const loginForm = document.getElementById("login-form");
+      const loginLink = document.getElementById("login-link");
+  const userInfo = document.getElementById("user-info");
+  const greeting = document.getElementById("greeting");
 
     if (registerForm) {
         registerForm.addEventListener("submit", function (e) {
@@ -50,4 +53,29 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "login.html";
         });
     }
+    import { auth } from './firebase-init.js';
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Nutzer ist eingeloggt
+      loginLink.classList.add("hidden");
+      userInfo.classList.remove("hidden");
+
+      const name = user.displayName || user.email.split("@")[0];
+      greeting.textContent = `👋 Assalamu alaikum, ${name}`;
+    } else {
+      // Nutzer ist ausgeloggt
+      loginLink.classList.remove("hidden");
+      userInfo.classList.add("hidden");
+    }
+  });
+
+
+window.logout = () => {
+  signOut(auth).then(() => {
+    location.reload(); // Seite neu laden nach Logout
+  });
+};
+
 });
