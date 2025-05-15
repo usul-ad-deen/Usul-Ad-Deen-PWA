@@ -486,7 +486,7 @@ ladeFeiertagsCountdowns("Berlin");
     window.fortsetzenLetztesBuch = () => {
   const letzteDatei = localStorage.getItem("zuletzt-gelesen");
   if (letzteDatei) {
-    window.location.href = `pdf-viewer.html?file=${encodeURIComponent(letzteDatei)}`;
+    window.location.href = `pdf-reader.html?file=${encodeURIComponent(letzteDatei)}`;
   } else {
     alert("⚠️ Kein zuletzt gelesenes Buch gespeichert.");
   }
