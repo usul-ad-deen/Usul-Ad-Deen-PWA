@@ -13,6 +13,41 @@ a {
     color: white;
     text-decoration: none;
 }
+.dropdown-gelesene-buecher {
+  margin: 20px;
+  text-align: center;
+}
+
+#gelesene-dropdown {
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+  text-align: left;
+}
+
+#gelesene-dropdown a {
+  color: #aad;
+  text-decoration: none;
+}
+
+#gelesene-dropdown a:hover {
+  text-decoration: underline;
+}
+
+#gelesene-dropdown ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#gelesene-dropdown li {
+  margin: 5px 0;
+}
+
 /* Login-Link Styling */
 #login-link {
   color: white;
