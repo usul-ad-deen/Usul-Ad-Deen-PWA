@@ -9,22 +9,24 @@
   <script defer src="pdf-reader.js"></script>
 </head>
 <body>
-
 <div id="controls">
   <button onclick="zurueck()">⬅️ Zurück</button>
   <span id="fortschritt">Fortschritt: 0%</span>
   <div>
     <button onclick="zoomOut()">➖ Zoom</button>
     <button onclick="zoomIn()">➕ Zoom</button>
+    <button onclick="weiter()">➡️ Weiter</button>
     <button onclick="setzeLesezeichen()">🔖 Lesezeichen</button>
-    <button onclick="geheZuLesezeichen()">📚 Gehe zu Lesezeichen</button>
-    <button onclick="zurueckZurAuswahl()">📚 Zur Bücherauswahl</button>
+    <button onclick="geheZuLesezeichen()">📚 Lesezeichen</button>
+    <button onclick="zurueckZurAuswahl()">📚 Zur Auswahl</button>
   </div>
 </div>
 
 <div id="viewer-container">
   <canvas id="pdf-canvas"></canvas>
 </div>
+
+
 
 </body>
 </html>
