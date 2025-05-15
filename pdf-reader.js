@@ -12,18 +12,16 @@ if (!url) {
   throw new Error("PDF-Pfad fehlt");
 }
 
-// Gespeicherte Seite laden
 const gespeicherteSeite = parseInt(localStorage.getItem(`pdf-seite-${url}`));
 if (!isNaN(gespeicherteSeite)) {
   aktuelleSeite = gespeicherteSeite;
 }
 
-// PDF laden
 pdfjsLib.getDocument(url).promise.then(pdf => {
   pdfDoc = pdf;
   totalSeiten = pdf.numPages;
   renderSeite(aktuelleSeite);
-  speichereGelesenesBuch(); // NEU: Buch zur Gelesen-Liste hinzufügen
+  speichereGelesenesBuch(); // 💾 Buch speichern
 }).catch(err => {
   console.error("PDF konnte nicht geladen werden:", err);
   alert("Fehler beim Laden des PDF-Dokuments.");
@@ -62,11 +60,9 @@ function updateFortschritt() {
 window.weiter = () => {
   if (aktuelleSeite < totalSeiten) renderSeite(aktuelleSeite + 1);
 };
-
 window.zurueck = () => {
   if (aktuelleSeite > 1) renderSeite(aktuelleSeite - 1);
 };
-
 window.zurueckZurAuswahl = () => {
   window.location.href = "bücher.html";
 };
@@ -76,7 +72,6 @@ window.zoomIn = () => {
   zoomFaktor += 0.2;
   renderSeite(aktuelleSeite);
 };
-
 window.zoomOut = () => {
   zoomFaktor = Math.max(0.6, zoomFaktor - 0.2);
   renderSeite(aktuelleSeite);
@@ -87,14 +82,13 @@ window.toggleDarkMode = () => {
   document.body.classList.toggle("dark");
   localStorage.setItem("dark-mode", document.body.classList.contains("dark"));
 };
-
 document.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("dark-mode") === "true") {
     document.body.classList.add("dark");
   }
 });
 
-// 📌 Lesezeichen setzen
+// 📌 Lesezeichen
 window.setzeLesezeichen = () => {
   let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
   if (!bookmarks.includes(aktuelleSeite)) {
@@ -106,7 +100,6 @@ window.setzeLesezeichen = () => {
   }
 };
 
-// 📌 Lesezeichen anzeigen + löschen
 window.zeigeLesezeichen = () => {
   const bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
   if (bookmarks.length === 0) {
@@ -133,15 +126,14 @@ window.geheZuLesezeichen = (seite) => {
   renderSeite(seite);
   bookmarkListe.classList.add("hidden");
 };
-
 window.loescheLesezeichen = (seite) => {
   let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
   bookmarks = bookmarks.filter(s => s !== seite);
   localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(bookmarks));
-  zeigeLesezeichen(); // neu rendern
+  zeigeLesezeichen();
 };
 
-// 📌 Gelesene Bücher speichern
+// 📌 Buch merken
 function speichereGelesenesBuch() {
   let liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
   const eintrag = {
@@ -157,7 +149,7 @@ function speichereGelesenesBuch() {
   localStorage.setItem("zuletzt-gelesen", url);
 }
 
-// 📌 Fortsetzen-Funktion (in anderer Datei abrufbar)
+// 📌 Button für zuletzt gelesen
 window.fortsetzenLetztesBuch = () => {
   const letzteDatei = localStorage.getItem("zuletzt-gelesen");
   if (letzteDatei) {
@@ -165,21 +157,4 @@ window.fortsetzenLetztesBuch = () => {
   } else {
     alert("⚠️ Kein zuletzt gelesenes Buch gefunden.");
   }
-};
-
-// 📌 Liste aller gelesenen Bücher anzeigen (z. B. in `bücher.html`)
-window.zeigeGeleseneBuecher = () => {
-  const liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
-  if (liste.length === 0) {
-    alert("⚠️ Keine gelesenen Bücher gefunden.");
-    return;
-  }
-
-  const bereich = document.getElementById("gelesene-buecher-anzeige");
-  bereich.innerHTML = "<h3>📖 Gelesene Bücher</h3>";
-  liste.forEach(e => {
-    const div = document.createElement("div");
-    div.innerHTML = `<a href="pdf-viewer.html?file=${encodeURIComponent(e.datei)}">📘 ${decodeURIComponent(e.datei)} (Seite ${e.seite})</a>`;
-    bereich.appendChild(div);
-  });
 };
