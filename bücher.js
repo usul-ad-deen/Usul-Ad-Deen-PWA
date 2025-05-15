@@ -319,21 +319,16 @@ document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${aktu
       alert("⚠️ Kein zuletzt gelesenes Buch gefunden.");
     }
   };
-
+if (!buchGrid) {
+  console.warn("📚 buecher-grid nicht gefunden.");
+  return;
+}
   // 📌 Start
   await ladeIslamischesDatum();
   await ladeBücher();
   await ermittleStandort();
   zeigeFortsetzenButton();
-  if (aktuelleStadt) {
   await ladeGebetszeiten(aktuelleStadt);
-}
-if (!buchGrid) {
-  console.warn("📚 buecher-grid nicht gefunden.");
-  return;
-}
-
-  
-  
+ 
  
 });
