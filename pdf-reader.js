@@ -1,5 +1,5 @@
 import { auth, db } from './firebase-init.js';
-import { doc, getDoc, setDoc, updateDoc, arrayUnion } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
+import { setDoc, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 let pdfDoc = null;
 let aktuelleSeite = 1;
@@ -20,11 +20,12 @@ if (!isNaN(gespeicherteSeite)) {
   aktuelleSeite = gespeicherteSeite;
 }
 
+// 📌 PDF laden
 pdfjsLib.getDocument(url).promise.then(pdf => {
   pdfDoc = pdf;
   totalSeiten = pdf.numPages;
   renderSeite(aktuelleSeite);
-  speichereGelesenesBuch(); // 💾 Buch speichern
+  speichereGelesenesBuch(); // 💾 Buch speichern (lokal oder Firebase)
 }).catch(err => {
   console.error("PDF konnte nicht geladen werden:", err);
   alert("Fehler beim Laden des PDF-Dokuments.");
@@ -91,63 +92,58 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// 📌 Lesezeichen
+// 📌 Lesezeichen lokal
 window.setzeLesezeichen = async () => {
-  const uid = auth.currentUser?.uid;
-  const datei = url;
   const seite = aktuelleSeite;
 
-  if (uid) {
-    const docId = `${uid}_pdf-bookmarks-${encodeURIComponent(datei)}`;
-    const ref = doc(db, "lesezeichen", docId);
-
-    try {
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        await updateDoc(ref, {
-          seiten: arrayUnion(seite)
-        });
-      } else {
-        await setDoc(ref, {
-          uid: uid,
-          datei: datei,
-          seiten: [seite]
-        });
-      }
-
-      alert(`✅ Lesezeichen (Seite ${seite}) wurde online gespeichert.`);
-    } catch (err) {
-      console.error("❌ Fehler beim Speichern in Firebase:", err);
-      alert("Fehler beim Speichern in Firebase.");
-    }
-
+  if (auth.currentUser) {
+    // 📤 Firebase speichern
+    const uid = auth.currentUser.uid;
+    const ref = doc(db, "lesezeichen", `${uid}_${encodeURIComponent(url)}`);
+    await setDoc(ref, {
+      uid,
+      datei: url,
+      seiten: arrayUnion(seite)
+    }, { merge: true });
+    alert(`✅ Lesezeichen für Seite ${seite} in Firebase gespeichert.`);
   } else {
-    let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${datei}`)) || [];
+    // 📥 Lokal speichern
+    let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
     if (!bookmarks.includes(seite)) {
       bookmarks.push(seite);
-      localStorage.setItem(`pdf-bookmarks-${datei}`, JSON.stringify(bookmarks));
-      alert(`✅ Lesezeichen lokal gesetzt (Seite ${seite})`);
+      localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(bookmarks));
+      alert(`✅ Lesezeichen für Seite ${seite} gespeichert.`);
     } else {
       alert("⚠️ Lesezeichen existiert bereits.");
     }
   }
 };
 
-window.zeigeLesezeichen = () => {
-  const bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
+window.zeigeLesezeichen = async () => {
+  bookmarkListe.innerHTML = "<strong>📚 Meine Lesezeichen:</strong>";
+  let bookmarks = [];
+
+  if (auth.currentUser) {
+    const ref = doc(db, "lesezeichen", `${auth.currentUser.uid}_${encodeURIComponent(url)}`);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      bookmarks = snap.data().seiten || [];
+    }
+  } else {
+    bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
+  }
+
   if (bookmarks.length === 0) {
     alert("⚠️ Keine Lesezeichen vorhanden.");
     return;
   }
 
-  bookmarkListe.innerHTML = "<strong>📚 Meine Lesezeichen:</strong>";
   bookmarks.forEach(seite => {
     const eintrag = document.createElement("div");
     eintrag.className = "lesezeichen-eintrag";
     eintrag.innerHTML = `
       <span>Seite ${seite}</span>
       <button onclick="geheZuLesezeichen(${seite})">📖</button>
-      <button onclick="loescheLesezeichen(${seite})">❌</button>
     `;
     bookmarkListe.appendChild(eintrag);
   });
@@ -159,25 +155,21 @@ window.geheZuLesezeichen = (seite) => {
   renderSeite(seite);
   bookmarkListe.classList.add("hidden");
 };
-window.loescheLesezeichen = (seite) => {
-  let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
-  bookmarks = bookmarks.filter(s => s !== seite);
-  localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(bookmarks));
-  zeigeLesezeichen();
-};
 
-// 📌 Buch merken (letztes gelesenes)
-function speichereGelesenesBuch() {
-  const uid = auth.currentUser?.uid;
+// 📌 Gelesenes Buch speichern
+async function speichereGelesenesBuch() {
   const eintrag = {
     datei: url,
     seite: aktuelleSeite,
     zeit: new Date().toISOString()
   };
 
-  if (uid) {
+  localStorage.setItem("zuletzt-gelesen", url);
+
+  if (auth.currentUser) {
+    const uid = auth.currentUser.uid;
     const ref = doc(db, "gelesene-buecher", uid);
-    setDoc(ref, {
+    await setDoc(ref, {
       [encodeURIComponent(url)]: eintrag
     }, { merge: true });
   } else {
@@ -185,11 +177,10 @@ function speichereGelesenesBuch() {
     liste = liste.filter(e => e.datei !== url);
     liste.unshift(eintrag);
     localStorage.setItem("gelesene-buecher", JSON.stringify(liste));
-    localStorage.setItem("zuletzt-gelesen", url);
   }
 }
 
-// 📌 Button für zuletzt gelesen
+// 📌 Letztes Buch fortsetzen
 window.fortsetzenLetztesBuch = () => {
   const letzteDatei = localStorage.getItem("zuletzt-gelesen");
   if (letzteDatei) {
