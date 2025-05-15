@@ -3,7 +3,14 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-
 let geleseneInterval = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const buchGrid = document.getElementById("buecher-grid");
+
+ 
+  if (!buchGrid) {
+    console.warn("📚 buecher-grid nicht gefunden.");
+    return;
+
+});
+  
   const kategorieFilter = document.getElementById("buch-filter");
   let buchDaten = [];
 
@@ -394,10 +401,7 @@ window.fortsetzenLetztesBuch = async () => {
 };
 
 
-if (!buchGrid) {
-  console.warn("📚 buecher-grid nicht gefunden.");
-  return;
-}
+
   // 📌 Start
   await ladeIslamischesDatum();
   await ladeBücher();
@@ -408,5 +412,6 @@ if (!buchGrid) {
  window.addEventListener("error", function (event) {
   alert("❌ JavaScript-Fehler: " + event.message);
 });
+
 
 });
