@@ -1,5 +1,6 @@
 import { auth, db } from "./firebase-init.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+let geleseneInterval = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const buchGrid = document.getElementById("buecher-grid");
@@ -401,5 +402,8 @@ if (!buchGrid) {
   zeigeFortsetzenButton();
   await ladeGebetszeiten(aktuelleStadt);
  
- 
+ window.addEventListener("error", function (event) {
+  alert("❌ JavaScript-Fehler: " + event.message);
+});
+
 });
