@@ -108,7 +108,8 @@ async function zeigeFirebaseGeleseneBuecher() {
     return;
   }
 
-  const buecher = await fetch("bücher.json").then(res => res.json());
+ 
+const buecher = buchDaten.length > 0 ? buchDaten : await fetch("bücher.json").then(res => res.json());
 
   dropdown.innerHTML = "<strong>📘 Gelesene Bücher:</strong><ul>";
   liste.forEach(e => {
