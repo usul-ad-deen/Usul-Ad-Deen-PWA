@@ -258,7 +258,7 @@ async function ladeStadtAuswahl() {
    // 📌 Lade Gebetszeiten
  async function ladeGebetszeiten(stadt) {
     try {
-        let response = await fetch(https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3);
+       let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
         let data = await response.json();
         let timings = data.data.timings;
 
@@ -292,8 +292,8 @@ async function ladeStadtAuswahl() {
             aktuellesGebet = gebete[gebete.length - 1];
         }
 
-        document.getElementById("next-prayer").textContent = Nächstes Gebet: ${nächstesGebet.name} (${nächstesGebet.zeit});
-        document.getElementById("current-prayer").textContent = Aktuelles Gebet: ${aktuellesGebet.name} (${aktuellesGebet.zeit});
+       document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${nächstesGebet.name} (${nächstesGebet.zeit})`;
+document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${aktuellesGebet.name} (${aktuellesGebet.zeit})`;
         document.getElementById("next-prayer-countdown").textContent = "";
         document.getElementById("current-prayer-countdown").textContent = "";
 
@@ -325,8 +325,15 @@ async function ladeStadtAuswahl() {
   await ladeBücher();
   await ermittleStandort();
   zeigeFortsetzenButton();
-  await ladeGebetszeiten();
-  zeigeBücher();
+  if (aktuelleStadt) {
+  await ladeGebetszeiten(aktuelleStadt);
+}
+if (!buchGrid) {
+  console.warn("📚 buecher-grid nicht gefunden.");
+  return;
+}
+
+  
   
  
 });
