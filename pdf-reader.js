@@ -106,7 +106,7 @@ window.setzeLesezeichen = async () => {
       datei: url,
       seiten: arrayUnion(seite)
     }, { merge: true });
-    alert(`✅ Lesezeichen für Seite ${seite} in Firebase gespeichert.`);
+    alert(`✅ Lesezeichen für Seite ${seite} gespeichert.`);
   } else {
     // 📥 Lokal speichern
     let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
@@ -143,9 +143,11 @@ window.zeigeLesezeichen = async () => {
     const eintrag = document.createElement("div");
     eintrag.className = "lesezeichen-eintrag";
     eintrag.innerHTML = `
-      <span>Seite ${seite}</span>
-      <button onclick="geheZuLesezeichen(${seite})">📖</button>
-    `;
+  <span>Seite ${seite}</span>
+  <button onclick="geheZuLesezeichen(${seite})">📖</button>
+  <button onclick="loescheLesezeichen(${seite})">❌</button>
+`;
+
     bookmarkListe.appendChild(eintrag);
   });
 
