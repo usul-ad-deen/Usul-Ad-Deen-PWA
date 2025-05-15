@@ -3,13 +3,12 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-
 let geleseneInterval = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-
- 
+  const buchGrid = document.getElementById("buecher-grid");
   if (!buchGrid) {
     console.warn("📚 buecher-grid nicht gefunden.");
     return;
+  }
 
-});
   
   const kategorieFilter = document.getElementById("buch-filter");
   let buchDaten = [];
