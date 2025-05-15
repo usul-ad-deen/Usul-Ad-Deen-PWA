@@ -1,51 +1,80 @@
 /* ===== Allgemein ===== */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: url('icons/hintergrund.png') center top no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url('icons/hintergrund.png') center top no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  color: #fff;
 }
 
 a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
+
+/* 📚 Gelesene Bücher Dropdown */
 .dropdown-gelesene-buecher {
-  margin: 20px;
+  margin: 20px auto;
   text-align: center;
+}
+
+.dropdown-gelesene-buecher button {
+  background: #0077cc;
+  color: white;
+  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.dropdown-gelesene-buecher button:hover {
+  background: #005fa3;
 }
 
 #gelesene-dropdown {
   margin-top: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.75);
   border-radius: 8px;
-  padding: 10px;
-  max-width: 400px;
+  padding: 12px 16px;
+  max-width: 500px;
   margin-left: auto;
   margin-right: auto;
   color: white;
   text-align: left;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  font-size: 15px;
+}
+
+#gelesene-dropdown strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 17px;
+  color: #fff;
+}
+
+#gelesene-dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#gelesene-dropdown li {
+  margin-bottom: 8px;
 }
 
 #gelesene-dropdown a {
   color: #aad;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 #gelesene-dropdown a:hover {
+  color: #fff;
   text-decoration: underline;
-}
-
-#gelesene-dropdown ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-#gelesene-dropdown li {
-  margin: 5px 0;
 }
 
 /* Login-Link Styling */
@@ -58,6 +87,8 @@ a {
 #login-link:hover {
   text-decoration: underline;
 }
+
+/* Fortsetzen-Bereich */
 .fortsetzen-bereich {
   text-align: center;
   margin-top: 20px;
@@ -77,7 +108,6 @@ a {
 .fortsetzen-bereich button:hover {
   background: #005fa3;
 }
-
 
 /* Authentifizierter Bereich ausblenden */
 .hidden {
@@ -113,198 +143,196 @@ a {
   cursor: pointer;
 }
 
-
-
 /* ===== Titel & App-Icon ===== */
 .app-title {
-    font-size: 32px;
-    font-weight: bold;
-    margin-left: 10px;
+  font-size: 32px;
+  font-weight: bold;
+  margin-left: 10px;
 }
 
 .top-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
 }
 
 .app-icon {
-    height: 60px;
-    width: 60px;
+  height: 60px;
+  width: 60px;
 }
 
 /* ===== Header Info (Uhrzeit, Gebete etc.) ===== */
 .top-info {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px 15px;
-    text-align: center;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px 15px;
+  text-align: center;
 }
 
 .header-info {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-    padding: 10px;
-    margin-top: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
 }
 
 /* ===== Navigationsmenü ===== */
 .menu {
-    position: relative;
+  position: relative;
 }
 
 .menu-button {
-    background: black;
-    color: white;
-    font-size: 24px;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
+  background: black;
+  color: white;
+  font-size: 24px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
 }
 
 .menu-list {
-    display: none;
-    list-style: none;
-    background: rgba(0, 0, 0, 0.85);
-    padding: 0;
-    position: absolute;
-    width: 100%;
-    z-index: 100;
+  display: none;
+  list-style: none;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 100;
 }
 
 .menu-list.show {
-    display: block;
+  display: block;
 }
 
 .menu-list li {
-    padding: 10px;
-    border-bottom: 1px solid white;
+  padding: 10px;
+  border-bottom: 1px solid white;
 }
 
 .menu-list a:hover,
 .menu-list .active {
-    background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* ===== Dropdown-Stadtwahl ===== */
 #stadt-container {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 #stadt-auswahl {
-    padding: 8px;
-    font-size: 16px;
-    border-radius: 6px;
-    width: 80%;
-    max-width: 300px;
-    margin: 10px auto;
-    display: block;
-    text-align: center;
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 6px;
+  width: 80%;
+  max-width: 300px;
+  margin: 10px auto;
+  display: block;
+  text-align: center;
 }
 
 /* ===== Bücherübersicht ===== */
 .content-section {
-    padding: 20px;
-    text-align: center;
+  padding: 20px;
+  text-align: center;
 }
 
 .startseite-text {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 /* ===== Kategoriefilter (Dropdown) ===== */
 .buch-suchfeld {
-    width: 90%;
-    max-width: 400px;
-    padding: 10px;
-    font-size: 16px;
-    margin: 15px auto;
-    border-radius: 8px;
-    border: none;
-    display: block;
-    text-align: center;
+  width: 90%;
+  max-width: 400px;
+  padding: 10px;
+  font-size: 16px;
+  margin: 15px auto;
+  border-radius: 8px;
+  border: none;
+  display: block;
+  text-align: center;
 }
 
 /* ===== Grid mit Buchkacheln ===== */
 .buch-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-    padding: 0 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+  padding: 0 15px;
 }
 
 .buch-tile {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.3);
-    transition: transform 0.2s ease;
-    color: #fff;
-    text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+  color: #fff;
+  text-align: center;
 }
 
 .buch-tile:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 15px rgba(255,255,255,0.2);
+  transform: scale(1.02);
+  box-shadow: 0 0 15px rgba(255,255,255,0.2);
 }
 
 .buch-tile img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    background: #333;
-    margin-bottom: 10px;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #333;
+  margin-bottom: 10px;
 }
 
 .buch-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .buch-buttons a {
-    background: #0077cc;
-    color: white;
-    padding: 8px;
-    border-radius: 6px;
-    font-size: 14px;
-    text-decoration: none;
-    transition: background 0.2s ease;
+  background: #0077cc;
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.2s ease;
 }
 
 .buch-buttons a:hover {
-    background: #005fa3;
+  background: #005fa3;
 }
 
 /* ===== Footer ===== */
 footer {
-    background: rgba(0, 0, 0, 0.7);
-    text-align: center;
-    padding: 10px;
-    margin-top: 30px;
+  background: rgba(0, 0, 0, 0.7);
+  text-align: center;
+  padding: 10px;
+  margin-top: 30px;
 }
 
 /* ===== Dark Mode ===== */
 .dark-mode {
-    background: #111;
-    color: #eee;
+  background: #111;
+  color: #eee;
 }
 
 .dark-mode .buch-tile {
-    background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .dark-mode .buch-buttons a {
-    background: #0099dd;
+  background: #0099dd;
 }
 
 .dark-mode .buch-buttons a:hover {
-    background: #0077bb;
+  background: #0077bb;
 }
