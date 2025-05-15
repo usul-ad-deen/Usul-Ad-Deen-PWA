@@ -59,39 +59,79 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // 📌 Gelesene Bücher Dropdown mit Titel
- 
-      window.toggleGeleseneBuecher = () => {
+ let geleseneInterval = null;
+
+window.toggleGeleseneBuecher = () => {
   const dropdown = document.getElementById("gelesene-dropdown");
   dropdown.classList.toggle("hidden");
 
   if (!dropdown.classList.contains("hidden")) {
-    const liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
+    zeigeFirebaseGeleseneBuecher(); // sofort anzeigen
 
-    if (liste.length === 0) {
-      dropdown.innerHTML = "<p>⚠️ Noch keine Bücher gelesen.</p>";
-      return;
-    }
+    // Automatisch alle 10 Sekunden aktualisieren
+    geleseneInterval = setInterval(() => {
+      zeigeFirebaseGeleseneBuecher();
+    }, 10000); /let geleseneInterval = null;
 
-    fetch("bücher.json")
-      .then(res => res.json())
-      .then(buecher => {
-        dropdown.innerHTML = "<strong>📘 Gelesene Bücher:</strong><ul>";
-        liste.forEach(e => {
-          const buch = buecher.find(b =>
-            b.pdf === e.datei || (b.readerLink && e.datei && b.readerLink.includes(e.datei))
-          );
-          const titel = buch?.titel || decodeURIComponent(e.datei).split("/").pop();
-          const urlParam = encodeURIComponent(decodeURIComponent(e.datei));
+// 📌 Gelesene Bücher Dropdown mit Titel
+window.toggleGeleseneBuecher = () => {
+  const dropdown = document.getElementById("gelesene-dropdown");
+  dropdown.classList.toggle("hidden");
 
-          dropdown.innerHTML += `
-            <li>
-              <a href="pdf-reader.html?file=${urlParam}">📘 ${titel} (Seite ${e.seite})</a>
-            </li>`;
-        });
-        dropdown.innerHTML += "</ul>";
-      });
+  if (!dropdown.classList.contains("hidden")) {
+    zeigeFirebaseGeleseneBuecher(); // sofort anzeigen
+
+    // Automatisch alle 10 Sekunden aktualisieren
+    geleseneInterval = setInterval(() => {
+      zeigeFirebaseGeleseneBuecher();
+    }, 10000);
+  } else {
+    clearInterval(geleseneInterval);
+    geleseneInterval = null;
   }
 };
+
+// 📌 Diese Funktion muss separat definiert sein
+async function zeigeFirebaseGeleseneBuecher() {
+  const dropdown = document.getElementById("gelesene-dropdown");
+  dropdown.innerHTML = "";
+
+  let liste = [];
+
+  if (auth.currentUser) {
+    const ref = doc(db, "gelesene-buecher", auth.currentUser.uid);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const daten = snap.data();
+      liste = Object.values(daten);
+    }
+  } else {
+    liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
+  }
+
+  if (liste.length === 0) {
+    dropdown.innerHTML = "<p>⚠️ Noch keine Bücher gelesen.</p>";
+    return;
+  }
+
+  const buecher = await fetch("bücher.json").then(res => res.json());
+
+  dropdown.innerHTML = "<strong>📘 Gelesene Bücher:</strong><ul>";
+  liste.forEach(e => {
+    const buch = buecher.find(b =>
+      b.pdf === e.datei || (b.readerLink && e.datei && b.readerLink.includes(e.datei))
+    );
+    const titel = buch?.titel || decodeURIComponent(e.datei).split("/").pop();
+    const urlParam = encodeURIComponent(decodeURIComponent(e.datei));
+
+    dropdown.innerHTML += `
+      <li>
+        <a href="pdf-reader.html?file=${urlParam}">📘 ${titel} (Seite ${e.seite})</a>
+      </li>`;
+  });
+  dropdown.innerHTML += "</ul>";
+}
+
 
 
  // 📌 Aktuelle Uhrzeit & Datum setzen (Berlin & Mekka)
