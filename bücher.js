@@ -264,6 +264,28 @@ window.zeigeGeleseneBuecher = () => {
   });
 };
 
+    window.toggleGeleseneBuecher = () => {
+  const dropdown = document.getElementById("gelesene-dropdown");
+  dropdown.classList.toggle("hidden");
+
+  if (!dropdown.classList.contains("hidden")) {
+    const liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
+
+    if (liste.length === 0) {
+      dropdown.innerHTML = "<p>⚠️ Keine Bücher gelesen.</p>";
+      return;
+    }
+
+    dropdown.innerHTML = "<strong>📘 Gelesene Bücher:</strong><ul>";
+    liste.forEach(e => {
+      const titel = decodeURIComponent(e.datei).split("/").pop();
+      dropdown.innerHTML += `<li><a href="pdf-reader.html?file=${encodeURIComponent(e.datei)}">📘 ${titel} (Seite ${e.seite})</a></li>`;
+    });
+    dropdown.innerHTML += "</ul>";
+  }
+};
+
+
 
     // 📌 Start
     await ladeIslamischesDatum();
