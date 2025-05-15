@@ -1,3 +1,6 @@
+import { auth, db } from "./firebase-init.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const buchGrid = document.getElementById("buecher-grid");
   const kategorieFilter = document.getElementById("buch-filter");
@@ -56,36 +59,40 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // 📌 Gelesene Bücher Dropdown mit Titel
-  window.toggleGeleseneBuecher = () => {
-    const dropdown = document.getElementById("gelesene-dropdown");
-    dropdown.classList.toggle("hidden");
+ 
+      window.toggleGeleseneBuecher = () => {
+  const dropdown = document.getElementById("gelesene-dropdown");
+  dropdown.classList.toggle("hidden");
 
-    if (!dropdown.classList.contains("hidden")) {
-      const liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
+  if (!dropdown.classList.contains("hidden")) {
+    const liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
 
-      if (liste.length === 0) {
-        dropdown.innerHTML = "<p>⚠️ Noch keine Bücher gelesen.</p>";
-        return;
-      }
-
-      fetch("bücher.json")
-        .then(res => res.json())
-        .then(buecher => {
-          dropdown.innerHTML = "<strong>📘 Gelesene Bücher:</strong><ul>";
-          liste.forEach(e => {
-            const buch = buecher.find(b =>
-              b.pdf === e.datei || b.readerLink?.includes(e.datei)
-            );
-            const titel = buch?.titel || decodeURIComponent(e.datei).split("/").pop();
-            dropdown.innerHTML += `<li><a href="pdf-reader.html?file=${encodeURIComponent(e.datei)}">📘 ${titel} (Seite ${e.seite})</a></li>`;
-          });
-          dropdown.innerHTML += "</ul>";
-        })
-        .catch(() => {
-          dropdown.innerHTML = "<p>⚠️ Fehler beim Laden der Buchtitel.</p>";
-        });
+    if (liste.length === 0) {
+      dropdown.innerHTML = "<p>⚠️ Noch keine Bücher gelesen.</p>";
+      return;
     }
-  };
+
+    fetch("bücher.json")
+      .then(res => res.json())
+      .then(buecher => {
+        dropdown.innerHTML = "<strong>📘 Gelesene Bücher:</strong><ul>";
+        liste.forEach(e => {
+          const buch = buecher.find(b =>
+            b.pdf === e.datei || (b.readerLink && e.datei && b.readerLink.includes(e.datei))
+          );
+          const titel = buch?.titel || decodeURIComponent(e.datei).split("/").pop();
+          const urlParam = encodeURIComponent(decodeURIComponent(e.datei));
+
+          dropdown.innerHTML += `
+            <li>
+              <a href="pdf-reader.html?file=${urlParam}">📘 ${titel} (Seite ${e.seite})</a>
+            </li>`;
+        });
+        dropdown.innerHTML += "</ul>";
+      });
+  }
+};
+
 
  // 📌 Aktuelle Uhrzeit & Datum setzen (Berlin & Mekka)
     function updateUhrzeit() {
