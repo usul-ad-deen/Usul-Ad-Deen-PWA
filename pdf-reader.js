@@ -1,3 +1,4 @@
+
 import { auth, db } from './firebase-init.js';
 import { setDoc, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
@@ -9,7 +10,7 @@ const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
 const url = new URLSearchParams(window.location.search).get("file");
 const bookmarkListe = document.getElementById("lesezeichen-liste");
-
+const pdfjsLib = window['pdfjs-dist/build/pdf'];
 if (!url) {
   alert("❌ Keine PDF-Datei angegeben.");
   throw new Error("PDF-Pfad fehlt");
