@@ -110,11 +110,13 @@ async function zeigeFirebaseGeleseneBuecher() {
       b.pdf === e.datei || (b.readerLink && e.datei && b.readerLink.includes(e.datei))
     );
     const titel = buch?.titel || decodeURIComponent(e.datei).split("/").pop();
-    const urlParam = encodeURIComponent(decodeURIComponent(e.datei));
+    const urlParam = e.datei;
+
+
 
     dropdown.innerHTML += `
       <li>
-        <a href="pdf-reader.html?file=${urlParam}">📘 ${titel} (Seite ${e.seite})</a>
+       <a href="pdf-reader.html?file=${urlParam}">📘 ${titel} (Seite ${e.seite}) </a>
       </li>`;
   });
   dropdown.innerHTML += "</ul>";
