@@ -227,10 +227,49 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Fehler beim Laden der Gebetszeiten:", error);
     }
 }
+// 📌 Zeige Button für letztes gelesenes Buch (falls vorhanden)
+function zeigeFortsetzenButton() {
+  const letzteDatei = localStorage.getItem("zuletzt-gelesen");
+  if (letzteDatei) {
+    document.getElementById("fortsetzen-bereich")?.classList.remove("hidden");
+  }
+}
+
+// 📌 Funktion bereits im pdf-reader.js definiert, hier nochmal:
+window.fortsetzenLetztesBuch = () => {
+  const letzteDatei = localStorage.getItem("zuletzt-gelesen");
+  if (letzteDatei) {
+    window.location.href = `pdf-viewer.html?file=${encodeURIComponent(letzteDatei)}`;
+  } else {
+    alert("⚠️ Kein zuletzt gelesenes Buch gefunden.");
+  }
+};
+
+// 📌 Gelesene Bücher anzeigen
+window.zeigeGeleseneBuecher = () => {
+  const liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
+  const bereich = document.getElementById("gelesene-buecher-anzeige");
+  if (!bereich) return;
+
+  if (liste.length === 0) {
+    bereich.innerHTML = "<p>⚠️ Noch keine Bücher gelesen.</p>";
+    return;
+  }
+
+  bereich.innerHTML = "<h3>📘 Gelesene Bücher:</h3>";
+  liste.forEach(e => {
+    const div = document.createElement("div");
+    div.innerHTML = `<a href="pdf-viewer.html?file=${encodeURIComponent(e.datei)}">📘 ${decodeURIComponent(e.datei)} (Seite ${e.seite})</a>`;
+    bereich.appendChild(div);
+  });
+};
 
 
     // 📌 Start
     await ladeIslamischesDatum();
     await ladeBücher();
     await ermittleStandort();
+      zeigeFortsetzenButton();
+  zeigeGeleseneBuecher();
+
 });
