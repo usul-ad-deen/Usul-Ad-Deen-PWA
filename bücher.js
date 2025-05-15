@@ -328,16 +328,33 @@ document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${aktu
   }
 }
 
-  // 📌 Funktion zum Fortsetzen
-window.fortsetzenLetztesBuch = () => {
-  const btn = document.getElementById("fortsetzen-bereich");
-  const datei = btn?.dataset.datei;
-  if (datei) {
-    window.location.href = `pdf-reader.html?file=${encodeURIComponent(datei)}`;
+window.fortsetzenLetztesBuch = async () => {
+  let letzteDatei = localStorage.getItem("zuletzt-gelesen");
+
+  if (!letzteDatei && auth.currentUser) {
+    try {
+      const ref = doc(db, "gelesene-buecher", auth.currentUser.uid);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        const daten = snap.data();
+        const liste = Object.values(daten);
+        if (liste.length > 0) {
+          letzteDatei = liste[0].datei;
+          localStorage.setItem("zuletzt-gelesen", letzteDatei);
+        }
+      }
+    } catch (error) {
+      console.error("Fehler beim Laden aus Firebase:", error);
+    }
+  }
+
+  if (letzteDatei) {
+    window.location.href = `pdf-reader.html?file=${encodeURIComponent(letzteDatei)}`;
   } else {
     alert("⚠️ Kein zuletzt gelesenes Buch gefunden.");
   }
 };
+
 
 if (!buchGrid) {
   console.warn("📚 buecher-grid nicht gefunden.");
