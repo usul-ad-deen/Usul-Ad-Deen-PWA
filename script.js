@@ -483,6 +483,15 @@ ladeFeiertagsCountdowns("Berlin");
   } else if (btn) {
     btn.style.display = "none";
   }
+    window.fortsetzenLetztesBuch = () => {
+  const letzteDatei = localStorage.getItem("zuletzt-gelesen");
+  if (letzteDatei) {
+    window.location.href = `pdf-viewer.html?file=${encodeURIComponent(letzteDatei)}`;
+  } else {
+    alert("⚠️ Kein zuletzt gelesenes Buch gespeichert.");
+  }
+};
+
 
     // 📌 ALLE Funktionen starten
     ermittleStandort();
