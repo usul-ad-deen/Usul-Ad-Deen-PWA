@@ -1,4 +1,4 @@
-import { auth } from './firebase-init.js';
+import { auth, db } from './firebase-init.js';
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -6,6 +6,7 @@ import {
     signOut,
     updateProfile
 } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById("register-form");
@@ -49,14 +50,36 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Auth-Zustand anzeigen
+    // Auth-Zustand anzeigen + gelesene Bücher aus Firebase holen
     if (loginLink && userInfo && greeting) {
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 loginLink.classList.add("hidden");
                 userInfo.classList.remove("hidden");
                 const name = user.displayName || user.email.split("@")[0];
                 greeting.textContent = `👋 Assalamu alaikum, ${name}`;
+
+                // 🔁 Firebase-Daten synchronisieren
+                try {
+                    const ref = doc(db, "gelesene-buecher", user.uid);
+                    const snap = await getDoc(ref);
+                    if (snap.exists()) {
+                        const daten = snap.data();
+                        const liste = Object.values(daten);
+                        if (liste.length > 0) {
+                            localStorage.setItem("gelesene-buecher", JSON.stringify(liste));
+                            localStorage.setItem("zuletzt-gelesen", liste[0].datei);
+                        }
+                    }
+                } catch (error) {
+                    console.error("❌ Fehler beim Abrufen gelesener Bücher:", error);
+                }
+
+                // 📌 Bereich sichtbar machen, wenn Daten vorhanden
+                const fortsetzenContainer = document.getElementById("fortsetzen-container");
+                if (fortsetzenContainer && localStorage.getItem("zuletzt-gelesen")) {
+                    fortsetzenContainer.classList.remove("hidden");
+                }
             } else {
                 loginLink.classList.remove("hidden");
                 userInfo.classList.add("hidden");
@@ -70,14 +93,5 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(() => location.reload())
             .catch(error => alert("❌ Fehler beim Logout: " + error.message));
     };
-
-    
-   
-  const zuletzt = localStorage.getItem("zuletzt-gelesen");
-  const fortsetzenContainer = document.getElementById("fortsetzen-container");
-  if (zuletzt && fortsetzenContainer) {
-    fortsetzenContainer.classList.remove("hidden");
-  }
 });
-
 
