@@ -1,1 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dein Profil | Usul ad-Deen</title>
+  <link rel="stylesheet" href="stylesbuecher.css"/>
+  <script defer src="bücher.js"></script>
+  <script type="module" src="auth.js"></script>
+</head>
+<body>
 
+  <!-- App-Titel + Icon -->
+  <header class="top-info">
+    <div class="top-header">
+      <a href="index.html"><img src="icons/icon-192x192.png" class="app-icon" alt="App Icon"></a>
+      <h1 class="app-title">Usul ad-Deen</h1>
+    </div>
+
+    <!-- Uhrzeit, Stadt & Datum -->
+    <div class="header-info">
+      <p><span id="datum">Lädt...</span> | <span id="uhrzeit">Berlin: 00:00</span></p>
+      <p><span id="islamisches-datum">Lädt...</span> | <span id="mekka-uhrzeit">Mekka: 00:00</span></p>
+      <p><span id="next-prayer" class="nextprayer-bold">Lädt...</span> <span id="next-prayer-countdown" class="nextprayer-bold"></span></p>
+      <p><span id="current-prayer" class="nextprayer-bold">Lädt...</span> <span id="current-prayer-countdown" class="nextprayer-bold"></span></p>
+      <p id="stadt-name">Standort wird geladen...</p>
+      <div id="stadt-container">
+        <select id="stadt-auswahl"></select>
+      </div>
+    </div>
+    <!-- Login/Profil-Anzeige oben rechts -->
+<div id="user-status" class="user-info">
+  <a href="login.html" id="login-link">🔐 Login</a>
+  <div id="user-info" class="hidden">
+    <span id="greeting"></span>
+    <a href="profil.html" title="Profil bearbeiten">👤</a>
+    <button onclick="logout()">🚪 Logout</button>
+  </div>
+</div>
+
+  </header>
+
+  <!-- Navigation -->
+  <nav class="menu">
+    <button class="menu-button">☰</button>
+    <ul class="menu-list">
+      <li><a href="index.html">Startseite</a></li>
+      <li><a href="beiträge.html">Beiträge</a></li>
+      <li><a href="bücher.html" class="active">Bücher</a></li>
+      <li><a href="hadith.html">Hadithsammlung</a></li>
+      <li><a href="dua.html">Bittgebete</a></li>
+      <li><a href="gebetszeiten.html">Gebetszeiten</a></li>
+      <li><a href="kalender.html">Islamischer Kalender</a></li>
+      <li><a href="login.html">Login/Registrierung</a></li>
+      <li><a href="über-uns.html">Über uns</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+      <li><a href="impressum.html">Impressum & Datenschutz</a></li>
+      <li><a href="app-teilen.html">App teilen</a></li>
+      <li><a href="#" id="dark-mode-toggle">Dark Mode</a></li>
+    </ul>
+  </nav>
+
+  <!-- Titelbereich -->
+  <section class="content-section">
+    <h2 class="startseite-text">📚 Dein Profil</h2>
+
+
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Usul ad-Deen</p>
+  </footer>
+</body>
+</html>
