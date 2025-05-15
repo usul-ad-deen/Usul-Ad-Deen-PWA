@@ -259,7 +259,7 @@ window.zeigeGeleseneBuecher = () => {
   bereich.innerHTML = "<h3>📘 Gelesene Bücher:</h3>";
   liste.forEach(e => {
     const div = document.createElement("div");
-    div.innerHTML = `<a href="pdf-viewer.html?file=${encodeURIComponent(e.datei)}">📘 ${decodeURIComponent(e.datei)} (Seite ${e.seite})</a>`;
+    div.innerHTML = `<a href="pdf-reader.html?file=${encodeURIComponent(e.datei)}">📘 ${decodeURIComponent(e.datei)} (Seite ${e.seite})</a>`;
     bereich.appendChild(div);
   });
 };
