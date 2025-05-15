@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const userInfo = document.getElementById("user-info");
     const greeting = document.getElementById("greeting");
 
-    // 🔐 Registrierung
+    // Registrierung
     if (registerForm) {
         registerForm.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -25,15 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(userCredential.user, { displayName: username });
-                alert("✅ Registrierung erfolgreich! Jetzt einloggen.");
+                alert("✅ Registrierung erfolgreich!");
                 window.location.href = "login.html";
             } catch (error) {
-                alert("❌ Fehler bei der Registrierung: " + error.message);
+                alert("❌ Registrierung fehlgeschlagen: " + error.message);
             }
         });
     }
 
-    // 🔐 Login
+    // Login
     if (loginForm) {
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -45,12 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("✅ Login erfolgreich!");
                 window.location.href = "index.html";
             } catch (error) {
-                alert("❌ Fehler beim Login: " + error.message);
+                alert("❌ Login fehlgeschlagen: " + error.message);
             }
         });
     }
 
-    // 👤 Statusanzeige für eingeloggte Nutzer
+    // Auth-Zustand anzeigen
     if (loginLink && userInfo && greeting) {
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -65,12 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 🚪 Logout-Funktion
+    // Logout-Funktion
     window.logout = () => {
-        signOut(auth).then(() => {
-            location.reload();
-        }).catch((error) => {
-            alert("❌ Fehler beim Logout: " + error.message);
-        });
+        signOut(auth)
+            .then(() => location.reload())
+            .catch(error => alert("❌ Fehler beim Logout: " + error.message));
     };
 });
