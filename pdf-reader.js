@@ -205,6 +205,7 @@ async function speichereGelesenesBuch() {
   }
 }
 
+
 // 📌 Letztes Buch fortsetzen
 window.fortsetzenLetztesBuch = () => {
   const letzteDatei = localStorage.getItem("zuletzt-gelesen");
