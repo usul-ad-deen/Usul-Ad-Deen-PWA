@@ -9,6 +9,7 @@ let zoomFaktor = 1.5;
 const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
 const url = decodeURIComponent(new URLSearchParams(window.location.search).get("file"));
+
 const bookmarkListe = document.getElementById("lesezeichen-liste");
 const pdfjsLib = window['pdfjs-dist/build/pdf'];
 if (!url) {
