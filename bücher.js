@@ -58,20 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // 📌 Gelesene Bücher Dropdown mit Titel
- let geleseneInterval = null;
 
-window.toggleGeleseneBuecher = () => {
-  const dropdown = document.getElementById("gelesene-dropdown");
-  dropdown.classList.toggle("hidden");
-
-  if (!dropdown.classList.contains("hidden")) {
-    zeigeFirebaseGeleseneBuecher(); // sofort anzeigen
-
-    // Automatisch alle 10 Sekunden aktualisieren
-    geleseneInterval = setInterval(() => {
-      zeigeFirebaseGeleseneBuecher();
-    }, 10000); /let geleseneInterval = null;
 
 // 📌 Gelesene Bücher Dropdown mit Titel
 window.toggleGeleseneBuecher = () => {
