@@ -23,6 +23,26 @@ a {
 #login-link:hover {
   text-decoration: underline;
 }
+.fortsetzen-bereich {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.fortsetzen-bereich button {
+  background: #0077cc;
+  color: white;
+  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.fortsetzen-bereich button:hover {
+  background: #005fa3;
+}
+
 
 /* Authentifizierter Bereich ausblenden */
 .hidden {
