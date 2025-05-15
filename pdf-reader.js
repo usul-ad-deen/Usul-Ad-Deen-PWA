@@ -1,7 +1,7 @@
 let pdfDoc = null;
 let aktuelleSeite = 1;
 let totalSeiten = 0;
-let zoomFaktor = 1;
+let zoomFaktor = 1.5; // Start-Zoom
 
 const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
@@ -12,14 +12,12 @@ if (!url) {
   throw new Error("PDF-Pfad fehlt");
 }
 
-// 🔄 Fortschritt oder Lesezeichen laden
 const gespeicherteSeite = parseInt(localStorage.getItem(`pdf-seite-${url}`));
-const gespeichertesLesezeichen = parseInt(localStorage.getItem(`pdf-bookmark-${url}`));
 if (!isNaN(gespeicherteSeite)) {
   aktuelleSeite = gespeicherteSeite;
 }
 
-// 📘 PDF laden
+// 📄 PDF laden
 pdfjsLib.getDocument(url).promise.then(pdf => {
   pdfDoc = pdf;
   totalSeiten = pdf.numPages;
@@ -29,10 +27,10 @@ pdfjsLib.getDocument(url).promise.then(pdf => {
   alert("Fehler beim Laden des PDF-Dokuments.");
 });
 
-// 📄 Seite anzeigen
+// 📄 Seite anzeigen (mit echtem Zoom!)
 function renderSeite(nr) {
   pdfDoc.getPage(nr).then(page => {
-    const viewport = page.getViewport({ scale: 1.5 });
+    const viewport = page.getViewport({ scale: zoomFaktor });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
 
@@ -43,7 +41,6 @@ function renderSeite(nr) {
 
     page.render(renderContext).promise.then(() => {
       aktuelleSeite = nr;
-      canvas.style.transform = `scale(${zoomFaktor})`;
       localStorage.setItem(`pdf-seite-${url}`, nr);
       updateFortschritt();
     });
@@ -69,24 +66,27 @@ window.zoomOut = () => {
 
 // 🔁 Navigation
 window.weiter = () => {
-  if (aktuelleSeite < totalSeiten) renderSeite(aktuelleSeite + 1);
+  if (aktuelleSeite < totalSeiten) {
+    renderSeite(aktuelleSeite + 1);
+  }
 };
 
 window.zurueck = () => {
-  if (aktuelleSeite > 1) renderSeite(aktuelleSeite - 1);
+  if (aktuelleSeite > 1) {
+    renderSeite(aktuelleSeite - 1);
+  }
 };
 
 window.zurueckZurAuswahl = () => {
   window.location.href = "bücher.html";
 };
 
-// 🔖 Lesezeichen speichern
+// 🔖 Lesezeichen
 window.setzeLesezeichen = () => {
   localStorage.setItem(`pdf-bookmark-${url}`, aktuelleSeite);
   alert(`Lesezeichen auf Seite ${aktuelleSeite} gesetzt ✅`);
 };
 
-// 📚 Lesezeichen aufrufen
 window.geheZuLesezeichen = () => {
   const bookmark = parseInt(localStorage.getItem(`pdf-bookmark-${url}`));
   if (!isNaN(bookmark)) {
