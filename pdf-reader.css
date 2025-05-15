@@ -30,6 +30,8 @@ body {
 canvas {
   display: block;
   background: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  transform-origin: top left;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  margin: 10px auto;
+  max-width: 100%;
 }
+
