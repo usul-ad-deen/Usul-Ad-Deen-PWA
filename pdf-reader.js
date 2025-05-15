@@ -1,3 +1,6 @@
+import { auth, db } from "./firebase-init.js";
+import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
 let pdfDoc = null;
 let aktuelleSeite = 1;
 let totalSeiten = 0;
@@ -9,25 +12,28 @@ const url = new URLSearchParams(window.location.search).get("file");
 
 if (!url) {
   alert("❌ Keine PDF-Datei angegeben.");
-  throw new Error("PDF-Pfad fehlt");
+  throw new Error("PDF fehlt");
 }
 
+const lesezeichenBox = document.getElementById("lesezeichen-liste");
+
+// 📌 Lokaler Fortschritt
 const gespeicherteSeite = parseInt(localStorage.getItem(`pdf-seite-${url}`));
-if (!isNaN(gespeicherteSeite)) {
-  aktuelleSeite = gespeicherteSeite;
-}
+if (!isNaN(gespeicherteSeite)) aktuelleSeite = gespeicherteSeite;
 
-// 📄 PDF laden
+let lesezeichen = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
+
+// 📘 PDF laden
 pdfjsLib.getDocument(url).promise.then(pdf => {
   pdfDoc = pdf;
   totalSeiten = pdf.numPages;
   renderSeite(aktuelleSeite);
 }).catch(err => {
-  console.error("PDF konnte nicht geladen werden:", err);
   alert("Fehler beim Laden des PDF-Dokuments.");
+  console.error(err);
 });
 
-// 📄 Seite anzeigen
+// 🔁 Seite anzeigen
 function renderSeite(nr) {
   pdfDoc.getPage(nr).then(page => {
     const viewport = page.getViewport({ scale: zoomFaktor });
@@ -47,7 +53,7 @@ function renderSeite(nr) {
   });
 }
 
-// 📊 Fortschritt anzeigen
+// 📊 Fortschritt
 function updateFortschritt() {
   const prozent = Math.round((aktuelleSeite / totalSeiten) * 100);
   document.getElementById("fortschritt").textContent = `Fortschritt: ${prozent}% (Seite ${aktuelleSeite}/${totalSeiten})`;
@@ -78,40 +84,38 @@ window.zurueckZurAuswahl = () => {
 };
 
 // 🔖 Lesezeichen setzen
-window.setzeLesezeichen = () => {
-  const key = `pdf-bookmarks-${url}`;
-  let bookmarks = JSON.parse(localStorage.getItem(key)) || [];
-  if (!bookmarks.includes(aktuelleSeite)) {
-    bookmarks.push(aktuelleSeite);
-    localStorage.setItem(key, JSON.stringify(bookmarks));
-    alert(`Lesezeichen auf Seite ${aktuelleSeite} gesetzt ✅`);
+window.setzeLesezeichen = async () => {
+  if (!lesezeichen.includes(aktuelleSeite)) {
+    lesezeichen.push(aktuelleSeite);
+    lesezeichen.sort((a, b) => a - b);
+    localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(lesezeichen));
+
+    // Firebase-Sync (optional)
+    const user = auth.currentUser;
+    if (user) {
+      await updateDoc(doc(db, "lesezeichen", user.uid), {
+        [url]: lesezeichen
+      });
+    }
+
+    alert(`✅ Lesezeichen für Seite ${aktuelleSeite} gespeichert`);
   } else {
-    alert("⚠️ Dieses Lesezeichen existiert bereits.");
+    alert("❗ Dieses Lesezeichen ist bereits vorhanden");
   }
 };
 
-// 📚 Lesezeichen anzeigen
-window.geheZuLesezeichen = () => {
-  const liste = document.getElementById("lesezeichen-liste");
-  liste.classList.toggle("hidden");
-
-  const ul = document.getElementById("lesezeichen-eintraege");
-  ul.innerHTML = "";
-
-  const bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
-
-  if (bookmarks.length === 0) {
-    ul.innerHTML = "<li>Keine Lesezeichen gesetzt.</li>";
-    return;
-  }
-
-  bookmarks.sort((a, b) => a - b).forEach(seite => {
-    const li = document.createElement("li");
-    li.textContent = `Seite ${seite}`;
-    li.addEventListener("click", () => {
-      renderSeite(seite);
-      liste.classList.add("hidden");
+// 📚 Lesezeichenliste anzeigen
+window.zeigeLesezeichen = () => {
+  lesezeichenBox.innerHTML = `<h3>📚 Meine Lesezeichen</h3>`;
+  if (lesezeichen.length === 0) {
+    lesezeichenBox.innerHTML += "<p>Keine Lesezeichen gesetzt.</p>";
+  } else {
+    lesezeichen.forEach(seite => {
+      const btn = document.createElement("button");
+      btn.textContent = `📄 Seite ${seite}`;
+      btn.onclick = () => renderSeite(seite);
+      lesezeichenBox.appendChild(btn);
     });
-    ul.appendChild(li);
-  });
+  }
+  lesezeichenBox.hidden = !lesezeichenBox.hidden;
 };
