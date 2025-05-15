@@ -301,24 +301,44 @@ document.getElementById("current-prayer").textContent = `Aktuelles Gebet: ${aktu
         console.error("Fehler beim Laden der Gebetszeiten:", error);
     }
 }
-  
-  // 📌 Zeige Button für letztes gelesenes Buch
-  function zeigeFortsetzenButton() {
-    const letzteDatei = localStorage.getItem("zuletzt-gelesen");
-    if (letzteDatei) {
-      document.getElementById("fortsetzen-bereich")?.classList.remove("hidden");
+  async function zeigeFortsetzenButton() {
+  const fortsetzenBereich = document.getElementById("fortsetzen-bereich");
+
+  let letzteDatei = null;
+
+  if (auth.currentUser) {
+    const uid = auth.currentUser.uid;
+    const ref = doc(db, "gelesene-buecher", uid);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const daten = snap.data();
+      // 🔁 Wir suchen das Buch mit der neuesten Zeit
+      const zuletztGelesen = Object.values(daten).sort((a, b) => new Date(b.zeit) - new Date(a.zeit))[0];
+      letzteDatei = zuletztGelesen?.datei || null;
     }
+  } else {
+    letzteDatei = localStorage.getItem("zuletzt-gelesen");
   }
 
+  if (letzteDatei && fortsetzenBereich) {
+    fortsetzenBereich.classList.remove("hidden");
+    fortsetzenBereich.dataset.datei = letzteDatei; // speichere Link zur späteren Nutzung
+  } else {
+    fortsetzenBereich?.classList.add("hidden");
+  }
+}
+
   // 📌 Funktion zum Fortsetzen
-  window.fortsetzenLetztesBuch = () => {
-    const letzteDatei = localStorage.getItem("zuletzt-gelesen");
-    if (letzteDatei) {
-      window.location.href = `pdf-reader.html?file=${encodeURIComponent(letzteDatei)}`;
-    } else {
-      alert("⚠️ Kein zuletzt gelesenes Buch gefunden.");
-    }
-  };
+window.fortsetzenLetztesBuch = () => {
+  const btn = document.getElementById("fortsetzen-bereich");
+  const datei = btn?.dataset.datei;
+  if (datei) {
+    window.location.href = `pdf-reader.html?file=${encodeURIComponent(datei)}`;
+  } else {
+    alert("⚠️ Kein zuletzt gelesenes Buch gefunden.");
+  }
+};
+
 if (!buchGrid) {
   console.warn("📚 buecher-grid nicht gefunden.");
   return;
