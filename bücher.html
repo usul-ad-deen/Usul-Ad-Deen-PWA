@@ -84,8 +84,12 @@
       <option value="Arabisch">Arabisch</option>
       <option value="Englisch">Englisch</option>
     </select>
-<div id="gelesene-buecher-anzeige"></div>
-<button onclick="zeigeGeleseneBuecher()">📚 Gelesene Bücher anzeigen</button>
+<!-- 📚 Gelesene Bücher Dropdown -->
+<div class="dropdown-gelesene-buecher">
+  <button onclick="toggleGeleseneBuecher()">📚 Gelesene Bücher anzeigen</button>
+  <div id="gelesene-dropdown" class="hidden"></div>
+</div>
+
     <!-- 📌 Letztes Buch weiterlesen -->
 <div id="fortsetzen-bereich" class="fortsetzen-bereich hidden">
   <button onclick="fortsetzenLetztesBuch()">📖 Letztes Buch weiterlesen</button>
