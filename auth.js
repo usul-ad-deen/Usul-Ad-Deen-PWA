@@ -70,4 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(() => location.reload())
             .catch(error => alert("❌ Fehler beim Logout: " + error.message));
     };
+
+    
+   
+  const zuletzt = localStorage.getItem("zuletzt-gelesen");
+  const fortsetzenContainer = document.getElementById("fortsetzen-container");
+  if (zuletzt && fortsetzenContainer) {
+    fortsetzenContainer.classList.remove("hidden");
+  }
 });
+
+
