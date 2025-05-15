@@ -325,5 +325,6 @@ async function ladeStadtAuswahl() {
   await ladeBücher();
   await ermittleStandort();
   zeigeFortsetzenButton();
+  await ladeGebetszeiten(stadt);
  
 });
