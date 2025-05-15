@@ -1,85 +1,57 @@
-// 📌 Imports
-import { auth, db } from "./firebase-init.js";
-import {
-  doc,
-  setDoc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+import { auth, db } from './firebase-init.js';
+import { doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js';
 
 let pdfDoc = null;
 let aktuelleSeite = 1;
 let totalSeiten = 0;
-let zoomStufe = 1.5;
+let zoomFaktor = 1.5;
 
 const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
 
 const url = new URLSearchParams(window.location.search).get("file");
-const dateiname = url?.split("/").pop(); // Nur Dateiname für Lesezeichen-ID
-
 if (!url) {
   alert("❌ Keine PDF-Datei angegeben.");
   throw new Error("PDF-Pfad fehlt");
 }
 
-// 📌 Lesezeichen aus Firestore laden
-async function ladeLesezeichenCloud(dateiname) {
-  const user = auth.currentUser;
-  if (!user) return 1;
-
-  const uid = user.uid;
-  const docId = `${uid}_${dateiname}`;
-  const docRef = doc(db, "bookmarks", docId);
-
-  const snap = await getDoc(docRef);
-  if (snap.exists()) {
-    return snap.data().seite || 1;
+// 📌 Firebase-Nutzer & Firestore-Pfad vorbereiten
+let userId = null;
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    userId = user.uid;
+    const docRef = doc(db, "lesezeichen", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const lesezeichen = docSnap.data()[url];
+      if (lesezeichen) aktuelleSeite = lesezeichen;
+    } else {
+      const lokal = parseInt(localStorage.getItem(`pdf-seite-${url}`));
+      if (!isNaN(lokal)) aktuelleSeite = lokal;
+    }
   } else {
-    return 1;
+    const lokal = parseInt(localStorage.getItem(`pdf-seite-${url}`));
+    if (!isNaN(lokal)) aktuelleSeite = lokal;
   }
-}
 
-// 📌 Lesezeichen in Firestore speichern
-async function speichereLesezeichenCloud(dateiname, seite) {
-  const user = auth.currentUser;
-  if (!user) return;
+  ladePdf();
+});
 
-  const uid = user.uid;
-  const docId = `${uid}_${dateiname}`;
-  const docRef = doc(db, "bookmarks", docId);
-
-  await setDoc(docRef, {
-    uid,
-    dateiname,
-    seite,
-    updated: Date.now()
+async function ladePdf() {
+  const loadingTask = pdfjsLib.getDocument(url);
+  loadingTask.promise.then(pdf => {
+    pdfDoc = pdf;
+    totalSeiten = pdf.numPages;
+    renderSeite(aktuelleSeite);
+  }).catch(err => {
+    console.error("PDF konnte nicht geladen werden:", err);
+    alert("Fehler beim Laden des PDF-Dokuments.");
   });
 }
 
-// 📌 PDF laden
-pdfjsLib.getDocument(url).promise.then(async pdf => {
-  pdfDoc = pdf;
-  totalSeiten = pdf.numPages;
-
-  // 🔄 Seite aus Firebase oder LocalStorage laden
-  const gespeicherteSeite = parseInt(localStorage.getItem(`pdf-seite-${url}`));
-  if (!isNaN(gespeicherteSeite)) {
-    aktuelleSeite = gespeicherteSeite;
-  }
-
-  const cloudSeite = await ladeLesezeichenCloud(dateiname);
-  if (cloudSeite > aktuelleSeite) aktuelleSeite = cloudSeite;
-
-  renderSeite(aktuelleSeite);
-}).catch(err => {
-  console.error("Fehler beim PDF-Laden:", err);
-  alert("❌ PDF konnte nicht geladen werden.");
-});
-
-// 📌 Seite rendern
 function renderSeite(nr) {
   pdfDoc.getPage(nr).then(page => {
-    const viewport = page.getViewport({ scale: zoomStufe });
+    const viewport = page.getViewport({ scale: zoomFaktor });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
 
@@ -90,19 +62,17 @@ function renderSeite(nr) {
 
     page.render(renderContext).promise.then(() => {
       aktuelleSeite = nr;
-      updateFortschritt();
-
-      // Speicher in localStorage & Firebase
       localStorage.setItem(`pdf-seite-${url}`, nr);
-      speichereLesezeichenCloud(dateiname, nr);
+      updateFortschritt();
     });
+  }).catch(err => {
+    console.error("Fehler beim Rendern der Seite:", err);
   });
 }
 
-// 📌 Fortschritt anzeigen
 function updateFortschritt() {
   const prozent = Math.floor((aktuelleSeite / totalSeiten) * 100);
-  document.getElementById("fortschritt").textContent = `Fortschritt: ${prozent}% (${aktuelleSeite}/${totalSeiten})`;
+  document.getElementById("fortschritt").textContent = `📖 Fortschritt: ${prozent}% (Seite ${aktuelleSeite} von ${totalSeiten})`;
 }
 
 // 📌 Navigation
@@ -115,13 +85,27 @@ window.zurueck = () => {
 };
 
 window.zoomIn = () => {
-  zoomStufe += 0.25;
+  zoomFaktor += 0.2;
   renderSeite(aktuelleSeite);
 };
 
 window.zoomOut = () => {
-  zoomStufe = Math.max(0.5, zoomStufe - 0.25);
+  zoomFaktor = Math.max(0.8, zoomFaktor - 0.2);
   renderSeite(aktuelleSeite);
+};
+
+window.lesezeichenSetzen = async () => {
+  if (!userId) {
+    alert("❌ Du musst angemeldet sein, um ein Lesezeichen zu setzen.");
+    return;
+  }
+
+  const lesezeichenRef = doc(db, "lesezeichen", userId);
+  await setDoc(lesezeichenRef, {
+    [url]: aktuelleSeite
+  }, { merge: true });
+
+  alert("✅ Lesezeichen gespeichert!");
 };
 
 window.zurueckZurListe = () => {
