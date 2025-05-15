@@ -255,30 +255,52 @@ async function ladeStadtAuswahl() {
     let aktuelleStadt = null;
 
     
-async function ladeGebetszeiten(stadt) {
-        try {
-            if (countdownInterval) clearInterval(countdownInterval);
+   // 📌 Lade Gebetszeiten
+ async function ladeGebetszeiten(stadt) {
+    try {
+        let response = await fetch(https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3);
+        let data = await response.json();
+        let timings = data.data.timings;
 
-            let response = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${stadt}&country=DE&method=3`);
-            let data = await response.json();
-            if (!data || !data.data || !data.data.timings) return;
+        const jetzt = new Date();
+        const zeitJetzt = jetzt.getHours() * 60 + jetzt.getMinutes();
 
-            let prayerTimes = {
-                "Fajr": data.data.timings.Fajr,
-                "Shuruk": data.data.timings.Sunrise,
-                "Duha": data.data.timings.Sunrise,
-                "Dhuhr": data.data.timings.Dhuhr,
-                "Asr": data.data.timings.Asr,
-                "Maghrib": data.data.timings.Maghrib,
-                "Isha": data.data.timings.Isha
-            };
+        const gebete = [
+            { name: "Fajr", zeit: timings.Fajr },
+            { name: "Dhuhr", zeit: timings.Dhuhr },
+            { name: "Asr", zeit: timings.Asr },
+            { name: "Maghrib", zeit: timings.Maghrib },
+            { name: "Isha", zeit: timings.Isha }
+        ];
 
-            document.getElementById("next-prayer").textContent = `Nächstes Gebet: ${Object.keys(prayerTimes)[0]}`;
-            document.getElementById("next-prayer-countdown").textContent = "";
-        } catch (error) {
-            console.error("❌ Fehler beim Abrufen der Gebetszeiten:", error);
+        let nächstesGebet = null;
+        let aktuellesGebet = null;
+
+        for (let i = 0; i < gebete.length; i++) {
+            const [h, m] = gebete[i].zeit.split(":").map(Number);
+            const gebetsZeit = h * 60 + m;
+
+            if (zeitJetzt < gebetsZeit) {
+                nächstesGebet = gebete[i];
+                aktuellesGebet = gebete[i - 1] || gebete[gebete.length - 1];
+                break;
+            }
         }
-    };
+
+        if (!nächstesGebet) {
+            nächstesGebet = gebete[0]; // nächster Tag
+            aktuellesGebet = gebete[gebete.length - 1];
+        }
+
+        document.getElementById("next-prayer").textContent = Nächstes Gebet: ${nächstesGebet.name} (${nächstesGebet.zeit});
+        document.getElementById("current-prayer").textContent = Aktuelles Gebet: ${aktuellesGebet.name} (${aktuellesGebet.zeit});
+        document.getElementById("next-prayer-countdown").textContent = "";
+        document.getElementById("current-prayer-countdown").textContent = "";
+
+    } catch (error) {
+        console.error("Fehler beim Laden der Gebetszeiten:", error);
+    }
+}
   
   // 📌 Zeige Button für letztes gelesenes Buch
   function zeigeFortsetzenButton() {
