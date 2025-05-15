@@ -1,3 +1,6 @@
+import { auth, db } from "./firebase-init.js";
+import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
 let pdfDoc = null;
 let aktuelleSeite = 1;
 let totalSeiten = 0;
@@ -17,43 +20,15 @@ if (!isNaN(gespeicherteSeite)) {
   aktuelleSeite = gespeicherteSeite;
 }
 
-// ⬇️ Hauptstart
-pdfjsLib.getDocument(url).promise.then(async pdf => {
+pdfjsLib.getDocument(url).promise.then(pdf => {
   pdfDoc = pdf;
   totalSeiten = pdf.numPages;
   renderSeite(aktuelleSeite);
-  await speichereGelesenesBuch(); // ⬅️ async beachten!
+  speichereGelesenesBuch();
 }).catch(err => {
   console.error("PDF konnte nicht geladen werden:", err);
   alert("Fehler beim Laden des PDF-Dokuments.");
 });
-
-// 📘 Buch & Titel speichern
-async function speichereGelesenesBuch() {
-  let liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
-
-  let titel = url;
-  try {
-    const res = await fetch("bücher.json");
-    const daten = await res.json();
-    const buch = daten.find(b => b.readerLink && decodeURIComponent(b.readerLink).includes(url));
-    if (buch) titel = buch.titel;
-  } catch (e) {
-    console.warn("Titel konnte nicht geladen werden:", e);
-  }
-
-  const eintrag = {
-    datei: url,
-    titel: titel,
-    seite: aktuelleSeite,
-    zeit: new Date().toISOString()
-  };
-
-  liste = liste.filter(e => e.datei !== url);
-  liste.unshift(eintrag);
-  localStorage.setItem("gelesene-buecher", JSON.stringify(liste));
-  localStorage.setItem("zuletzt-gelesen", url);
-}
 
 function renderSeite(nr) {
   pdfDoc.getPage(nr).then(page => {
@@ -84,7 +59,6 @@ function updateFortschritt() {
   document.getElementById("fortschritt").textContent = `Fortschritt: ${prozent}% (Seite ${aktuelleSeite}/${totalSeiten})`;
 }
 
-// Navigation
 window.weiter = () => {
   if (aktuelleSeite < totalSeiten) renderSeite(aktuelleSeite + 1);
 };
@@ -95,7 +69,6 @@ window.zurueckZurAuswahl = () => {
   window.location.href = "bücher.html";
 };
 
-// Zoom
 window.zoomIn = () => {
   zoomFaktor += 0.2;
   renderSeite(aktuelleSeite);
@@ -105,32 +78,45 @@ window.zoomOut = () => {
   renderSeite(aktuelleSeite);
 };
 
-// Dark Mode
 window.toggleDarkMode = () => {
   document.body.classList.toggle("dark");
   localStorage.setItem("dark-mode", document.body.classList.contains("dark"));
 };
-
 document.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("dark-mode") === "true") {
     document.body.classList.add("dark");
   }
 });
 
-// 📌 Lesezeichen-Funktion
-window.setzeLesezeichen = () => {
-  let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
-  if (!bookmarks.includes(aktuelleSeite)) {
-    bookmarks.push(aktuelleSeite);
-    localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(bookmarks));
-    alert(`✅ Lesezeichen für Seite ${aktuelleSeite} gesetzt.`);
+// 🔖 Lesezeichen-Funktionen
+window.setzeLesezeichen = async () => {
+  const user = auth.currentUser;
+  const seite = aktuelleSeite;
+
+  if (user) {
+    await speichereLesezeichenInCloud(seite);
   } else {
-    alert("⚠️ Lesezeichen existiert bereits.");
+    let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
+    if (!bookmarks.includes(seite)) {
+      bookmarks.push(seite);
+      localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(bookmarks));
+      alert(`✅ Lesezeichen für Seite ${seite} gesetzt.`);
+    } else {
+      alert("⚠️ Lesezeichen existiert bereits.");
+    }
   }
 };
 
-window.zeigeLesezeichen = () => {
-  const bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
+window.zeigeLesezeichen = async () => {
+  const user = auth.currentUser;
+  let bookmarks = [];
+
+  if (user) {
+    bookmarks = await ladeLesezeichenAusCloud();
+  } else {
+    bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
+  }
+
   if (bookmarks.length === 0) {
     alert("⚠️ Keine Lesezeichen vorhanden.");
     return;
@@ -156,14 +142,84 @@ window.geheZuLesezeichen = (seite) => {
   bookmarkListe.classList.add("hidden");
 };
 
-window.loescheLesezeichen = (seite) => {
-  let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
-  bookmarks = bookmarks.filter(s => s !== seite);
-  localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(bookmarks));
+window.loescheLesezeichen = async (seite) => {
+  const user = auth.currentUser;
+
+  if (user) {
+    const key = `pdf-bookmarks-${encodeURIComponent(url)}`;
+    const docRef = doc(db, "lesezeichen", `${user.uid}_${key}`);
+    const snapshot = await getDoc(docRef);
+
+    if (snapshot.exists()) {
+      let daten = snapshot.data().seiten || [];
+      daten = daten.filter(s => s !== seite);
+      await setDoc(docRef, { uid: user.uid, datei: url, seiten: daten });
+    }
+  } else {
+    let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
+    bookmarks = bookmarks.filter(s => s !== seite);
+    localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(bookmarks));
+  }
+
   zeigeLesezeichen();
 };
 
-// 📌 Button-Funktion für "zuletzt gelesen"
+// 🔄 Cloud-Lesezeichen speichern
+async function speichereLesezeichenInCloud(seite) {
+  const user = auth.currentUser;
+  const key = `pdf-bookmarks-${encodeURIComponent(url)}`;
+  const docRef = doc(db, "lesezeichen", `${user.uid}_${key}`);
+
+  try {
+    const snapshot = await getDoc(docRef);
+    let daten = snapshot.exists() ? snapshot.data().seiten || [] : [];
+
+    if (!daten.includes(seite)) {
+      daten.push(seite);
+      await setDoc(docRef, { uid: user.uid, datei: url, seiten: daten });
+      alert(`✅ Cloud-Lesezeichen für Seite ${seite} gesetzt.`);
+    } else {
+      alert("⚠️ Lesezeichen existiert bereits.");
+    }
+  } catch (error) {
+    console.error("❌ Fehler beim Speichern des Cloud-Lesezeichens:", error);
+  }
+}
+
+// 🔄 Cloud-Lesezeichen laden
+async function ladeLesezeichenAusCloud() {
+  const user = auth.currentUser;
+  const key = `pdf-bookmarks-${encodeURIComponent(url)}`;
+  const docRef = doc(db, "lesezeichen", `${user.uid}_${key}`);
+
+  try {
+    const snapshot = await getDoc(docRef);
+    if (snapshot.exists()) {
+      return snapshot.data().seiten || [];
+    }
+  } catch (error) {
+    console.error("❌ Fehler beim Laden der Cloud-Lesezeichen:", error);
+  }
+
+  return [];
+}
+
+// 🧠 Gelesene Bücher lokal merken
+function speichereGelesenesBuch() {
+  let liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
+  const eintrag = {
+    datei: url,
+    seite: aktuelleSeite,
+    zeit: new Date().toISOString()
+  };
+
+  liste = liste.filter(e => e.datei !== url);
+  liste.unshift(eintrag);
+  localStorage.setItem("gelesene-buecher", JSON.stringify(liste));
+  localStorage.setItem("zuletzt-gelesen", url);
+}
+
+// ▶️ Fortsetzen-Funktion
 window.fortsetzenLetztesBuch = () => {
   const letzteDatei = localStorage.getItem("zuletzt-gelesen");
   if (letzteDatei) {
