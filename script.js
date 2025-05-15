@@ -494,6 +494,7 @@ ladeFeiertagsCountdowns("Berlin");
 
 
     // 📌 ALLE Funktionen starten
+    zeigeFortsetzenButton()
     ermittleStandort();
     await ladeHadith();
     await ladeDua();
