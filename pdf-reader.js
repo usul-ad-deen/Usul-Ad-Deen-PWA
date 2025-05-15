@@ -196,7 +196,7 @@ async function speichereGelesenesBuch() {
     const uid = auth.currentUser.uid;
     const ref = doc(db, "gelesene-buecher", uid);
     await setDoc(ref, {
-      [encodeURIComponent(url)]: eintrag
+      [url]: eintrag
     }, { merge: true });
   } else {
     let liste = JSON.parse(localStorage.getItem("gelesene-buecher")) || [];
