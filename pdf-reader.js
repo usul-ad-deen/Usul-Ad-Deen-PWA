@@ -157,6 +157,25 @@ window.geheZuLesezeichen = (seite) => {
   bookmarkListe.classList.add("hidden");
 };
 
+window.loescheLesezeichen = async (seite) => {
+  if (auth.currentUser) {
+    const uid = auth.currentUser.uid;
+    const ref = doc(db, "lesezeichen", `${uid}_${encodeURIComponent(url)}`);
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const vorhandene = snap.data().seiten || [];
+      const neueListe = vorhandene.filter(s => s !== seite);
+      await setDoc(ref, { seiten: neueListe }, { merge: true });
+    }
+  } else {
+    let bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
+    bookmarks = bookmarks.filter(s => s !== seite);
+    localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(bookmarks));
+  }
+
+  zeigeLesezeichen();
+};
+
 // 📌 Gelesenes Buch speichern
 async function speichereGelesenesBuch() {
   const eintrag = {
