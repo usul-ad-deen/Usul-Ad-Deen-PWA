@@ -39,10 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const email = document.getElementById("login-email").value.trim();
             const password = document.getElementById("login-password").value;
-
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                alert("✅ Login erfolgreich!");
+                alert("✅ Assalam Alaykum");
                 window.location.href = "index.html";
             } catch (error) {
                 alert("❌ Login fehlgeschlagen: " + error.message);
