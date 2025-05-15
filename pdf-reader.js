@@ -133,11 +133,12 @@ window.zeigeLesezeichen = async () => {
   } else {
     bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
   }
-
-  if (bookmarks.length === 0) {
+    if (bookmarks.length === 0) {
     alert("⚠️ Keine Lesezeichen vorhanden.");
+    bookmarkListe.classList.add("hidden"); // ⬅️ Hier Dropdown schließen
     return;
   }
+await window.zeigeLesezeichen();
 
   bookmarks.forEach(seite => {
     const eintrag = document.createElement("div");
