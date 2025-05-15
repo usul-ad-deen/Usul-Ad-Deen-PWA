@@ -133,27 +133,27 @@ window.zeigeLesezeichen = async () => {
   } else {
     bookmarks = JSON.parse(localStorage.getItem(`pdf-bookmarks-${url}`)) || [];
   }
-    if (bookmarks.length === 0) {
+
+  if (bookmarks.length === 0) {
     alert("⚠️ Keine Lesezeichen vorhanden.");
-    bookmarkListe.classList.add("hidden"); // ⬅️ Hier Dropdown schließen
+    bookmarkListe.classList.add("hidden");
     return;
   }
-await window.zeigeLesezeichen();
 
   bookmarks.forEach(seite => {
     const eintrag = document.createElement("div");
     eintrag.className = "lesezeichen-eintrag";
     eintrag.innerHTML = `
-  <span>Seite ${seite}</span>
-  <button onclick="geheZuLesezeichen(${seite})">📖</button>
-  <button onclick="loescheLesezeichen(${seite})">❌</button>
-`;
-
+      <span>Seite ${seite}</span>
+      <button onclick="geheZuLesezeichen(${seite})">📖</button>
+      <button onclick="loescheLesezeichen(${seite})">❌</button>
+    `;
     bookmarkListe.appendChild(eintrag);
   });
 
   bookmarkListe.classList.toggle("hidden");
 };
+
 
 window.geheZuLesezeichen = (seite) => {
   renderSeite(seite);
@@ -176,8 +176,10 @@ window.loescheLesezeichen = async (seite) => {
     localStorage.setItem(`pdf-bookmarks-${url}`, JSON.stringify(bookmarks));
   }
 
+  alert(`✅ Lesezeichen auf Seite ${seite} wurde gelöscht.`);
   zeigeLesezeichen();
 };
+
 
 // 📌 Gelesenes Buch speichern
 async function speichereGelesenesBuch() {
