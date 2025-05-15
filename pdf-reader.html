@@ -2,22 +2,23 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PDF Reader | Usul ad-Deen</title>
-  <link rel="stylesheet" href="pdf-reader.css" />
+  <link rel="stylesheet" href="pdf-reader.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script type="module" src="pdf-reader.js"></script>
+  <script defer src="pdf-reader.js"></script>
 </head>
 <body>
   <div id="controls">
-    <div class="nav-buttons">
+    <div class="top-controls">
       <button onclick="zurueck()">⬅️ vorherige Seite</button>
+      <span id="fortschritt">Fortschritt: 0%</span>
       <button onclick="weiter()">➡️ nächste Seite</button>
       <button onclick="zoomOut()">➖ Zoom</button>
       <button onclick="zoomIn()">➕ Zoom</button>
+      <button onclick="toggleDarkMode()">🌓 Dark Mode</button>
     </div>
-    <span id="fortschritt">Fortschritt: 0%</span>
-    <div class="action-buttons">
+    <div class="bookmark-controls">
       <button onclick="setzeLesezeichen()">🔖 Lesezeichen setzen</button>
       <button onclick="zeigeLesezeichen()">🔖 Meine Lesezeichen</button>
       <button onclick="zurueckZurAuswahl()">📚 Zur Bücherauswahl</button>
@@ -26,7 +27,7 @@
 
   <div id="viewer-container">
     <canvas id="pdf-canvas"></canvas>
-    <div id="lesezeichen-liste" class="lesezeichen-box" hidden></div>
+    <div id="lesezeichen-liste" class="hidden"></div>
   </div>
 </body>
 </html>
