@@ -476,6 +476,13 @@ ladeFeiertagsCountdowns("Berlin");
             console.error("Fehler beim Laden der Dua:", error);
         }
     }
+     const zuletzt = localStorage.getItem("zuletzt-gelesen");
+  const btn = document.getElementById("zuletzt-gelesen-button");
+  if (zuletzt && btn) {
+    btn.style.display = "block";
+  } else if (btn) {
+    btn.style.display = "none";
+  }
 
     // 📌 ALLE Funktionen starten
     ermittleStandort();
