@@ -1,35 +1,39 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <!-- 📱 Mobilgeräte: Optimierte Darstellung + kein Pinch-Zoom -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PDF Reader | Usul ad-Deen</title>
   <link rel="stylesheet" href="pdf-reader.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script defer src="pdf-reader.js"></script>
 </head>
-
 <body>
-<div id="controls">
-  <button onclick="zurueck()">⬅️ vorherige Seite</button>
-  <span id="fortschritt">Fortschritt: 0%</span>
-  <div>
-    <button onclick="zoomOut()">➖ Zoom</button>
-    <button onclick="zoomIn()">➕ Zoom</button>
-    <button onclick="weiter()">➡️ nächste Seite</button>
-    <button onclick="setzeLesezeichen()">🔖 Lesezeichen</button>
-    <button onclick="geheZuLesezeichen()">🔖 meine Lesezeichen</button>
-    <button onclick="zurueckZurAuswahl()">📚 Zur allen Büchern</button>
+
+  <!-- 📌 Steuerung -->
+  <div id="controls">
+    <button onclick="zurueck()">⬅️ vorherige Seite</button>
+    <span id="fortschritt">Fortschritt: 0%</span>
+    <div>
+      <button onclick="zoomOut()">➖ Zoom</button>
+      <button onclick="zoomIn()">➕ Zoom</button>
+      <button onclick="weiter()">➡️ nächste Seite</button>
+      <button onclick="setzeLesezeichen()">🔖 Lesezeichen</button>
+      <button onclick="geheZuLesezeichen()">🔖 Meine Lesezeichen</button>
+      <button onclick="zurueckZurAuswahl()">📚 Zur Bücherauswahl</button>
+    </div>
   </div>
-</div>
 
-<div id="viewer-container">
-  <canvas id="pdf-canvas"></canvas>
-</div>
+  <!-- 📄 PDF-Anzeige -->
+  <div id="viewer-container">
+    <canvas id="pdf-canvas"></canvas>
+  </div>
 
-
+  <!-- 🔖 Seitenleiste für Lesezeichen -->
+  <div id="lesezeichen-liste" class="hidden">
+    <h3>📌 Meine Lesezeichen</h3>
+    <ul id="lesezeichen-eintraege"></ul>
+  </div>
 
 </body>
 </html>
